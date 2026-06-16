@@ -36,9 +36,10 @@ export async function fetchChannelVideos(pageToken: string = '') {
       
       if (res.ok && data.status === 'ok') {
         const videos = data.items.map((item: any) => {
-          const videoId = item.link.split('v=')[1];
+          const match = item.link.match(/(?:v=|shorts\/|youtu\.be\/)([\w-]+)/);
+          const videoId = match ? match[1] : null;
           return { id: videoId, title: item.title };
-        });
+        }).filter((v: any) => v.id); // Filter out any that failed to parse
         return { videos, nextPageToken: null, isOfficialApi: false };
       }
     }
