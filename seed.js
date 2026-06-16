@@ -1,8 +1,7 @@
 const { loadEnvConfig } = require('@next/env');
 loadEnvConfig(process.cwd());
 const fs = require('fs');
-const { sequelize } = require('./src/lib/db.ts');
-require('./src/models/index.ts');
+const { sequelize } = require('./src/models/index.ts');
 
 async function seed() {
   console.log("--- Starting Full Database Seed ---");
