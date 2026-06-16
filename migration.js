@@ -1,4 +1,6 @@
-﻿const { DataTypes } = require("sequelize");
+const { loadEnvConfig } = require('@next/env');
+loadEnvConfig(process.cwd());
+const { DataTypes } = require("sequelize");
 
 module.exports = {
   up: async (queryInterface) => {
