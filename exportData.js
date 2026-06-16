@@ -1,3 +1,5 @@
+const { loadEnvConfig } = require('@next/env');
+loadEnvConfig(process.cwd());
 const fs = require('fs');
 const { sequelize } = require('./src/lib/db.ts');
 require('./src/models/index.ts');
