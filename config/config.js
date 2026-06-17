@@ -1,4 +1,16 @@
-require('dotenv').config({ path: '.env.local' }); // Load environment variables from .env.local if present
+const fs = require('fs');
+try {
+  // Always load .env first if it exists
+  if (fs.existsSync('.env')) {
+    require('dotenv').config({ path: '.env' });
+  }
+  // Then load .env.local to override/add any local variables
+  if (fs.existsSync('.env.local')) {
+    require('dotenv').config({ path: '.env.local', override: true });
+  }
+} catch (error) {
+  console.log('Error loading dotenv, relying on system environment variables.');
+}
 
 module.exports = {
   development: {
