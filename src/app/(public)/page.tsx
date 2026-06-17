@@ -4,6 +4,8 @@ import { connectDB } from '@/lib/db';
 import { Product } from '@/models/Product';
 import { Category } from '@/models/Category';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   return await getSeoMetadata('/');
 }
