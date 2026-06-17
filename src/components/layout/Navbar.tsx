@@ -96,16 +96,20 @@ export default function Navbar() {
   const renderMegaMenu = (items: any[], isOpen: boolean) => {
     if (!items || items.length === 0) return null;
 
+    const allProducts = items.reduce((acc: any[], rootCat: any) => {
+      if (rootCat.allNestedProducts) {
+        return [...acc, ...rootCat.allNestedProducts];
+      }
+      return acc;
+    }, []);
+
+    if (allProducts.length === 0) return null;
+
     return (
       <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 w-max min-w-[700px] max-w-[90vw] z-50 transition-all duration-300 ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0'}`}>
         <div className="bg-white shadow-2xl border border-gray-100 rounded-2xl p-8 relative">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-5">
-            {items.reduce((acc: any[], rootCat: any) => {
-              if (rootCat.allNestedProducts) {
-                return [...acc, ...rootCat.allNestedProducts];
-              }
-              return acc;
-            }, []).map((prod: any) => (
+            {allProducts.map((prod: any) => (
               <div key={prod.id} className="border-b border-gray-100 pb-3">
                 <Link href={`/products/${prod.slug}`} className="block text-gray-800 hover:text-blue-600 hover:underline hover:underline-offset-4 transition-all text-base font-medium w-full">
                   {prod.name}

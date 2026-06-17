@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, X, FolderTree } from 'lucide-react';
 import Link from 'next/link';
+import Swal from 'sweetalert2';
 
 interface CategoryFormProps {
   initialData?: any;
@@ -56,13 +57,25 @@ export default function CategoryForm({ initialData, parentId = null }: CategoryF
     });
   };
 
-  const handleRemoveTab = (index: number) => {
-    const newTabs = [...formData.equipmentSolutions.tabs];
-    newTabs.splice(index, 1);
-    setFormData({
-      ...formData,
-      equipmentSolutions: { ...formData.equipmentSolutions, tabs: newTabs }
+  const handleRemoveTab = async (index: number) => {
+    const result = await Swal.fire({
+      title: 'Remove Tab?',
+      text: "Are you sure you want to remove this tab?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!'
     });
+
+    if (result.isConfirmed) {
+      const newTabs = [...formData.equipmentSolutions.tabs];
+      newTabs.splice(index, 1);
+      setFormData({
+        ...formData,
+        equipmentSolutions: { ...formData.equipmentSolutions, tabs: newTabs }
+      });
+    }
   };
 
   const handleTabChange = (index: number, field: string, value: string) => {
@@ -95,15 +108,22 @@ export default function CategoryForm({ initialData, parentId = null }: CategoryF
       });
       
       if (res.ok) {
+        await Swal.fire({
+          icon: 'success',
+          title: !isEditMode ? 'Category Created!' : 'Category Updated!',
+          text: 'Your changes have been saved successfully.',
+          timer: 1500,
+          showConfirmButton: false
+        });
         router.push('/admin/categories');
         router.refresh();
       } else {
         const errorData = await res.json();
-        alert(errorData.error || 'Failed to save category');
+        Swal.fire('Error!', errorData.error || 'Failed to save category', 'error');
       }
     } catch (error) {
       console.error('Error saving category:', error);
-      alert('An error occurred while saving');
+      Swal.fire('Error!', 'An error occurred while saving', 'error');
     } finally {
       setSaving(false);
     }

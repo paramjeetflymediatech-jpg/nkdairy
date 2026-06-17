@@ -1,9 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Loader2, Image as ImageIcon, X } from 'lucide-react';
+import { Loader2, Image as ImageIcon, X, ChevronUp, ChevronDown } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import Swal from 'sweetalert2';
 
 // Dynamically import CKEditor to avoid SSR issues
 const CustomEditor = dynamic(() => {
@@ -21,7 +22,7 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
   const [categories, setCategories] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
-  
+
   const parseEquipmentSolutions = (data: any) => {
     if (!data) return { enabled: false, title: '', subtitle: '', generalDescription: '', tabsHeader: '', tabs: [] };
     if (typeof data === 'object') return data;
@@ -65,6 +66,25 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
     pageSections: parsePageSections(initialData?.pageSections),
     faqs: parseFaqs(initialData?.faqs)
   });
+
+  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    parsePageSections(initialData?.pageSections).forEach((s: any) => {
+      if (s.id) initial[s.id] = true;
+    });
+    return initial;
+  });
+
+  const [collapsedFaqs, setCollapsedFaqs] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    parseFaqs(initialData?.faqs).forEach((f: any) => {
+      if (f.id) initial[f.id] = true;
+    });
+    return initial;
+  });
+
+  const toggleSection = (id: string) => setCollapsedSections(prev => ({ ...prev, [id]: !prev[id] }));
+  const toggleFaq = (id: string) => setCollapsedFaqs(prev => ({ ...prev, [id]: !prev[id] }));
 
   useEffect(() => {
     fetchCategories();
@@ -112,11 +132,11 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
         const data = await res.json();
         setFormData({ ...formData, images: [...formData.images, data.url] });
       } else {
-        alert('Image upload failed');
+        Swal.fire('Error', 'Image upload failed', 'error');
       }
     } catch (err) {
       console.error(err);
-      alert('Error uploading image');
+      Swal.fire('Error', 'Error uploading image', 'error');
     } finally {
       setUploadingImage(false);
       // reset input
@@ -124,11 +144,23 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
     }
   };
 
-  const removeImage = (indexToRemove: number) => {
-    setFormData({
-      ...formData,
-      images: formData.images.filter((_: any, i: number) => i !== indexToRemove)
+  const removeImage = async (indexToRemove: number) => {
+    const result = await Swal.fire({
+      title: 'Remove Image?',
+      text: "Are you sure you want to remove this image?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!'
     });
+    
+    if (result.isConfirmed) {
+      setFormData({
+        ...formData,
+        images: formData.images.filter((_: any, i: number) => i !== indexToRemove)
+      });
+    }
   };
 
   const handleAddTab = () => {
@@ -141,13 +173,25 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
     });
   };
 
-  const handleRemoveTab = (index: number) => {
-    const newTabs = [...formData.equipmentSolutions.tabs];
-    newTabs.splice(index, 1);
-    setFormData({
-      ...formData,
-      equipmentSolutions: { ...formData.equipmentSolutions, tabs: newTabs }
+  const handleRemoveTab = async (index: number) => {
+    const result = await Swal.fire({
+      title: 'Remove Tab?',
+      text: "Are you sure you want to remove this tab?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!'
     });
+    
+    if (result.isConfirmed) {
+      const newTabs = [...formData.equipmentSolutions.tabs];
+      newTabs.splice(index, 1);
+      setFormData({
+        ...formData,
+        equipmentSolutions: { ...formData.equipmentSolutions, tabs: newTabs }
+      });
+    }
   };
 
   const handleTabChange = (index: number, field: string, value: string) => {
@@ -193,10 +237,22 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
     });
   };
 
-  const handleRemoveSection = (index: number) => {
-    const newSections = [...formData.pageSections];
-    newSections.splice(index, 1);
-    setFormData({ ...formData, pageSections: newSections });
+  const handleRemoveSection = async (index: number) => {
+    const result = await Swal.fire({
+      title: 'Remove Section?',
+      text: "Are you sure you want to remove this dynamic section?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!'
+    });
+
+    if (result.isConfirmed) {
+      const newSections = [...formData.pageSections];
+      newSections.splice(index, 1);
+      setFormData({ ...formData, pageSections: newSections });
+    }
   };
 
   const handleSectionChange = (index: number, field: string, value: string) => {
@@ -212,10 +268,22 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
     });
   };
 
-  const handleRemoveFaq = (index: number) => {
-    const newFaqs = [...formData.faqs];
-    newFaqs.splice(index, 1);
-    setFormData({ ...formData, faqs: newFaqs });
+  const handleRemoveFaq = async (index: number) => {
+    const result = await Swal.fire({
+      title: 'Remove FAQ?',
+      text: "Are you sure you want to remove this FAQ?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!'
+    });
+
+    if (result.isConfirmed) {
+      const newFaqs = [...formData.faqs];
+      newFaqs.splice(index, 1);
+      setFormData({ ...formData, faqs: newFaqs });
+    }
   };
 
   const handleFaqChange = (index: number, field: string, value: string) => {
@@ -251,15 +319,22 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
       });
       
       if (res.ok) {
+        await Swal.fire({
+          icon: 'success',
+          title: mode === 'create' ? 'Product Created!' : 'Product Updated!',
+          text: 'Your changes have been saved successfully.',
+          timer: 1500,
+          showConfirmButton: false
+        });
         router.push('/admin/products');
         router.refresh();
       } else {
         const errorData = await res.json();
-        alert(errorData.error || 'Failed to save product');
+        Swal.fire('Error!', errorData.error || 'Failed to save product', 'error');
       }
     } catch (error) {
       console.error('Error saving product:', error);
-      alert('An error occurred while saving');
+      Swal.fire('Error!', 'An error occurred while saving', 'error');
     } finally {
       setSaving(false);
     }
@@ -368,91 +443,100 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
             </div>
 
             <div className="space-y-6">
-              {formData.pageSections.map((section: any, idx: number) => (
-                <div key={section.id} className="bg-white border border-gray-200 p-6 rounded-2xl relative shadow-sm">
-                  <div className="flex justify-between items-center border-b border-gray-100 pb-4 mb-4">
-                    <h4 className="font-bold text-gray-700">Section {idx + 1}</h4>
+              {formData.pageSections.map((section: any, idx: number) => {
+                const isCollapsed = collapsedSections[section.id];
+                return (
+                <div key={section.id} className="bg-white border border-gray-200 rounded-2xl relative shadow-sm overflow-hidden">
+                  <div className="flex justify-between items-center bg-gray-50 px-6 py-4 border-b border-gray-100 cursor-pointer" onClick={() => toggleSection(section.id)}>
+                    <h4 className="font-bold text-gray-700 flex items-center gap-2">
+                      {isCollapsed ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
+                      Section {idx + 1} {section.title ? `- ${section.title}` : ''}
+                    </h4>
                     <button 
                       type="button"
-                      onClick={() => handleRemoveSection(idx)}
+                      onClick={(e) => { e.stopPropagation(); handleRemoveSection(idx); }}
                       className="text-sm text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-md transition-all font-semibold"
                     >
                       Remove
                     </button>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Section Title</label>
-                      <input 
-                        type="text" 
-                        value={section.title}
-                        onChange={(e) => handleSectionChange(idx, 'title', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 text-gray-800"
-                        placeholder="e.g. Pasteurizing Milk Machine"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
+                  {!isCollapsed && (
+                  <div className="p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Image Align</label>
-                        <select 
-                          value={section.alignment}
-                          onChange={(e) => handleSectionChange(idx, 'alignment', e.target.value)}
-                          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
-                        >
-                          <option value="left">Image on Left</option>
-                          <option value="right">Image on Right</option>
-                        </select>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Section Title</label>
+                        <input 
+                          type="text" 
+                          value={section.title}
+                          onChange={(e) => handleSectionChange(idx, 'title', e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 text-gray-800"
+                          placeholder="e.g. Pasteurizing Milk Machine"
+                        />
                       </div>
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Background</label>
-                        <select 
-                          value={section.backgroundColor}
-                          onChange={(e) => handleSectionChange(idx, 'backgroundColor', e.target.value)}
-                          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
-                        >
-                          <option value="white">White</option>
-                          <option value="gray">Light Gray</option>
-                        </select>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">Image Align</label>
+                          <select 
+                            value={section.alignment}
+                            onChange={(e) => handleSectionChange(idx, 'alignment', e.target.value)}
+                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
+                          >
+                            <option value="left">Image on Left</option>
+                            <option value="right">Image on Right</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">Background</label>
+                          <select 
+                            value={section.backgroundColor}
+                            onChange={(e) => handleSectionChange(idx, 'backgroundColor', e.target.value)}
+                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
+                          >
+                            <option value="white">White</option>
+                            <option value="gray">Light Gray</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="mb-4">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Section Content (HTML)</label>
-                    <div className="border border-gray-200 rounded-lg overflow-hidden prose max-w-none">
-                      <CustomEditor
-                        data={section.content}
-                        onChange={(event: any, editor: any) => {
-                          const data = editor.getData();
-                          handleSectionChange(idx, 'content', data);
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-6">
-                    <div className="flex-1">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Section Media (Image or Video)</label>
-                      <input 
-                        type="file" 
-                        accept="image/*,video/*"
-                        onChange={(e) => handleSectionImageUpload(idx, e)}
-                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-gray-200 rounded-lg"
-                      />
-                    </div>
-                    {section.image && (
-                      <div className="w-24 h-24 relative rounded-lg border border-gray-200 overflow-hidden bg-gray-50 shrink-0">
-                        {section.mediaType === 'video' ? (
-                          <video src={section.image} className="w-full h-full object-cover" muted autoPlay loop />
-                        ) : (
-                          <img src={section.image} alt="Section" className="w-full h-full object-contain" />
-                        )}
+                    <div className="mb-4">
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">Section Content (HTML)</label>
+                      <div className="border border-gray-200 rounded-lg overflow-hidden prose max-w-none">
+                        <CustomEditor
+                          data={section.content}
+                          onChange={(event: any, editor: any) => {
+                            const data = editor.getData();
+                            handleSectionChange(idx, 'content', data);
+                          }}
+                        />
                       </div>
-                    )}
+                    </div>
+
+                    <div className="flex items-center gap-6">
+                      <div className="flex-1">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Section Media (Image or Video)</label>
+                        <input 
+                          type="file" 
+                          accept="image/*,video/*"
+                          onChange={(e) => handleSectionImageUpload(idx, e)}
+                          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-gray-200 rounded-lg"
+                        />
+                      </div>
+                      {section.image && (
+                        <div className="w-24 h-24 relative rounded-lg border border-gray-200 overflow-hidden bg-gray-50 shrink-0">
+                          {section.mediaType === 'video' ? (
+                            <video src={section.image} className="w-full h-full object-cover" muted autoPlay loop />
+                          ) : (
+                            <img src={section.image} alt="Section" className="w-full h-full object-contain" />
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
+                  )}
                 </div>
-              ))}
+              )})}
               {formData.pageSections.length === 0 && (
                 <div className="text-sm text-gray-500 italic text-center py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-300">
                   No dynamic sections added. The default layout will be used.
@@ -640,18 +724,24 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
         </div>
 
         <div className="space-y-6">
-          {formData.faqs.map((faq: any, idx: number) => (
+          {formData.faqs.map((faq: any, idx: number) => {
+            const isCollapsed = collapsedFaqs[faq.id];
+            return (
             <div key={faq.id} className="relative bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
-                <span className="font-semibold text-gray-700">FAQ Item {idx + 1}</span>
+              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center cursor-pointer" onClick={() => toggleFaq(faq.id)}>
+                <span className="font-semibold text-gray-700 flex items-center gap-2">
+                  {isCollapsed ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
+                  FAQ Item {idx + 1} {faq.question ? `- ${faq.question}` : ''}
+                </span>
                 <button 
                   type="button"
-                  onClick={() => handleRemoveFaq(idx)}
+                  onClick={(e) => { e.stopPropagation(); handleRemoveFaq(idx); }}
                   className="text-red-500 hover:text-red-700 text-sm font-medium flex items-center gap-1"
                 >
                   <X size={14} /> Remove
                 </button>
               </div>
+              {!isCollapsed && (
               <div className="p-5 space-y-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Question</label>
@@ -674,8 +764,9 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
                   />
                 </div>
               </div>
+              )}
             </div>
-          ))}
+          )})}
           {formData.faqs.length === 0 && (
             <div className="text-sm text-gray-500 italic text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-300">
               No FAQs added yet. Click "+ Add FAQ" to start.

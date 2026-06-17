@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Plus, Search, Edit2, Trash2, ExternalLink } from 'lucide-react';
 import { Pagination } from '@/components/admin/Pagination';
+import Swal from 'sweetalert2';
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<any[]>([]);
@@ -47,18 +48,29 @@ export default function AdminProductsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this product?')) return;
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (!result.isConfirmed) return;
     
     try {
       const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
       if (res.ok) {
+        Swal.fire('Deleted!', 'The product has been deleted.', 'success');
         fetchProducts(currentPage);
       } else {
-        alert('Failed to delete product');
+        Swal.fire('Error!', 'Failed to delete product', 'error');
       }
     } catch (error) {
       console.error('Error deleting:', error);
-      alert('An error occurred while deleting');
+      Swal.fire('Error!', 'An error occurred while deleting', 'error');
     }
   };
 

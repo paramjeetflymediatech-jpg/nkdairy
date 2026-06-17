@@ -63,8 +63,19 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     }
   };
 
+  const getFaqs = (prod: any) => {
+    if (!prod.faqs) return [];
+    if (Array.isArray(prod.faqs)) return prod.faqs;
+    try {
+      return JSON.parse(prod.faqs) || [];
+    } catch (e) {
+      return [];
+    }
+  };
+
   const eqSolutions = getEquipmentSolutions(product);
   const pageSections = getPageSections(product);
+  const faqs = getFaqs(product);
 
   return (
     <div className="bg-white">
@@ -198,11 +209,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       )}
 
       {/* 4. Frequently Asked Questions */}
-      {product.faqs && product.faqs.length > 0 && (
+      {faqs && faqs.length > 0 && (
         <FAQAccordion
           title="Frequently Asked Questions"
           subtitle=""
-          data={product.faqs}
+          data={faqs}
         />
       )}
 

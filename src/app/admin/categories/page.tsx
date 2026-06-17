@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Search, Edit2, Trash2, ChevronRight, FolderTree } from 'lucide-react';
 import Link from 'next/link';
+import Swal from 'sweetalert2';
 
 export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -27,18 +28,29 @@ export default function AdminCategoriesPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this category? All its subcategories will be affected.')) return;
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "All its subcategories will be affected!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
       const res = await fetch(`/api/categories/${id}`, { method: 'DELETE' });
       if (res.ok) {
+        Swal.fire('Deleted!', 'The category has been deleted.', 'success');
         fetchCategories();
       } else {
-        alert('Failed to delete category');
+        Swal.fire('Error!', 'Failed to delete category', 'error');
       }
     } catch (error) {
       console.error('Error deleting:', error);
-      alert('An error occurred while deleting');
+      Swal.fire('Error!', 'An error occurred while deleting', 'error');
     }
   };
 

@@ -4,6 +4,10 @@ import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Settings, ShieldCheck, Factory, CheckCircle2, ChevronDown, Play, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 import ClienteleSlider from '@/components/shared/ClienteleSlider';
 
 const testimonials = [
@@ -158,22 +162,38 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
   const [activeAccordion, setActiveAccordion] = useState<number | null>(0);
   const [currentSlide, setCurrentSlide] = useState(0);
   const marqueeRef = useRef<HTMLDivElement>(null);
+  const swiperPrevRef = useRef<HTMLDivElement>(null);
+  const swiperNextRef = useRef<HTMLDivElement>(null);
 
-  const heroImages = [
-    '/gallery-banner.png',
-    '/processing-tank-placeholder.png',
-    '/milking-machine-placeholder.png',
-    '/dairy-farm-placeholder.png',
-    'https://images.unsplash.com/photo-1596229983446-24e525145cd5?q=80&w=1920', // High-quality industrial plant
-    'https://images.unsplash.com/photo-1565191564757-4ed0ba385614?q=80&w=1920' // Manufacturing/processing plant
+  const heroSlides = [
+    {
+      image: '/gallery-banner.png',
+      title: 'Complete Processing Solutions',
+      subtitle: 'Tailormade Process Equipment for Dairy, Food, and Beverage Industries.'
+    },
+    {
+      image: '/processing-tank-placeholder.png',
+      title: 'Advanced Processing Tanks',
+      subtitle: 'High-grade SS 304 and SS 316 tanks for hygienic milk processing.'
+    },
+    {
+      image: '/milking-machine-placeholder.png',
+      title: 'State-of-the-Art Milking Systems',
+      subtitle: 'Efficient, safe, and automated milking machinery for modern dairy farms.'
+    },
+    {
+      image: '/dairy-farm-placeholder.png',
+      title: 'End-to-End Dairy Solutions',
+      subtitle: 'From farm to processing plant, we deliver excellence at every step.'
+    }
   ];
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, 5000); // Change slide every 5 seconds
     return () => clearInterval(timer);
-  }, [heroImages.length]);
+  }, [heroSlides.length]);
 
   const segments = [
     { name: 'Dairy', icon: '/logo.png' }, // placeholder
@@ -190,7 +210,7 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-slate-900">
         
         {/* Background Slider */}
-        {heroImages.map((img, index) => (
+        {heroSlides.map((slide, index) => (
           <div
             key={index}
             className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out z-0 ${
@@ -198,8 +218,8 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
             }`}
           >
             <img
-              src={img}
-              alt={`Dairy Machinery ${index + 1}`}
+              src={slide.image}
+              alt={slide.title}
               className="absolute inset-0 w-full h-full object-cover opacity-80"
             />
           </div>
@@ -211,7 +231,7 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
         
         {/* Slider Controls */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-          {heroImages.map((_, index) => (
+          {heroSlides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
@@ -223,12 +243,12 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
           ))}
         </div>
         
-        <div className="relative z-10 text-center max-w-5xl px-6 mt-16">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight drop-shadow-2xl">
-            Complete Processing Solutions
+        <div className="relative z-10 text-center max-w-5xl px-6 mt-16 transition-opacity duration-500">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight drop-shadow-2xl transition-all duration-700 ease-in-out">
+            {heroSlides[currentSlide].title}
           </h1>
-          <p className="text-lg md:text-2xl text-white/90 mb-10 font-light drop-shadow-md max-w-3xl mx-auto">
-            Tailormade Process Equipment for Dairy, Food, and Beverage Industries.
+          <p className="text-lg md:text-2xl text-white/90 mb-10 font-light drop-shadow-md max-w-3xl mx-auto transition-all duration-700 ease-in-out delay-100">
+            {heroSlides[currentSlide].subtitle}
           </p>
           <div className="flex justify-center gap-4">
             <Link href="/products">
@@ -276,44 +296,96 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
         </div>
       </section>
 
-      {/* 4. Our Products Carousel (Snap Scroll) */}
-      <section className="py-24 bg-white overflow-hidden relative">
-        <div className="container mx-auto px-6 text-center mb-16 relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#127e9f] mb-3 uppercase tracking-widest">Our Products</h2>
-          <p className="text-slate-500 text-lg font-medium">Discover Our Technologically Advanced Processing Machines</p>
-        </div>
-
-        <div className="w-full flex overflow-x-auto snap-x snap-mandatory pb-12 pt-4 px-6 md:px-12 gap-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {initialProducts.map((product, i) => {
-            let imageUrl = 'https://images.unsplash.com/photo-1596229983446-24e525145cd5?q=80&w=800';
-            if (product.images) {
-              try {
-                const parsed = typeof product.images === 'string' ? JSON.parse(product.images) : product.images;
-                if (Array.isArray(parsed) && parsed.length > 0) imageUrl = parsed[0];
-              } catch (e) {}
-            }
-
-            return (
-              <div key={i} className="snap-center shrink-0 w-[85vw] md:w-[400px] bg-white border border-gray-100 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group flex flex-col">
-                <div className="h-[250px] relative bg-gray-50 overflow-hidden">
-                  <img src={imageUrl} alt={product.name} className="absolute inset-0 w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors duration-300"></div>
-                </div>
-                <div className="p-8 flex flex-col flex-1 border-t border-gray-50">
-                  {product.category && (
-                    <span className="text-[#f3b216] text-xs font-bold uppercase tracking-widest mb-2 block">
-                      {product.category.name}
-                    </span>
-                  )}
-                  <h3 className="text-xl font-bold text-slate-800 mb-3 line-clamp-2 group-hover:text-[#127e9f] transition-colors">{product.name}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed line-clamp-3 mb-6 flex-1">{product.description}</p>
-                  <Link href={`/products/${product.slug}`} className="inline-flex items-center justify-center w-full bg-gray-50 hover:bg-[#127e9f] text-slate-700 hover:text-white py-3 rounded font-bold uppercase tracking-widest text-xs transition-colors">
-                    Read More
-                  </Link>
-                </div>
+      {/* 4. Our Products Carousel (Swiper JS) */}
+      <section className="py-24 bg-[#f8f9fa] overflow-hidden relative home-product-slider">
+        <div className="container mx-auto px-6 md:px-12 flex flex-col lg:flex-row gap-12 items-center lg:items-stretch relative">
+          
+          {/* Arrow Box Product Slider */}
+          <div className="w-full lg:w-1/3 flex flex-col justify-center arrow-box-product-slider z-10 text-center lg:text-left pr-0 lg:pr-8">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-[#323373] mb-4 MainHeading">
+              Our Products
+            </h2>
+            <p className="text-[#64748b] text-lg font-medium mb-10 productSubtitle">
+              Discover Our Technologically Advanced Food Processing Machines
+            </p>
+            <div className="flex gap-4 justify-center lg:justify-start">
+              <div 
+                 ref={swiperPrevRef}
+                 className="w-14 h-14 rounded-full border-2 border-[#127e9f] text-[#127e9f] hover:bg-[#127e9f] hover:text-white flex items-center justify-center cursor-pointer transition-all hover:scale-110 z-20 shadow-sm swiper-slide-button swiper-button-prev"
+              >
+                <ChevronLeft size={28} />
               </div>
-            );
-          })}
+              <div 
+                 ref={swiperNextRef}
+                 className="w-14 h-14 rounded-full border-2 border-[#127e9f] text-[#127e9f] hover:bg-[#127e9f] hover:text-white flex items-center justify-center cursor-pointer transition-all hover:scale-110 z-20 shadow-sm swiper-slide-button swiper-button-next"
+              >
+                <ChevronRight size={28} />
+              </div>
+            </div>
+          </div>
+
+          {/* Swiper Slider Wrapper */}
+          <div className="w-full lg:w-2/3 lg:-mr-[30vw] relative z-0 card-wrapper">
+             <Swiper
+               modules={[Navigation, Autoplay]}
+               spaceBetween={30}
+               slidesPerView={1.2}
+               loop={initialProducts.length > 3}
+               autoplay={{ delay: 3000, disableOnInteraction: false }}
+               breakpoints={{
+                 640: { slidesPerView: 2.2 },
+                 1024: { slidesPerView: 2.5 },
+                 1280: { slidesPerView: 3.2 }
+               }}
+               navigation={{
+                 prevEl: swiperPrevRef.current,
+                 nextEl: swiperNextRef.current,
+               }}
+               onBeforeInit={(swiper) => {
+                  // @ts-ignore
+                  swiper.params.navigation.prevEl = swiperPrevRef.current;
+                  // @ts-ignore
+                  swiper.params.navigation.nextEl = swiperNextRef.current;
+               }}
+               className="!pb-12 !pt-8 !px-4"
+             >
+               {initialProducts.map((product, i) => {
+                  let imageUrl = 'https://images.unsplash.com/photo-1596229983446-24e525145cd5?q=80&w=800';
+                  if (product.images) {
+                    try {
+                      const parsed = typeof product.images === 'string' ? JSON.parse(product.images) : product.images;
+                      if (Array.isArray(parsed) && parsed.length > 0) imageUrl = parsed[0];
+                    } catch (e) {}
+                  }
+                  
+                  return (
+                    <SwiperSlide key={i} className="!h-auto card-item">
+                       <Link href={`/products/${product.slug}`} className="block h-full card-link group">
+                         <div className="bg-[#127e9f] rounded-2xl overflow-hidden h-full flex flex-col shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(18,126,159,0.3)] transition-all duration-300 product-info-box">
+                            {/* Image Background Container */}
+                            <div className="bg-white p-6 pb-8 flex justify-center items-center h-64 relative gray-bg-box">
+                                <img src={imageUrl} alt={product.name} className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500 home-product-img" />
+                            </div>
+                            
+                            <div className="p-8 flex flex-col flex-1 text-center items-center bg-[#127e9f] relative">
+                                {/* SVG triangle to create the angle effect if needed, omitted for modern clean look */}
+                                <h5 className="text-xl font-bold text-white mb-3 line-clamp-2 productName">{product.name}</h5>
+                                <p className="text-white/80 text-sm mb-6 line-clamp-3 productDesc">{product.description}</p>
+                                
+                                <div className="mt-auto">
+                                  <button className="inline-flex items-center gap-2 text-[#127e9f] bg-white hover:bg-[#f3b216] hover:text-white px-6 py-3 rounded-full font-bold tracking-widest text-sm transition-colors uppercase readBtn group/btn shadow-md">
+                                    Read more
+                                    <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
+                                  </button>
+                                </div>
+                            </div>
+                         </div>
+                       </Link>
+                    </SwiperSlide>
+                  );
+               })}
+             </Swiper>
+          </div>
         </div>
       </section>
 
