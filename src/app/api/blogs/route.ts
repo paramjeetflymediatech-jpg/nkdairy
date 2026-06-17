@@ -3,6 +3,7 @@ import { Blog } from '@/models/Blog';
 import { BlogCategory } from '@/models/BlogCategory';
 import { User } from '@/models/User';
 import { connectDB } from '@/lib/db';
+import { Op } from 'sequelize';
 
 export async function GET(req: NextRequest) {
   try {
@@ -16,9 +17,19 @@ export async function GET(req: NextRequest) {
     let limit = parseInt(searchParams.get('limit') || '10', 10);
     if (isNaN(limit)) limit = 10;
     
+    const search = searchParams.get('search');
+    
     const offset = (page - 1) * limit;
     
+    let whereClause: any = {};
+    if (search) {
+      whereClause.title = {
+        [Op.like]: `%${search}%`
+      };
+    }
+    
     const { count, rows } = await Blog.findAndCountAll({
+      where: whereClause,
       include: [
         { model: BlogCategory, as: 'category' },
         { model: User, as: 'author', attributes: ['id', 'name', 'email'] }

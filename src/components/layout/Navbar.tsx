@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, Box, Layers } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const MobileNavItem = ({ item, depth = 0, setNavOpen }: { item: any, depth?: number, setNavOpen: any }) => {
@@ -13,8 +13,8 @@ const MobileNavItem = ({ item, depth = 0, setNavOpen }: { item: any, depth?: num
   return (
     <div className={`${depth === 0 ? 'border-b border-gray-50 pb-2' : ''}`}>
       <div className={`flex justify-between items-center py-2 ${depth === 0 ? 'text-[#323373] font-semibold text-base' : 'text-gray-600 text-sm'}`}>
-        <Link 
-          href={href} 
+        <Link
+          href={href}
           onClick={() => { if (!hasSubcategories) setNavOpen(false); }}
           className="flex-1"
         >
@@ -26,7 +26,7 @@ const MobileNavItem = ({ item, depth = 0, setNavOpen }: { item: any, depth?: num
           </button>
         )}
       </div>
-      
+
       <AnimatePresence>
         {isExpanded && hasSubcategories && (
           <motion.div
@@ -76,79 +76,112 @@ export default function Navbar() {
     fetchCategories();
   }, []);
 
-  // Create the nav structure based on DB and static requests
+  // Create the nav structure
   const navItems = [
-    { name: 'Home', href: '/', isDynamic: false },
-    { name: 'About Us', href: '/about', isDynamic: false },
-    ...categories.map(cat => ({
-      name: cat.name,
-      href: `/${cat.slug}`,
+    { name: 'Home', href: '/', isDynamic: false, isMegaMenu: false },
+    { name: 'About Us', href: '/about', isDynamic: false, isMegaMenu: false },
+    {
+      name: 'Equipment & Solutions',
+      href: '#',
       isDynamic: true,
-      subcategories: cat.subcategories || []
-    })),
-    { name: 'Our Clientele', href: '/our-clientele', isDynamic: false },
-    { name: 'Blog', href: '/blogs', isDynamic: false },
-    { name: 'Videos', href: '/videos', isDynamic: false },
-    { name: 'Contact Us', href: '/contact', isDynamic: false },
+      isMegaMenu: true,
+      subcategories: categories
+    },
+    { name: 'Our Clientele', href: '/our-clientele', isDynamic: false, isMegaMenu: false },
+    { name: 'Blog', href: '/blogs', isDynamic: false, isMegaMenu: false },
+    { name: 'Videos', href: '/videos', isDynamic: false, isMegaMenu: false },
+    { name: 'Contact Us', href: '/contact', isDynamic: false, isMegaMenu: false },
   ];
+
+  const renderMegaMenu = (items: any[], isOpen: boolean) => {
+    if (!items || items.length === 0) return null;
+
+    return (
+      <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 w-max min-w-[700px] max-w-[90vw] z-50 transition-all duration-300 ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0'}`}>
+        <div className="bg-white shadow-2xl border border-gray-100 rounded-2xl p-8 relative">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-5">
+            {items.reduce((acc: any[], rootCat: any) => {
+              if (rootCat.allNestedProducts) {
+                return [...acc, ...rootCat.allNestedProducts];
+              }
+              return acc;
+            }, []).map((prod: any) => (
+              <div key={prod.id} className="border-b border-gray-100 pb-3">
+                <Link href={`/products/${prod.slug}`} className="block text-gray-800 hover:text-blue-600 hover:underline hover:underline-offset-4 transition-all text-base font-medium w-full">
+                  {prod.name}
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   const renderDropdown = (items: any[], depth: number = 0) => {
     if (!items || items.length === 0) return null;
-    
-    // For root dropdown (depth 0), it goes down.
-    // For sub-dropdowns (depth > 0), it goes right.
-    const dropdownClasses = depth === 0 
-      ? "absolute top-full left-0 mt-2 min-w-max bg-white shadow-xl border border-gray-100 rounded-lg py-2 z-50 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 transform origin-top-left translate-y-2 group-hover:translate-y-0"
-      : "absolute top-0 left-full ml-0 min-w-max bg-white shadow-xl border border-gray-100 rounded-lg py-2 opacity-0 group-hover/sub:opacity-100 invisible group-hover/sub:visible transition-all duration-300 transform -translate-x-2 group-hover/sub:translate-x-0 z-50";
+
+    const wrapperClasses = depth === 0
+      ? "absolute top-full left-0 pt-2 min-w-max z-50 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 transform origin-top-left translate-y-2 group-hover:translate-y-0"
+      : "absolute top-0 left-full pl-0 min-w-max z-50 opacity-0 group-hover/sub:opacity-100 invisible group-hover/sub:visible transition-all duration-300 transform -translate-x-2 group-hover/sub:translate-x-0";
 
     return (
-      <ul className={dropdownClasses}>
+      <div className={wrapperClasses}>
+        <ul className="bg-white shadow-xl border border-gray-100 rounded-lg py-2">
         {items.map((sub: any) => (
           <li key={sub.id} className="relative group/sub">
             <Link href={`/${sub.slug}`} className="block px-5 py-2 text-sm text-[#323373] hover:bg-gray-50 hover:text-blue-600 transition-colors flex justify-between items-center whitespace-nowrap gap-4">
               {sub.name}
               {sub.subcategories && sub.subcategories.length > 0 && <ChevronDown size={14} className="-rotate-90 text-gray-400" />}
             </Link>
-            
+
             {/* Infinite Recursive Dropdown */}
             {sub.subcategories && sub.subcategories.length > 0 && renderDropdown(sub.subcategories, depth + 1)}
           </li>
         ))}
-      </ul>
+        </ul>
+      </div>
     );
   };
 
-
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/95 backdrop-blur-md py-4 shadow-sm' : 'bg-white py-6 border-b border-gray-100'
-      }`}
+      className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md py-4 shadow-sm' : 'bg-white py-6 border-b border-gray-100'
+        }`}
     >
-      <div className="container mx-auto px-4 md:px-8 flex justify-between items-center w-full">
+      <div className="container mx-auto px-4 md:px-8 flex justify-between items-center w-full relative">
         <Link href="/" className="flex items-center group flex-shrink-0">
           <Image src="/logo.png" alt="NK Dairy Logo" width={150} height={50} className="object-contain" priority />
         </Link>
 
         {/* Desktop Nav - Centered */}
-        <div className="hidden lg:flex flex-1 justify-center items-center gap-6 xl:gap-8 px-4">
+        <div className="hidden lg:flex flex-1 justify-center items-center gap-6 xl:gap-8 px-4 h-full">
           {navItems.map((link, idx) => (
-            <div 
+            <div
               key={`${link.name}-${idx}`}
-              className="relative group"
+              className="relative group h-full flex items-center"
               onMouseEnter={() => link.isDynamic && setActiveDropdown(link.name)}
               onMouseLeave={() => link.isDynamic && setActiveDropdown(null)}
             >
               <Link
                 href={link.href}
-                className="flex items-center gap-1 text-[#323373] hover:text-blue-600 text-sm font-semibold tracking-wide transition-colors py-2"
+                onClick={(e) => {
+                  if (link.isDynamic) {
+                    e.preventDefault();
+                    setActiveDropdown(activeDropdown === link.name ? null : link.name);
+                  }
+                }}
+                className={`flex items-center gap-1 text-sm font-semibold tracking-wide transition-colors py-2 ${activeDropdown === link.name ? 'text-blue-600' : 'text-[#323373] hover:text-blue-600'}`}
               >
                 {link.name}
-                {link.isDynamic && <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />}
+                {link.isDynamic && <ChevronDown size={14} className={`transition-transform duration-300 ${activeDropdown === link.name ? 'rotate-180' : 'group-hover:rotate-180'}`} />}
               </Link>
-              
+
               {/* Dropdown for dynamic links */}
-              {link.isDynamic && renderDropdown((link as any).subcategories)}
+              {link.isMegaMenu
+                ? renderMegaMenu(link.subcategories || [], activeDropdown === link.name)
+                : (link.isDynamic && renderDropdown(link.subcategories || []))
+              }
             </div>
           ))}
         </div>

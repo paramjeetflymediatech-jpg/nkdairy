@@ -13,6 +13,17 @@ export default function AdminBlogsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
 
+  // Search State
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchBlogs(1);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   useEffect(() => {
     fetchBlogs(currentPage);
   }, [currentPage]);
@@ -20,7 +31,7 @@ export default function AdminBlogsPage() {
   const fetchBlogs = async (page: number) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/blogs?page=${page}&limit=10`);
+      const res = await fetch(`/api/blogs?page=${page}&limit=10&search=${encodeURIComponent(searchQuery)}`);
       if (res.ok) {
         const json = await res.json();
         setBlogs(json.data);
@@ -70,6 +81,8 @@ export default function AdminBlogsPage() {
             <input 
               type="text" 
               placeholder="Search posts..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>

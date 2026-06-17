@@ -21,6 +21,17 @@ export default function AdminLeadsPage() {
   const [status, setStatus] = useState('');
   const [message, setMessage] = useState('');
 
+  // Search State
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchLeads(1);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   useEffect(() => {
     fetchLeads(currentPage);
   }, [currentPage]);
@@ -28,7 +39,7 @@ export default function AdminLeadsPage() {
   const fetchLeads = async (page: number) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/leads?page=${page}&limit=10`);
+      const res = await fetch(`/api/leads?page=${page}&limit=10&search=${encodeURIComponent(searchQuery)}`);
       if (res.ok) {
         const json = await res.json();
         setLeads(json.data);
@@ -111,6 +122,8 @@ export default function AdminLeadsPage() {
             <input 
               type="text" 
               placeholder="Search leads by name or email..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>

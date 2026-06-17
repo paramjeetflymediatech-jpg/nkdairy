@@ -13,6 +13,17 @@ export default function AdminProductsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
 
+  // Search State
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchProducts(1);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   useEffect(() => {
     fetchProducts(currentPage);
   }, [currentPage]);
@@ -20,7 +31,7 @@ export default function AdminProductsPage() {
   const fetchProducts = async (page: number) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/products?page=${page}&limit=10`);
+      const res = await fetch(`/api/products?page=${page}&limit=10&search=${encodeURIComponent(searchQuery)}`);
       if (res.ok) {
         const json = await res.json();
         setProducts(json.data);
@@ -70,6 +81,8 @@ export default function AdminProductsPage() {
             <input 
               type="text" 
               placeholder="Search products..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
             />
           </div>
@@ -104,7 +117,7 @@ export default function AdminProductsPage() {
                         Active
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-right flex justify-end gap-2 whitespace-nowrap opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                    <td className="px-6 py-4 text-right flex justify-end gap-2 whitespace-nowrap transition-opacity">
                       <Link 
                         href={`/products/${product.slug}`}
                         target="_blank"

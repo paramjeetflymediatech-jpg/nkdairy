@@ -1,5 +1,6 @@
 import { Award, Shield, Target, Users, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
+import FAQAccordion from '@/components/home/FAQAccordion';
 
 const faqs = [
   { q: "What is the price of dairy processing equipment in India?", a: "Dairy processing equipment price in India depends on the machine type, capacity, and automation level. Small machines used by startups and small dairy units are usually affordable. For large-scale production, high-capacity machines with a high automation level may cost more." },
@@ -40,13 +41,13 @@ export default function AboutPage() {
             <h2 className="text-3xl font-bold mb-6 tracking-tight">Our Manufacturing Excellence</h2>
             <div className="space-y-6 text-gray-600 leading-relaxed text-lg">
               <p>
-                Under the able leadership of our energetic director Mrs. Himpreet Kaur, the firm has installed and executed many projects in Milk Processing Plants. Her mindset of suggesting exact requirements to the Client and appropriate machinery/equipment for the Plant has proved the Projects quite successful and achieved good results and required rated capacity.
+                NK Dairy Equipments is a team of qualified technocrats with an engineering background, supported by skilled technicians and craftsmen. It is monitored by an energetic woman Mrs. Himpreet Kaur. Under her able leadership, the firm has installed and executed many projects in Milk Processing Plants. Her mindset of suggesting exact requirements to the Client and appropriate machinery/equipment for the Plant has proved the Projects quite successful and achieved good results and required needed rated capacity.
               </p>
               <p>
-                Due to this, many of our Clients have repeated their orders for expansion of Plant Capacity. We have always lived up to the faith of our Clients. We have wide experience in the dairy field. We have a full-fledged Workshop for fabrication, as well as an up-to-date machine shop for precision machining.
+                Due to this, many of our Clients have repeated their orders for expansion of Plant Capacity. We have always lived up to the faith of our Clients. We have wide experience in the dairy field. We have a full-fledged Workshop for fabrication, as well as a to date machine shop for precision machining. Our skilled workers follow the instructions of their engineers as regards the production of equipment and are quite confident to take up any assignment of setting up a Milk Processing Plant. We follow N. D. D. B. norms and fabricate the equipment as per the guidance of our qualified engineers. We have separate teams to work on-site, for site fabrication, installation of equipment/machinery, piping, and its commissioning.
               </p>
               <p>
-                We follow N.D.D.B. norms and fabricate the equipment as per the guidance of our qualified engineers. Our skilled workers follow the instructions of their engineers and are quite confident to take up any assignment of setting up a Milk Processing Plant. We have separate teams to work on-site, for site fabrication, installation of equipment/machinery, piping, and commissioning.
+                It is monitored by our engineers and supervisors, who are able to complete the job as per schedule. Also, they are sufficiently skilled and experienced to overcome any unforeseen technical or administrative problem on site. A cordial relationship with the Client on-site helps in troubleshooting any difficulty to the satisfaction of the Client.
               </p>
             </div>
           </div>
@@ -71,27 +72,11 @@ export default function AboutPage() {
         </div>
 
         {/* FAQs Section */}
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-10 text-center tracking-tight">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <details 
-                key={index} 
-                className="group bg-gray-50 border border-gray-100 rounded-2xl [&_summary::-webkit-details-marker]:hidden"
-              >
-                <summary className="flex items-center justify-between cursor-pointer p-6 font-semibold text-lg text-[#323373]">
-                  {faq.q}
-                  <span className="transition duration-300 group-open:-rotate-180 bg-white p-2 rounded-full shadow-sm">
-                    <ChevronDown size={20} className="text-blue-600" />
-                  </span>
-                </summary>
-                <div className="px-6 pb-6 text-gray-600 leading-relaxed border-t border-gray-100 pt-4 mt-2">
-                  {faq.a}
-                </div>
-              </details>
-            ))}
-          </div>
-        </div>
+        <FAQAccordion 
+          title="Frequently Asked Questions"
+          subtitle=""
+          data={faqs.map(f => ({ question: f.q, answer: f.a }))}
+        />
 
       </div>
     </div>

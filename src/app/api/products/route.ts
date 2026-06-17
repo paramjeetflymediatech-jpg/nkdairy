@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Product } from '@/models/Product';
 import { Category } from '@/models/Category';
 import { connectDB } from '@/lib/db';
+import { Op } from 'sequelize';
 
 export async function GET(req: NextRequest) {
   try {
@@ -17,11 +18,19 @@ export async function GET(req: NextRequest) {
     let limit = parseInt(searchParams.get('limit') || '10', 10);
     if (isNaN(limit)) limit = 10;
     
+    const search = searchParams.get('search');
+    
     const offset = (page - 1) * limit;
     
-    let whereClause = {};
+    let whereClause: any = {};
     if (categoryId) {
-      whereClause = { categoryId };
+      whereClause.categoryId = categoryId;
+    }
+    
+    if (search) {
+      whereClause.name = {
+        [Op.like]: `%${search}%`
+      };
     }
     
     const { count, rows } = await Product.findAndCountAll({

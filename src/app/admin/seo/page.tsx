@@ -7,6 +7,17 @@ export default function AdminSeoPage() {
   const [seoEntries, setSeoEntries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Search State
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchSeoMetadata();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   useEffect(() => {
     fetchSeoMetadata();
   }, []);
@@ -14,7 +25,7 @@ export default function AdminSeoPage() {
   const fetchSeoMetadata = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/seo');
+      const res = await fetch(`/api/seo?search=${encodeURIComponent(searchQuery)}`);
       if (res.ok) {
         const data = await res.json();
         setSeoEntries(data);
@@ -64,6 +75,8 @@ export default function AdminSeoPage() {
             <input 
               type="text" 
               placeholder="Search paths..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>

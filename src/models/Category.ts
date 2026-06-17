@@ -8,6 +8,7 @@ export class Category extends Model {
   declare description?: string;
   declare image?: string;
   declare parentId?: number;
+  declare equipmentSolutions?: any;
 }
 
 Category.init(
@@ -41,6 +42,10 @@ Category.init(
         model: 'categories',
         key: 'id'
       }
+    },
+    equipmentSolutions: {
+      type: DataTypes.JSON,
+      allowNull: true,
     }
   },
   {

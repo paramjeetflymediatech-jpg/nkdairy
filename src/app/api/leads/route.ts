@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Lead } from '@/models/Lead';
 import { connectDB } from '@/lib/db';
+import { Op } from 'sequelize';
 import nodemailer from 'nodemailer';
 
 export async function POST(req: NextRequest) {
@@ -117,9 +118,23 @@ export async function GET(req: NextRequest) {
     let limit = parseInt(searchParams.get('limit') || '10', 10);
     if (isNaN(limit)) limit = 10;
     
+    const search = searchParams.get('search');
+    
     const offset = (page - 1) * limit;
 
+    let whereClause: any = {};
+    if (search) {
+      whereClause = {
+        [Op.or]: [
+          { name: { [Op.like]: `%${search}%` } },
+          { email: { [Op.like]: `%${search}%` } },
+          { company: { [Op.like]: `%${search}%` } }
+        ]
+      };
+    }
+
     const { count, rows } = await Lead.findAndCountAll({
+      where: whereClause,
       order: [['createdAt', 'DESC']],
       limit,
       offset

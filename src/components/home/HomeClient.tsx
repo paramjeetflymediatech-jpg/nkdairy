@@ -1,315 +1,397 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
+import { ArrowRight, Settings, ShieldCheck, Factory, CheckCircle2, ChevronDown, Play, ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
+import ClienteleSlider from '@/components/shared/ClienteleSlider';
 
-import NumberTicker from '@/components/home/NumberTicker';
-import FAQAccordion from '@/components/home/FAQAccordion';
-import WelcomeSection from '@/components/home/WelcomeSection';
+const testimonials = [
+  {
+    company: 'RJ Corp Limited',
+    logo: '/image-clients/rj-crop-testimonial.webp',
+    text: [
+      'Mr. Ravindra & Mr. Rajendra of Neologic Engineers have worked with us for over 7 years now and we are delighted with the work carried out so far. Our company RJ Corp Limited & Group companies — Sameer Agriculture, Devyani Food Industries, Varun Food & Beverages Ltd established in India & abroad are into the business of Food, Beverages & Dairy. These companies function under the brand names of PEPSI, Cream bell, Daima, Fresh Dairy, Ole Spring, etc.',
+      'Where high-quality work with precision and dedication is required, Neologic Engineers always stands out. They are responsible for providing high-quality processing equipment. Neologic Engineers understands the high standards that our company has and is most efficient in delivering well within time limits. I would highly recommend working with them.',
+    ],
+  },
+  {
+    company: 'Dodla Dairy',
+    logo: '/image-clients/Dodla-Dairy-testimonial.webp',
+    text: [
+      'Neologic Engineers is a well-organized engineering company with a line of technocrats to execute our dairy projects on a turn-key basis with a lot of commitment and sense of responsibility. We appreciate their technological up-gradation work, consistency, best-in-class performance, and workmanship.',
+    ],
+  },
+  {
+    company: 'Hatsun Agro Product Ltd.',
+    logo: '/image-clients/Hatsun-testimonial.webp',
+    text: [
+      'Neologic Engineers meet the customer requirement in a systematic way of working. They ensure to supply quality material, consistently meeting the delivery schedules, and complete the projects on time as per their commitment.',
+    ],
+  },
+  {
+    company: 'ITC-Limited',
+    logo: '/image-clients/ITC-limited-testimonial.webp',
+    text: [
+      'Neologic Engineers understood our requirements and delivered a perfectly engineered process solution to us for the beverage manufacturing plant in Bangalore, India. The system is compact and easily expandable and flexible. The compact footprint of equipment has saved critical floor space in the Brownfield project.',
+      'Our company had given challenging timelines to Neologic Engineers at the time of awarding the contract. Neologic Engineers has professionally managed the project as well as all agencies involved to fast track the project. Neologic Engineers is one who has all expertise under one roof.',
+    ],
+  },
+  {
+    company: 'Dabur India',
+    logo: '/image-clients/dabur-india-testimonial.webp',
+    text: [
+      'We acknowledge the sincere efforts, hard work, flawless site coordination, consistent progress on daily activities and delivery of quality work done by the team on site. The Neologic Engineers\' Project team has shown exceptional commitment towards every support needed by us throughout the project.',
+      'Thanks again for being such an amazing partner to work with. We are excited to work together in the upcoming phase IV work for the Aseptic PET line juice backend system.',
+    ],
+  },
+  {
+    company: 'Varun Beverages Limited, DRC',
+    logo: '/image-clients/varun-beverages-testimonial.webp',
+    text: [
+      'We have been working with Neologic Engineers for the past 10-12 years and they have understood our needs and requirements and provided us with meticulously designed process solutions each time.',
+      'We acknowledge the sincere efforts, hard work, flawless site coordination, consistent progress on daily activities and delivery of quality work done by Installation team on site.',
+    ],
+  },
+  {
+    company: 'Hamdard',
+    logo: '/image-clients/humdard-testimonial.webp',
+    text: [
+      'We wanted to expand our business into the milk-based beverages and fusion drinks line. The team at Neologic Engineers, with just product information, helped set up an entire plant. Other companies suggested having multiple lines for multiple products, but Neologic Engineers suggested doing it all in a single processing line. It ultimately saved us on resources.',
+    ],
+  },
+];
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, useGSAP);
-}
+function TestimonialsCarousel() {
+  const [active, setActive] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const goTo = (idx: number) => {
+    setActive((idx + testimonials.length) % testimonials.length);
+  };
 
-export default function HomeClient() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const heroTextRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
-  const solutionsRef = useRef<HTMLDivElement>(null);
-  const horizontalScrollRef = useRef<HTMLDivElement>(null);
-  const horizontalContainerRef = useRef<HTMLDivElement>(null);
-  const whyChooseUsRef = useRef<HTMLDivElement>(null);
-  const marqueeRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    timerRef.current = setTimeout(() => goTo(active + 1), 3000);
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, [active]);
 
-  useGSAP(() => {
-    // 1. Hero Animation (Timeline)
-    const tl = gsap.timeline();
-
-    // Animate text reveal
-    const titleLines = heroTextRef.current?.querySelectorAll('h1 span.line') || [];
-    tl.from(titleLines, {
-      y: 100,
-      opacity: 0,
-      duration: 1.2,
-      stagger: 0.2,
-      ease: "power4.out",
-      delay: 0.5
-    })
-      .from('.hero-desc', {
-        y: 30,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out"
-      }, "-=0.8")
-      .from('.hero-btn', {
-        scale: 0.8,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: "back.out(1.7)"
-      }, "-=0.6");
-    // Continuous float animation for buttons
-    gsap.to('.hero-btn', {
-      y: -5,
-      duration: 2,
-      yoyo: true,
-      repeat: -1,
-      ease: "sine.inOut",
-      stagger: 0.2,
-      delay: 2
-    });
-
-    // 3. Horizontal Scroll for Solutions (Desktop Only)
-    const mm = gsap.matchMedia();
-    mm.add("(min-width: 1024px)", () => {
-      if (horizontalContainerRef.current && horizontalScrollRef.current) {
-        const cards = gsap.utils.toArray('.solution-card');
-
-        gsap.to(cards, {
-          xPercent: -100 * (cards.length - 1),
-          ease: "none",
-          scrollTrigger: {
-            trigger: horizontalScrollRef.current,
-            pin: true,
-            scrub: 1,
-            start: "center center",
-            end: () => "+=" + horizontalContainerRef.current!.offsetWidth,
-          }
-        });
-      }
-    });
-
-    // 4. Why Choose Us Parallax & Pin
-    if (whyChooseUsRef.current) {
-      const listItems = whyChooseUsRef.current.querySelectorAll('li');
-
-      gsap.from('.wcu-title, .wcu-desc', {
-        scrollTrigger: {
-          trigger: whyChooseUsRef.current,
-          start: "top 75%",
-        },
-        x: -50,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.2,
-        ease: "power3.out"
-      });
-
-      gsap.from(listItems, {
-        scrollTrigger: {
-          trigger: whyChooseUsRef.current,
-          start: "top 60%",
-        },
-        x: -30,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.15,
-        ease: "power2.out"
-      });
-
-      // 3D Box / Image reveal
-      gsap.from('.wcu-image', {
-        scrollTrigger: {
-          trigger: whyChooseUsRef.current,
-          start: "top 65%",
-        },
-        scale: 0.8,
-        opacity: 0,
-        rotationY: 15,
-        duration: 1.5,
-        ease: "expo.out"
-      });
-    }
-
-
-
-    // Card Hover Interactions setup
-    const solutionCards = document.querySelectorAll('.solution-card');
-    solutionCards.forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        gsap.to(card.querySelector('.bg-image'), { scale: 1.1, duration: 0.8, ease: "power2.out" });
-        gsap.to(card.querySelector('.card-arrow'), { x: 5, duration: 0.3 });
-      });
-      card.addEventListener('mouseleave', () => {
-        gsap.to(card.querySelector('.bg-image'), { scale: 1, duration: 0.8, ease: "power2.out" });
-        gsap.to(card.querySelector('.card-arrow'), { x: 0, duration: 0.3 });
-      });
-    });
-
-    // Clientele Marquee Animation
-    if (marqueeRef.current) {
-      gsap.to(marqueeRef.current, {
-        xPercent: -50,
-        ease: "none",
-        duration: 50, // Increased duration to slow down movement
-        repeat: -1,
-      });
-    }
-
-  }, { scope: containerRef });
+  const t = testimonials[active];
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-[#020617]">
-      {/* Hero Section */}
-      <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Video */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover z-0"
-        >
-          <source src="/bg-video.webm" type="video/webm" />
-          <source src="/bg-video.mp4" type="video/mp4" />
-        </video>
-        {/* Dark overlay to make text readable */}
-        <div className="absolute inset-0 bg-black/60 z-0"></div>
+    <section style={{ background: '#ffffff', padding: '5rem 0' }}>
+      <div className="container mx-auto px-6 md:px-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-center uppercase tracking-widest mb-2" style={{ color: '#127e9f' }}>
+          Testimonials
+        </h2>
+        <p className="text-center mb-12 text-lg" style={{ color: '#64748b' }}>
+          Here&apos;s What Our Customers Have to Say About Us
+        </p>
 
-        {/* Content Overlay */}
-        <div className="relative z-10 container mx-auto px-6 md:px-12 text-center mt-20">
-          <h1 ref={heroTextRef} className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-6 drop-shadow-lg overflow-hidden flex flex-col items-center">
-            <span className="line block relative overflow-hidden pb-2 leading-tight">DAIRY PROCESSING EQUIPMENT</span>
-            <span className="line block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400 pb-2 leading-tight">
-              BEST QUALITY PRODUCTS
-            </span>
+        <div className="relative max-w-5xl mx-auto">
+          {/* Slide */}
+          <div className="rounded-2xl p-8 md:p-12" style={{ background: '#f8fafc', border: '1px solid #e2e8f0', boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}>
+            <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center md:items-start">
+
+              {/* Left — Logo */}
+              <div className="flex-shrink-0 flex flex-col items-center gap-3" style={{ minWidth: '160px' }}>
+                <div className="w-36 h-36 bg-white rounded-2xl flex items-center justify-center shadow-xl p-4">
+                  <img
+                    src={t.logo}
+                    alt={t.company}
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <h5 className="font-bold text-center text-sm hidden md:block" style={{ color: '#127e9f' }}>{t.company}</h5>
+              </div>
+
+              {/* Right — Text */}
+              <div className="flex-1">
+                <h5 className="text-xl font-bold mb-4" style={{ color: '#127e9f' }}>{t.company}</h5>
+                {t.text.map((para, i) => (
+                  <p key={i} className="mb-3 leading-relaxed" style={{ color: '#475569', fontSize: '0.97rem' }}>{para}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Prev / Next */}
+          <button
+            onClick={() => goTo(active - 1)}
+            aria-label="Previous testimonial"
+            className="absolute -left-5 md:-left-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition-all"
+            style={{ background: 'rgba(18,126,159,0.1)', border: '2px solid rgba(18,126,159,0.4)' }}
+          >
+            <ChevronLeft size={20} color="#127e9f" />
+          </button>
+          <button
+            onClick={() => goTo(active + 1)}
+            aria-label="Next testimonial"
+            className="absolute -right-5 md:-right-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition-all"
+            style={{ background: 'rgba(18,126,159,0.1)', border: '2px solid rgba(18,126,159,0.4)' }}
+          >
+            <ChevronRight size={20} color="#127e9f" />
+          </button>
+        </div>
+
+        {/* Dots */}
+        <div className="flex justify-center gap-2 mt-8">
+          {testimonials.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              className="rounded-full transition-all duration-300"
+              style={{
+                width: i === active ? '28px' : '10px',
+                height: '10px',
+                background: i === active ? '#127e9f' : '#cbd5e1',
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function HomeClient({ initialProducts = [] }: { initialProducts?: any[] }) {
+  const [activeAccordion, setActiveAccordion] = useState<number | null>(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const marqueeRef = useRef<HTMLDivElement>(null);
+
+  const heroImages = [
+    '/gallery-banner.png',
+    '/processing-tank-placeholder.png',
+    '/milking-machine-placeholder.png',
+    '/dairy-farm-placeholder.png',
+    'https://images.unsplash.com/photo-1596229983446-24e525145cd5?q=80&w=1920', // High-quality industrial plant
+    'https://images.unsplash.com/photo-1565191564757-4ed0ba385614?q=80&w=1920' // Manufacturing/processing plant
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 5000); // Change slide every 5 seconds
+    return () => clearInterval(timer);
+  }, [heroImages.length]);
+
+  const segments = [
+    { name: 'Dairy', icon: '/logo.png' }, // placeholder
+    { name: 'Fruits & Vegetables', icon: '/logo.png' },
+    { name: 'Food', icon: '/logo.png' },
+    { name: 'Cosmetics', icon: '/logo.png' },
+    { name: 'Beverages', icon: '/logo.png' },
+    { name: 'Allied Industry', icon: '/logo.png' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-white text-slate-800 font-sans">
+      {/* 1. Hero Banner with Image Slider */}
+      <section className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-slate-900">
+        
+        {/* Background Slider */}
+        {heroImages.map((img, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out z-0 ${
+              index === currentSlide ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <img
+              src={img}
+              alt={`Dairy Machinery ${index + 1}`}
+              className="absolute inset-0 w-full h-full object-cover opacity-80"
+            />
+          </div>
+        ))}
+
+        {/* Overlays for text readability */}
+        <div className="absolute inset-0 bg-[#0d7293]/40 mix-blend-multiply z-0"></div>
+        <div className="absolute inset-0 bg-slate-900/50 z-0"></div>
+        
+        {/* Slider Controls */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+          {heroImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all ${
+                index === currentSlide ? 'bg-[#f3b216] scale-125' : 'bg-white/50 hover:bg-white'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+        
+        <div className="relative z-10 text-center max-w-5xl px-6 mt-16">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight drop-shadow-2xl">
+            Complete Processing Solutions
           </h1>
-
-          <p className="hero-desc text-lg md:text-xl text-gray-200 mb-10 max-w-3xl mx-auto font-light drop-shadow-md leading-relaxed">
-            All kind of Khoya Mawa machine, Curd making machine, Butter churner, Cream seprator, Bulk milk cooler, Paneer press machine etc.
+          <p className="text-lg md:text-2xl text-white/90 mb-10 font-light drop-shadow-md max-w-3xl mx-auto">
+            Tailormade Process Equipment for Dairy, Food, and Beverage Industries.
           </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/about" className="hero-btn">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-sm font-semibold tracking-wider shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2 w-full sm:w-auto">
-                Explore Products <ArrowRight size={20} />
-              </button>
-            </Link>
-            <Link href="/contact" className="hero-btn">
-              <button className="bg-transparent border-2 border-white hover:bg-white/10 text-white px-8 py-4 rounded-sm font-semibold tracking-wider w-full sm:w-auto backdrop-blur-sm">
-                Get a Quote
+          <div className="flex justify-center gap-4">
+            <Link href="/products">
+              <button className="bg-[#f3b216] hover:bg-yellow-500 text-slate-900 px-8 py-4 rounded font-bold tracking-widest transition-colors shadow-lg">
+                EXPLORE SOLUTIONS
               </button>
             </Link>
           </div>
         </div>
-
-        {/* Scroll Indicator */}
-        {/* <div className="hero-scroll absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10">
-          <div className="w-8 h-12 border-2 border-gray-400 rounded-full flex justify-center p-2 relative">
-            <div className="w-1 h-3 bg-gray-400 rounded-full animate-bounce" />
-          </div>
-        </div> */}
       </section>
 
-      {/* Welcome & Utilities Section */}
-      <WelcomeSection />
-
-      {/* Stats Section */}
-      {/* <section ref={statsRef} className="bg-[#020617]/40 backdrop-blur-xl py-24 border-b border-white/10 relative z-20">
-        <div className="container mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div className="stat-item">
-              <h3 className="text-5xl font-bold text-white mb-2 drop-shadow-md">
-                <NumberTicker value={25} suffix="+" />
-              </h3>
-              <p className="text-blue-400 uppercase tracking-widest text-xs font-semibold">Years Experience</p>
-            </div>
-            <div className="stat-item">
-              <h3 className="text-5xl font-bold text-white mb-2 drop-shadow-md">
-                <NumberTicker value={50} suffix="+" />
-              </h3>
-              <p className="text-blue-400 uppercase tracking-widest text-xs font-semibold">Countries Exported</p>
-            </div>
-            <div className="stat-item">
-              <h3 className="text-5xl font-bold text-white mb-2 drop-shadow-md">
-                <NumberTicker value={500} suffix="+" />
-              </h3>
-              <p className="text-blue-400 uppercase tracking-widest text-xs font-semibold">Plants Installed</p>
-            </div>
-            <div className="stat-item">
-              <h3 className="text-5xl font-bold text-white mb-2 drop-shadow-md">
-                <NumberTicker value={100} suffix="%" />
-              </h3>
-              <p className="text-blue-400 uppercase tracking-widest text-xs font-semibold">Quality Guaranteed</p>
-            </div>
-          </div>
-        </div>
-      </section> */}
-
-      {/* Featured Categories - Horizontal Scroll */}
-      <section ref={horizontalScrollRef} className="bg-slate-50 min-h-screen flex flex-col justify-center relative z-20 lg:overflow-hidden py-20">
-        <div className="container mx-auto px-6 md:px-12 mb-10 shrink-0">
-          <div className="flex justify-between items-end">
-            <div>
-              <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-4">Industrial Solutions</h2>
-              <p className="text-slate-600 max-w-xl text-lg">
-                Comprehensive machinery portfolio covering every stage of the dairy manufacturing process.
-              </p>
-            </div>
-            <Link href="/products" className="hidden md:flex text-blue-600 hover:text-blue-700 items-center gap-2 uppercase tracking-widest text-sm font-semibold transition-colors">
-              View All <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-
-        {/* Native scroll on mobile/tablet, hidden on desktop where GSAP takes over */}
-        <div className="w-full flex-1 flex items-center pb-10 lg:pb-20 overflow-x-auto lg:overflow-hidden snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          <div ref={horizontalContainerRef} className="flex gap-6 lg:gap-8 px-6 md:px-12 lg:w-max h-[60vh] min-h-[400px]">
-            {['Milk Processing', 'Paneer Plants', 'Storage Tanks', 'Evaporators', 'Dryers'].map((category, i) => (
-              <div key={i} className="solution-card snap-center group relative overflow-hidden rounded-2xl w-[85vw] sm:w-[60vw] md:w-[45vw] lg:w-[400px] h-full bg-white shadow-xl hover:shadow-2xl transition-shadow border border-gray-200 cursor-pointer shrink-0 flex flex-col">
-                <div className="relative h-[55%] w-full overflow-hidden">
-                  <div className="bg-image absolute inset-0 bg-[url('https://images.unsplash.com/photo-1596229983446-24e525145cd5?q=80&w=800')] bg-cover bg-center transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-overlay" />
+      {/* 2. Business Segments Grid */}
+      <section className="py-24 bg-white text-center">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#127e9f] mb-3 uppercase tracking-widest">Business Segments</h2>
+          <p className="text-slate-500 mb-16 font-medium text-lg">Explore the Innovative Possibilities Beyond Imagination</p>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 max-w-6xl mx-auto">
+            {segments.map((seg, i) => (
+              <div key={i} className="group cursor-pointer flex flex-col items-center">
+                <div className="w-32 h-32 rounded-full bg-gray-50 border-2 border-gray-100 flex items-center justify-center mb-4 overflow-hidden group-hover:border-[#127e9f] group-hover:shadow-xl transition-all duration-300 relative">
+                  {/* Real icons/images should be placed here, using standard lucide icon for demo */}
+                  <Factory size={32} className="text-[#127e9f] group-hover:scale-110 transition-transform duration-300" />
                 </div>
-
-                <div className="flex-1 p-8 flex flex-col justify-between bg-white relative z-20">
-                  <div>
-                    <h3 className="text-2xl font-bold text-slate-900 mb-3">{category}</h3>
-                    <p className="text-slate-600 text-sm leading-relaxed">State-of-the-art automated systems for high-capacity industrial production ensuring maximum yield and hygiene.</p>
-                  </div>
-                  <button className="flex items-center gap-2 text-blue-600 group-hover:text-blue-800 font-bold uppercase tracking-widest text-xs mt-6 transition-colors">
-                    Explore Details <ArrowRight size={14} className="card-arrow" />
-                  </button>
-                </div>
+                <span className="font-bold text-slate-700 group-hover:text-[#127e9f] transition-colors">{seg.name}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Clientele Marquee */}
-      <section className="bg-slate-50 py-24  overflow-hidden">
-        <div className="container mx-auto px-6 md:px-12 mb-10 text-center">
-          <h2 className="text-3xl font-bold text-slate-900 uppercase tracking-widest">Our Clientele</h2>
-        </div>
-        <div className="flex w-max" ref={marqueeRef}>
-          {[...Array(2)].map((_, index) => (
-            <div key={index} className="flex gap-6 md:gap-12 px-3 md:px-6 items-center justify-around">
-              {[...Array(20)].map((_, i) => {
-                const imgName = i === 19 ? 'image-20-1.jpg' : `image-${i + 1}.jpg`;
-                return (
-                  <div key={i} className="shrink-0 flex items-center justify-center w-24 h-24 md:w-32 md:h-32 bg-white rounded-xl shadow-sm border border-gray-100 p-3">
-                    <img src={`/CLIENTELE/${imgName}`} alt={`Client ${i + 1}`} className="max-w-full max-h-full object-contain mix-blend-multiply" />
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+      {/* 3. Company Introduction */}
+      <section className="py-24 bg-gray-50 border-y border-gray-100">
+        <div className="container mx-auto px-6 md:px-12 text-center max-w-4xl">
+          <h2 className="text-3xl font-bold text-[#127e9f] mb-8 uppercase tracking-widest">About NK Dairy Equipments</h2>
+          <p className="text-lg text-slate-600 leading-relaxed mb-6 font-medium">
+            NK Dairy Equipments is a leading manufacturer of comprehensive machinery portfolios covering every stage of the dairy and food manufacturing process. We provide technologically advanced, energy-efficient, and tailormade solutions.
+          </p>
+          <p className="text-slate-500 leading-relaxed mb-10">
+            From Khoya Mawa machines, Curd making machines, to Bulk milk coolers and complete Pasteurization Plants, our equipment meets the highest global standards for hygiene and automation.
+          </p>
+          <Link href="/about" className="inline-flex items-center gap-2 text-[#127e9f] font-bold uppercase tracking-widest hover:text-[#f3b216] transition-colors border-b-2 border-transparent hover:border-[#f3b216] pb-1">
+            Read More About Us <ArrowRight size={16} />
+          </Link>
         </div>
       </section>
 
+      {/* 4. Our Products Carousel (Snap Scroll) */}
+      <section className="py-24 bg-white overflow-hidden relative">
+        <div className="container mx-auto px-6 text-center mb-16 relative z-10">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#127e9f] mb-3 uppercase tracking-widest">Our Products</h2>
+          <p className="text-slate-500 text-lg font-medium">Discover Our Technologically Advanced Processing Machines</p>
+        </div>
 
-      {/* News Section */}
-      <section className="bg-white py-32 ">
+        <div className="w-full flex overflow-x-auto snap-x snap-mandatory pb-12 pt-4 px-6 md:px-12 gap-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          {initialProducts.map((product, i) => {
+            let imageUrl = 'https://images.unsplash.com/photo-1596229983446-24e525145cd5?q=80&w=800';
+            if (product.images) {
+              try {
+                const parsed = typeof product.images === 'string' ? JSON.parse(product.images) : product.images;
+                if (Array.isArray(parsed) && parsed.length > 0) imageUrl = parsed[0];
+              } catch (e) {}
+            }
+
+            return (
+              <div key={i} className="snap-center shrink-0 w-[85vw] md:w-[400px] bg-white border border-gray-100 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group flex flex-col">
+                <div className="h-[250px] relative bg-gray-50 overflow-hidden">
+                  <img src={imageUrl} alt={product.name} className="absolute inset-0 w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors duration-300"></div>
+                </div>
+                <div className="p-8 flex flex-col flex-1 border-t border-gray-50">
+                  {product.category && (
+                    <span className="text-[#f3b216] text-xs font-bold uppercase tracking-widest mb-2 block">
+                      {product.category.name}
+                    </span>
+                  )}
+                  <h3 className="text-xl font-bold text-slate-800 mb-3 line-clamp-2 group-hover:text-[#127e9f] transition-colors">{product.name}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed line-clamp-3 mb-6 flex-1">{product.description}</p>
+                  <Link href={`/products/${product.slug}`} className="inline-flex items-center justify-center w-full bg-gray-50 hover:bg-[#127e9f] text-slate-700 hover:text-white py-3 rounded font-bold uppercase tracking-widest text-xs transition-colors">
+                    Read More
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 5. Why Choose Us (Split Layout) */}
+      <section className="py-24 bg-slate-50 border-y border-gray-100">
+        <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          {/* Left Side: Bullet Points */}
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#127e9f] mb-8 uppercase tracking-widest">Why NK Dairy Equipments?</h2>
+            <div className="space-y-6">
+              {[
+                { title: 'Technologically Advanced', desc: 'Our machines feature state-of-the-art automation for maximum yield and minimum waste.' },
+                { title: 'FSSAI & Global Compliance', desc: 'Designed keeping strict hygienic engineering guidelines and sanitary standards in mind.' },
+                { title: 'Tailormade Solutions', desc: 'We don’t just sell equipment; we customize full plant layouts based on your specific requirements.' },
+                { title: 'ISO Certified Manufacturing', desc: 'Manufactured in our modern facility guaranteeing strict quality control at every step.' },
+              ].map((item, i) => (
+                <div key={i} className="flex gap-4">
+                  <div className="shrink-0 mt-1">
+                    <CheckCircle2 className="text-[#f3b216]" size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-800 text-lg mb-1">{item.title}</h4>
+                    <p className="text-slate-600">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-10">
+               <Link href="/videos" className="inline-flex items-center gap-2 text-white bg-[#127e9f] hover:bg-blue-800 px-6 py-3 rounded font-bold tracking-widest uppercase transition-colors shadow-md">
+                 <Play size={18} fill="currentColor" /> Watch Corporate Video
+               </Link>
+            </div>
+          </div>
+
+          {/* Right Side: Accordions */}
+          <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+            <h3 className="text-2xl font-bold text-slate-800 mb-6">Our Commitments</h3>
+            <div className="space-y-4">
+              {[
+                { title: 'Comprehensive Services', icon: Settings, content: 'We offer end-to-end services from initial consultation, 3D plant layout design, manufacturing, on-site installation, to extensive after-sales support and maintenance.' },
+                { title: 'Uncompromising Quality', icon: ShieldCheck, content: 'Quality is embedded in our DNA. Every component undergoes rigorous testing to ensure it meets our exacting standards before it ever reaches your facility.' },
+                { title: 'Global Execution', icon: Factory, content: 'With successful installations across multiple countries, we have the logistical and technical capability to execute turnkey projects worldwide.' },
+              ].map((acc, i) => (
+                <div key={i} className="border border-gray-100 rounded-lg overflow-hidden">
+                  <button 
+                    onClick={() => setActiveAccordion(activeAccordion === i ? null : i)}
+                    className={`w-full flex items-center justify-between p-4 font-bold text-left transition-colors ${activeAccordion === i ? 'bg-[#127e9f] text-white' : 'bg-gray-50 text-slate-700 hover:bg-gray-100'}`}
+                  >
+                    <span className="flex items-center gap-3">
+                      <acc.icon size={20} className={activeAccordion === i ? 'text-white' : 'text-[#f3b216]'} />
+                      {acc.title}
+                    </span>
+                    <ChevronDown size={20} className={`transition-transform duration-300 ${activeAccordion === i ? 'rotate-180' : ''}`} />
+                  </button>
+                  <div className={`transition-all duration-300 overflow-hidden ${activeAccordion === i ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <div className="p-5 text-slate-600 bg-white border-t border-gray-100">
+                      {acc.content}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Testimonials */}
+      <TestimonialsCarousel />
+
+      {/* 7. Clientele & News */}
+      <ClienteleSlider />
+      
+      <section className="bg-slate-50 py-24 overflow-hidden">
+        {/* News & Updates */}
         <div className="container mx-auto px-6 md:px-12 text-center">
-          <h2 className="text-3xl font-bold text-slate-900 mb-16 uppercase tracking-widest">In The News</h2>
-          <div className="flex flex-col md:flex-row justify-center items-stretch gap-6 md:gap-8">
+          <h2 className="text-3xl font-bold text-[#127e9f] mb-12 uppercase tracking-widest">News & Updates</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
               { img: 'logo1-1.jpg', link: 'https://www.thehansindia.com/business/engineering-the-backbone-of-indias-dairy-processing-sector-1061882' },
               { img: 'logo2.png', link: 'https://www.freepressjournal.in/latest-news/from-small-beginnings-to-global-projects-nk-dairy-equipments-llps-journey' },
@@ -320,7 +402,7 @@ export default function HomeClient() {
                 href={news.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center rounded-xl border border-gray-200 bg-white shadow-sm p-6 md:p-8 w-full md:w-1/4"
+                className="flex items-center justify-center rounded-xl bg-white shadow-md hover:shadow-xl transition-shadow p-8 border border-gray-100 h-32"
               >
                 <img src={`/News/${news.img}`} alt={`News Outlet ${i + 1}`} className="max-w-full h-auto max-h-16 object-contain" />
               </a>
@@ -328,65 +410,6 @@ export default function HomeClient() {
           </div>
         </div>
       </section>
-      {/* Testimonials / Google Reviews */}
-      <section className="bg-slate-50 py-32">
-        <div className="container mx-auto px-6 md:px-12">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4 uppercase tracking-widest">Client Testimonials</h2>
-            <div className="flex justify-center items-center gap-2">
-              <span className="text-slate-600 font-semibold text-lg">Excellent</span>
-              <div className="flex gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-6 h-6 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <span className="text-slate-500 text-sm ml-2">Based on Google Reviews</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { name: 'Rajesh Kumar', role: 'Operations Manager', text: 'NK Dairy provided us with exceptional milk processing equipment. The machinery is highly efficient and built to last. Their after-sales support is outstanding.' },
-              { name: 'Anita Sharma', role: 'Director, Fresh Farms', text: 'We procured a complete paneer plant from them. The automation level is superb, and it has significantly improved our yield and hygiene standards.' },
-              { name: 'Sandeep Singh', role: 'Plant Head', text: 'Highly professional team. They understood our custom requirements for storage tanks and delivered exactly what we needed within the timeline. Highly recommended.' }
-            ].map((review, i) => (
-              <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-shadow">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl">
-                    {review.name.charAt(0)}
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900">{review.name}</h4>
-                    <p className="text-xs text-slate-500">{review.role}</p>
-                  </div>
-                  <div className="ml-auto">
-                    {/* Google 'G' Logo SVG placeholder */}
-                    <svg className="w-6 h-6" viewBox="0 0 24 24">
-                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, starIndex) => (
-                    <svg key={starIndex} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-slate-600 leading-relaxed text-sm italic">"{review.text}"</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <FAQAccordion />
 
     </div>
   );

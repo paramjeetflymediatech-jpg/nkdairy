@@ -6,14 +6,15 @@ import { Category } from '@/models/Category';
 import { Product } from '@/models/Product';
 import { connectDB } from '@/lib/db';
 import { Metadata } from 'next';
+import EquipmentSolutions from '@/components/shared/EquipmentSolutions';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   await connectDB();
   const category = await Category.findOne({ where: { slug } });
-  
+
   if (!category) return { title: 'Not Found' };
-  
+
   return {
     title: `${category.name} | NK Dairy Equipments`,
     description: category.description || `Explore our ${category.name} machinery and equipment solutions.`,
@@ -23,9 +24,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   await connectDB();
-  
+
   // Find the requested category
-  const category = await Category.findOne({ 
+  const category = await Category.findOne({
     where: { slug }
   });
 
@@ -75,7 +76,14 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             </p>
           )}
         </div>
+      </div>
 
+      {/* Equipment & Solutions Dynamic Section */}
+      {category.equipmentSolutions && category.equipmentSolutions.enabled && (
+        <EquipmentSolutions data={category.equipmentSolutions} />
+      )}
+
+      <div className="container mx-auto px-6 md:px-12 mt-16">
         {/* Subcategories Grid */}
         {subcategories.length > 0 && (
           <div className="mb-20">
@@ -84,8 +92,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {subcategories.map(sub => (
-                <Link 
-                  href={`/${sub.slug}`} 
+                <Link
+                  href={`/${sub.slug}`}
                   key={sub.id}
                   className="group bg-gray-50 hover:bg-white border border-gray-100 hover:border-blue-200 shadow-sm hover:shadow-md rounded-xl p-6 transition-all duration-300"
                 >
@@ -110,18 +118,18 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         {products.length > 0 && (
           <div>
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-2 border-b border-gray-100 pb-4">
-               Products in {category.name}
+              Products in {category.name}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {products.map(product => (
-                <Link 
-                  href={`/products/${product.slug}`} 
+                <Link
+                  href={`/products/${product.slug}`}
                   key={product.id}
                   className="group block"
                 >
                   <div className="aspect-[4/3] bg-gray-50 rounded-xl mb-4 overflow-hidden border border-gray-100 relative">
-                    <Image 
-                      src={getProductImage(product)} 
+                    <Image
+                      src={getProductImage(product)}
                       alt={product.name}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -138,7 +146,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             </div>
           </div>
         )}
-        
+
         {/* Empty State */}
         {subcategories.length === 0 && products.length === 0 && (
           <div className="text-center py-20 bg-gray-50 rounded-xl border border-gray-100 border-dashed">

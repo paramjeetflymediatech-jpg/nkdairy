@@ -1,11 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SeoMetadata } from '@/models/SeoMetadata';
 import { connectDB } from '@/lib/db';
+import { Op } from 'sequelize';
 
 export async function GET(req: NextRequest) {
   try {
     await connectDB();
+    const { searchParams } = new URL(req.url);
+    const search = searchParams.get('search');
+    
+    let whereClause: any = {};
+    if (search) {
+      whereClause = {
+        [Op.or]: [
+          { pagePath: { [Op.like]: `%${search}%` } },
+          { title: { [Op.like]: `%${search}%` } }
+        ]
+      };
+    }
+
     const seoEntries = await SeoMetadata.findAll({
+      where: whereClause,
       order: [['pagePath', 'ASC']]
     });
     return NextResponse.json(seoEntries, { status: 200 });

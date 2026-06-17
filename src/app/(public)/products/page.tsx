@@ -5,13 +5,33 @@ import { connectDB } from '@/lib/db';
 import { Product } from '@/models/Product';
 import { Category } from '@/models/Category';
 
+import ProductFilter from '@/components/public/ProductFilter';
+
 export const dynamic = 'force-dynamic';
 
-export default async function ProductsPage() {
+export default async function ProductsPage(
+  props: { searchParams: Promise<{ category?: string }> }
+) {
+  const searchParams = await props.searchParams;
   await connectDB();
 
-  // Fetch all products with their categories
+  // Fetch categories for the filter
+  const categories = await Category.findAll({
+    attributes: ['id', 'name', 'slug'],
+    order: [['name', 'ASC']],
+  });
+
+  // Find selected category ID if a slug is provided
+  let categoryId = null;
+  if (searchParams.category) {
+    const selectedCat = categories.find((c) => c.slug === searchParams.category);
+    if (selectedCat) categoryId = selectedCat.id;
+  }
+
+  // Fetch all products with their categories, filtered if necessary
+  const whereClause = categoryId ? { categoryId } : {};
   const products = await Product.findAll({
+    where: whereClause,
     include: [
       {
         model: Category,
@@ -43,9 +63,7 @@ export default async function ProductsPage() {
               Explore our comprehensive range of industrial dairy processing equipment, designed for efficiency, durability, and maximum output.
             </p>
           </div>
-          <button className="mt-6 md:mt-0 flex items-center gap-2 bg-white border border-gray-200 px-5 py-2.5 rounded-lg hover:bg-gray-50 transition-colors text-sm font-semibold shadow-sm text-slate-700">
-            <Filter size={18} /> Filter Categories
-          </button>
+          <ProductFilter categories={categories.map(c => c.toJSON())} />
         </div>
 
         {products.length === 0 ? (
@@ -55,12 +73,12 @@ export default async function ProductsPage() {
             <p className="text-gray-500">We are currently updating our inventory. Please check back later.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
             {products.map((product) => {
               const image = getProductImage(product);
               
               return (
-                <div key={product.id} className="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:border-blue-500 hover:shadow-xl shadow-sm transition-all duration-300 flex flex-col">
+                <div key={product.id} className="group bg-white border border-gray-100 rounded-xl overflow-hidden hover:border-blue-500 hover:shadow-xl shadow-sm transition-all duration-300 flex flex-col">
                   <Link href={`/products/${product.slug}`} className="block">
                     <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden flex items-center justify-center">
                       {image ? (
@@ -68,7 +86,7 @@ export default async function ProductsPage() {
                           src={image} 
                           alt={product.name}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-700"
+                          className="object-contain group-hover:scale-105 transition-transform duration-700"
                         />
                       ) : (
                         <div className="text-gray-400 font-mono text-xs opacity-50">
@@ -78,25 +96,25 @@ export default async function ProductsPage() {
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
                   </Link>
-                  <div className="p-6 md:p-8 flex-1 flex flex-col">
-                    <span className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-3 block">
+                  <div className="p-4 flex-1 flex flex-col">
+                    <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-2 block truncate">
                       {(product as any).category?.name || 'Uncategorized'}
                     </span>
                     <Link href={`/products/${product.slug}`}>
-                      <h3 className="text-2xl font-bold mb-3 group-hover:text-blue-600 transition-colors text-[#323373] line-clamp-2">
+                      <h3 className="text-lg font-bold mb-2 group-hover:text-blue-600 transition-colors text-[#323373] line-clamp-2 leading-tight">
                         {product.name}
                       </h3>
                     </Link>
                     
                     {product.capacity && (
-                      <p className="text-gray-500 text-sm mb-6 flex items-center gap-2 font-medium bg-slate-50 inline-block px-3 py-1.5 rounded-md w-fit">
+                      <p className="text-gray-500 text-xs mb-4 flex items-center gap-1 font-medium bg-slate-50 inline-block px-2 py-1 rounded w-fit truncate max-w-full">
                         Capacity: {product.capacity}
                       </p>
                     )}
                     
-                    <div className="mt-auto pt-4 border-t border-gray-100">
-                      <Link href={`/products/${product.slug}`} className="inline-flex items-center gap-2 text-sm font-bold text-[#323373] group-hover:text-blue-600 transition-colors uppercase tracking-wider">
-                        View Specifications <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    <div className="mt-auto pt-3 border-t border-gray-100">
+                      <Link href={`/products/${product.slug}`} className="inline-flex items-center gap-1.5 text-xs font-bold text-[#323373] group-hover:text-blue-600 transition-colors uppercase tracking-wider">
+                        View Specs <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                       </Link>
                     </div>
                   </div>

@@ -8,6 +8,7 @@ export class Product extends Model {
   declare slug: string;
   declare categoryId: number;
   declare description: string;
+  declare heroSubtitle?: string;
   declare specifications?: any;
   declare capacity?: string;
   declare images?: string[];
@@ -17,6 +18,9 @@ export class Product extends Model {
   declare applications?: string[];
   declare metaTitle?: string;
   declare metaDescription?: string;
+  declare equipmentSolutions?: any;
+  declare pageSections?: any;
+  declare faqs?: any;
 }
 
 Product.init(
@@ -42,6 +46,10 @@ Product.init(
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
+    },
+    heroSubtitle: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     specifications: {
       type: DataTypes.JSON,
@@ -77,6 +85,18 @@ Product.init(
     },
     metaDescription: {
       type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    equipmentSolutions: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
+    pageSections: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
+    faqs: {
+      type: DataTypes.JSON,
       allowNull: true,
     },
   },

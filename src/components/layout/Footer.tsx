@@ -1,84 +1,189 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, Phone, MapPin, Clock } from 'lucide-react';
-import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { FaFacebook, FaLinkedin, FaYoutube, FaInstagram } from 'react-icons/fa';
+
+const industries = [
+  { label: 'Dairy',              href: '/products?category=dairy' },
+  { label: 'Food',               href: '/products?category=food' },
+  { label: 'Beverage',           href: '/products?category=beverage' },
+  { label: 'Fruits & Vegetables',href: '/products?category=fruits-vegetables' },
+  { label: 'Cosmetics',          href: '/products?category=cosmetics' },
+  { label: 'Allied Industry',    href: '/products?category=allied-industry' },
+];
+
+const equipmentCol1 = [
+  { label: 'Milk Pasteurizer System',    href: '/products' },
+  { label: 'Juice Pasteurizer System',   href: '/products' },
+  { label: 'CIP Systems',               href: '/products' },
+  { label: 'Aseptic Storage Tank',       href: '/products' },
+  { label: 'Membrane Filtration System', href: '/products' },
+  { label: 'UHT Steriliser Module',      href: '/products' },
+  { label: 'Dairy Separators',           href: '/products' },
+  { label: 'Spiral Cooling Solutions',   href: '/products' },
+  { label: 'Spiral Air Freezing Solutions', href: '/products' },
+  { label: 'IQF Technology',            href: '/products' },
+  { label: 'Milk Reception Modules',     href: '/products' },
+  { label: 'Powder Mixing Systems',      href: '/products' },
+  { label: 'Contherm Skid',             href: '/products' },
+];
+
+const equipmentCol2 = [
+  { label: 'Tomato Processing',      href: '/products' },
+  { label: 'Mango Processing',       href: '/products' },
+  { label: 'Citrus Processing',      href: '/products' },
+  { label: 'Ice Cream Mix Processing', href: '/products' },
+  { label: 'CSD Processing',         href: '/products' },
+  { label: 'Juice Processing',       href: '/products' },
+  { label: 'Honey Processing',       href: '/products' },
+  { label: 'Paneer & Cheese Press',  href: '/products' },
+  { label: 'Butter Melting Vats',    href: '/products' },
+  { label: 'Evaporator',             href: '/products' },
+  { label: 'Turbo Extractor',        href: '/products' },
+  { label: 'Hot Water Modules',      href: '/products' },
+];
+
+const services = [
+  { label: 'Spares & AMC',                        href: '/contact' },
+  { label: 'Process Engineering & Consultancy',   href: '/contact' },
+  { label: 'Automation Engineering',              href: '/contact' },
+];
+
+const navLinks = [
+  { label: 'About Us',    href: '/about' },
+  { label: 'Clients',     href: '/#clients' },
+  { label: 'Blogs',       href: '/blogs' },
+  { label: 'Contact Us',  href: '/contact' },
+  { label: 'Gallery',     href: '/gallery' },
+  { label: 'Videos',      href: '/videos' },
+];
+
+const linkCls = 'text-slate-600 hover:text-[#127e9f] transition-colors text-sm leading-relaxed';
+const headingCls = 'text-slate-800 font-bold text-base mb-3';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#323373] text-white pt-20 pb-10 border-t border-[#292a5d]">
-      <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-        <div className="col-span-1 md:col-span-1">
-          <Link href="/" className="flex items-center mb-6">
-            <Image src="/logo.png" alt="NK Dairy Logo" width={180} height={60} className="object-contain bg-white/10 p-2 rounded-lg" />
+    <footer style={{ backgroundColor: '#f8fafc', borderTop: '1px solid #e2e8f0' }}>
+
+      {/* ── Top nav bar ── */}
+      <div style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', padding: '1.25rem 0' }}>
+        <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* Nav links */}
+          <nav>
+            <ul className="flex flex-wrap gap-x-6 gap-y-2">
+              {navLinks.map((n) => (
+                <li key={n.label}>
+                  <Link href={n.href} className="text-slate-600 hover:text-[#127e9f] font-medium text-sm transition-colors">
+                    {n.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          {/* Resources button */}
+          <Link href="/contact">
+            <button
+              className="font-bold tracking-wider text-sm px-6 py-2 rounded transition-colors"
+              style={{ backgroundColor: '#127e9f', color: '#fff' }}
+            >
+              Resources
+            </button>
           </Link>
-          <p className="text-sm leading-relaxed mb-6 text-white">
-            We are running a dairy equipment company located at 119, Ishopur, Delhi Road, Near Radha Swami Sat Sang Bhawan, Yamuna Nagar, Haryana which is certified with ISO:9001:2015. We offer Dairy Equipment for the clients, which are manufactured with consideration and accuracy. Our products are well-renowned for offering high performance even in tough and serious conditions.
-          </p>
+        </div>
+      </div>
+
+      {/* ── Main footer grid ── */}
+      <div className="container mx-auto px-6 md:px-12 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
+
+          {/* Col 1 — Industries (3 cols) */}
+          <div className="md:col-span-3">
+            <h5 className={headingCls}>Industries</h5>
+            {industries.map((item) => (
+              <div key={item.label} className="pt-2">
+                <Link href={item.href} className={linkCls}>{item.label}</Link>
+              </div>
+            ))}
+          </div>
+
+          {/* Col 2 — Process Equipment & Solutions (6 cols, 2 sub-cols) */}
+          <div className="md:col-span-6">
+            <h5 className={headingCls}>Process Equipment &amp; Solutions</h5>
+            <div className="grid grid-cols-2 gap-x-8">
+              <div>
+                {equipmentCol1.map((item) => (
+                  <div key={item.label} className="pt-2">
+                    <Link href={item.href} className={linkCls}>{item.label}</Link>
+                  </div>
+                ))}
+              </div>
+              <div>
+                {equipmentCol2.map((item) => (
+                  <div key={item.label} className="pt-2">
+                    <Link href={item.href} className={linkCls}>{item.label}</Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Col 3 — Services + Social + ISO (3 cols) */}
+          <div className="md:col-span-3">
+            <h5 className={headingCls}>Services</h5>
+            {services.map((item) => (
+              <div key={item.label} className="pt-2">
+                <Link href={item.href} className={linkCls}>{item.label}</Link>
+              </div>
+            ))}
+            <div className="pt-2">
+              <Link href="/contact" className="font-semibold transition-colors text-sm" style={{ color: '#127e9f' }}>
+                Customer Support
+              </Link>
+            </div>
+
+            {/* Social */}
+            <h5 className="font-bold text-slate-800 text-sm mt-6 mb-3">Follow us on:</h5>
+            <div className="flex gap-4 mb-6">
+              <a href="https://www.facebook.com/nkdairyequipments" target="_blank" rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
+                style={{ backgroundColor: '#1877f2' }}>
+                <FaFacebook size={18} color="#fff" />
+              </a>
+              <a href="https://www.instagram.com/nkdairyequipments/" target="_blank" rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
+                style={{ background: 'radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)' }}>
+                <FaInstagram size={18} color="#fff" />
+              </a>
+              <a href="https://www.youtube.com/@NKDairyEquipments" target="_blank" rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
+                style={{ backgroundColor: '#ff0000' }}>
+                <FaYoutube size={18} color="#fff" />
+              </a>
+            </div>
+
+            {/* ISO */}
+            <p className="text-xs text-slate-500 mb-2">We are standardized with the certification of</p>
+            <img
+              src="https://www.neologicengineers.com/images/iso-footer-logo-new.webp"
+              alt="ISO Certificate"
+              style={{ width: '80px', objectFit: 'contain' }}
+              loading="lazy"
+            />
+          </div>
+
+        </div>
+      </div>
+
+      {/* ── Bottom bar ── */}
+      <div style={{ borderTop: '1px solid #e2e8f0', padding: '1rem 0', backgroundColor: '#127e9f' }}>
+        <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-white">
+          <p>&copy; {new Date().getFullYear()} NK Dairy Equipments. All rights reserved.</p>
           <div className="flex gap-4">
-            <a href="https://www.facebook.com/nkdairyequipments" target="_blank" className="hover:text-blue-200 transition-colors text-white"><FaFacebook size={20} /></a>
-            <a href="https://www.youtube.com/@NKDairyEquipments" target="_blank" className="hover:text-blue-200 transition-colors text-white"><FaYoutube size={20} /></a>
-            <a href="https://www.instagram.com/nkdairyequipments/" target="_blank" className="hover:text-blue-200 transition-colors text-white"><FaInstagram size={20} /></a>
+            <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
+            <Link href="/terms" className="hover:underline">Terms of Service</Link>
           </div>
         </div>
-
-        <div>
-          <h4 className="text-white font-semibold mb-6 uppercase tracking-wider">Quick Links</h4>
-          <ul className="space-y-3 text-sm">
-            <li><Link href="/" className="text-white hover:text-blue-200 transition-colors">Home</Link></li>
-            <li><Link href="/gallery" className="text-white hover:text-blue-200 transition-colors">Gallery</Link></li>
-            <li><Link href="/blogs" className="text-white hover:text-blue-200 transition-colors">Blog</Link></li>
-            <li><Link href="/videos" className="text-white hover:text-blue-200 transition-colors">Videos</Link></li>
-            <li><Link href="/certificates" className="text-white hover:text-blue-200 transition-colors">Certificates</Link></li>
-            <li><Link href="/contact" className="text-white hover:text-blue-200 transition-colors">Contact Us</Link></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="text-white font-semibold mb-6 uppercase tracking-wider">Products</h4>
-          <ul className="space-y-3 text-sm">
-            <li><Link href="/khoya-mawa-making-machine" className="text-white hover:text-blue-200 transition-colors">Khoya or Mawa Making Machines</Link></li>
-            <li><Link href="/cream-separator" className="text-white hover:text-blue-200 transition-colors">Cream Separator</Link></li>
-            <li><Link href="/dairy-processing-plant-in-india" className="text-white hover:text-blue-200 transition-colors">Dairy Processing Plant</Link></li>
-            <li><Link href="/milk-storage-tank" className="text-white hover:text-blue-200 transition-colors">Milk Storage Tank</Link></li>
-            <li><Link href="/paneer-press" className="text-white hover:text-blue-200 transition-colors">Paneer Press</Link></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="text-white font-semibold mb-6 uppercase tracking-wider">Contact Info</h4>
-          <ul className="space-y-4 text-sm text-white">
-            <li className="flex items-start gap-3">
-              <MapPin className="text-blue-400 shrink-0 mt-1" size={18} />
-              <span>NK Dairy Equipments, 119, Ishopur, Delhi Road, Near Radha Swami Sat Sang Bhawan, Yamuna Nagar, Haryana 135001</span>
-            </li>
-            <li className="flex items-center gap-3">
-              <Phone className="text-blue-400 shrink-0" size={18} />
-              <div className="flex flex-col">
-                <span>+91-93550-13913</span>
-              </div>
-            </li>
-            <li className="flex items-center gap-3">
-              <Mail className="text-blue-400 shrink-0" size={18} />
-              <span>info@nkdairyequipments.com</span>
-            </li>
-            <li className="flex items-start gap-3 mt-4 pt-4 border-t border-[#292a5d]">
-              <Clock className="text-blue-400 shrink-0 mt-1" size={18} />
-              <div className="flex flex-col">
-                <span className="font-semibold text-white">Timings : 9 AM to 6:00 PM</span>
-                <span className="text-white mt-0.5">Weekly Off : SUNDAY</span>
-              </div>
-            </li>
-          </ul>
-        </div>
       </div>
 
-      <div className="container mx-auto px-6 md:px-12 border-t border-[#292a5d] pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-white">
-        <p>&copy; {new Date().getFullYear()} NK Dairy Equipments. All rights reserved.</p>
-        <div className="flex gap-4 mt-4 md:mt-0">
-          <Link href="/privacy" className="hover:text-blue-200 transition-colors">Privacy Policy</Link>
-          <Link href="/terms" className="hover:text-blue-200 transition-colors">Terms of Service</Link>
-        </div>
-      </div>
     </footer>
   );
 }
