@@ -20,8 +20,8 @@ export const connectDB = async () => {
   try {
     await sequelize.authenticate();
     
-    // Synchronize models automatically in development, but ONLY once per process
-    if (process.env.NODE_ENV !== 'production' && !globalAny.isSynced) {
+    // Synchronize models automatically (temporarily enabled for production to fix schema)
+    if (!globalAny.isSynced) {
       globalAny.isSynced = true;
       try {
         await sequelize.sync({ alter: true });
