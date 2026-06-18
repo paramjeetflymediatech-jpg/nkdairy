@@ -144,11 +144,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                     {/* Text Column */}
                     <div className={`${isLeft ? 'lg:order-2' : 'lg:order-1'}`}>
                       {section.title && (
-                        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#127e9f]">{section.title}</h2>
+                        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#323373]">{section.title}</h2>
                       )}
                       {section.content && (
                         <div
-                          className="prose max-w-none text-gray-600 prose-headings:text-[#127e9f] prose-li:marker:text-[#f3b216] prose-a:text-[#f3b216]"
+                          className="prose max-w-none text-gray-600 prose-headings:text-[#323373] prose-li:marker:text-[#f3b216] prose-a:text-[#f3b216]"
                           dangerouslySetInnerHTML={{ __html: section.content }}
                         />
                       )}
@@ -165,10 +165,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         <div className="py-20 container mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
             <div>
-              <h2 className="text-3xl font-bold mb-6 text-[#127e9f]">{productName} Overview</h2>
+              <h2 className="text-3xl font-bold mb-6 text-[#323373]">{productName} Overview</h2>
               {product.description ? (
                 <div
-                  className="prose max-w-none text-gray-600 prose-headings:text-[#127e9f] prose-li:marker:text-[#f3b216]"
+                  className="prose max-w-none text-gray-600 prose-headings:text-[#323373] prose-li:marker:text-[#f3b216]"
                   dangerouslySetInnerHTML={{ __html: product.description }}
                 />
               ) : (
@@ -177,7 +177,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             </div>
 
             <div className="bg-gray-50 border border-gray-200 p-8 rounded-xl">
-              <h3 className="text-xl font-bold mb-6 text-[#127e9f]">Technical Specifications</h3>
+              <h3 className="text-xl font-bold mb-6 text-[#323373]">Technical Specifications</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                 <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                   <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Capacity</p>
@@ -192,7 +192,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 <Link href="/contact" className="flex-1 bg-[#f3b216] hover:bg-yellow-500 text-white px-6 py-3 rounded font-bold text-center transition-colors">
                   Request Quote
                 </Link>
-                <button className="flex-1 bg-white border-2 border-[#127e9f] text-[#127e9f] hover:bg-gray-50 px-6 py-3 rounded font-bold transition-colors flex justify-center items-center gap-2">
+                <button className="flex-1 bg-white border-2 border-[#323373] text-[#323373] hover:bg-gray-50 px-6 py-3 rounded font-bold transition-colors flex justify-center items-center gap-2">
                   <Download size={18} /> Brochure
                 </button>
               </div>

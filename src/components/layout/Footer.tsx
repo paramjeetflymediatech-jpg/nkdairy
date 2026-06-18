@@ -3,61 +3,61 @@ import Image from 'next/image';
 import { FaFacebook, FaLinkedin, FaYoutube, FaInstagram } from 'react-icons/fa';
 
 const industries = [
-  { label: 'Dairy',              href: '/products?category=dairy' },
-  { label: 'Food',               href: '/products?category=food' },
-  { label: 'Beverage',           href: '/products?category=beverage' },
-  { label: 'Fruits & Vegetables',href: '/products?category=fruits-vegetables' },
-  { label: 'Cosmetics',          href: '/products?category=cosmetics' },
-  { label: 'Allied Industry',    href: '/products?category=allied-industry' },
+  { label: 'Dairy', href: '/products?category=dairy' },
+  { label: 'Food', href: '/products?category=food' },
+  { label: 'Beverage', href: '/products?category=beverage' },
+  { label: 'Fruits & Vegetables', href: '/products?category=fruits-vegetables' },
+  { label: 'Cosmetics', href: '/products?category=cosmetics' },
+  { label: 'Allied Industry', href: '/products?category=allied-industry' },
 ];
 
 const equipmentCol1 = [
-  { label: 'Milk Pasteurizer System',    href: '/products' },
-  { label: 'Juice Pasteurizer System',   href: '/products' },
-  { label: 'CIP Systems',               href: '/products' },
-  { label: 'Aseptic Storage Tank',       href: '/products' },
+  { label: 'Milk Pasteurizer System', href: '/products' },
+  { label: 'Juice Pasteurizer System', href: '/products' },
+  { label: 'CIP Systems', href: '/products' },
+  { label: 'Aseptic Storage Tank', href: '/products' },
   { label: 'Membrane Filtration System', href: '/products' },
-  { label: 'UHT Steriliser Module',      href: '/products' },
-  { label: 'Dairy Separators',           href: '/products' },
-  { label: 'Spiral Cooling Solutions',   href: '/products' },
+  { label: 'UHT Steriliser Module', href: '/products' },
+  { label: 'Dairy Separators', href: '/products' },
+  { label: 'Spiral Cooling Solutions', href: '/products' },
   { label: 'Spiral Air Freezing Solutions', href: '/products' },
-  { label: 'IQF Technology',            href: '/products' },
-  { label: 'Milk Reception Modules',     href: '/products' },
-  { label: 'Powder Mixing Systems',      href: '/products' },
-  { label: 'Contherm Skid',             href: '/products' },
+  { label: 'IQF Technology', href: '/products' },
+  { label: 'Milk Reception Modules', href: '/products' },
+  { label: 'Powder Mixing Systems', href: '/products' },
+  { label: 'Contherm Skid', href: '/products' },
 ];
 
 const equipmentCol2 = [
-  { label: 'Tomato Processing',      href: '/products' },
-  { label: 'Mango Processing',       href: '/products' },
-  { label: 'Citrus Processing',      href: '/products' },
+  { label: 'Tomato Processing', href: '/products' },
+  { label: 'Mango Processing', href: '/products' },
+  { label: 'Citrus Processing', href: '/products' },
   { label: 'Ice Cream Mix Processing', href: '/products' },
-  { label: 'CSD Processing',         href: '/products' },
-  { label: 'Juice Processing',       href: '/products' },
-  { label: 'Honey Processing',       href: '/products' },
-  { label: 'Paneer & Cheese Press',  href: '/products' },
-  { label: 'Butter Melting Vats',    href: '/products' },
-  { label: 'Evaporator',             href: '/products' },
-  { label: 'Turbo Extractor',        href: '/products' },
-  { label: 'Hot Water Modules',      href: '/products' },
+  { label: 'CSD Processing', href: '/products' },
+  { label: 'Juice Processing', href: '/products' },
+  { label: 'Honey Processing', href: '/products' },
+  { label: 'Paneer & Cheese Press', href: '/products' },
+  { label: 'Butter Melting Vats', href: '/products' },
+  { label: 'Evaporator', href: '/products' },
+  { label: 'Turbo Extractor', href: '/products' },
+  { label: 'Hot Water Modules', href: '/products' },
 ];
 
 const services = [
-  { label: 'Spares & AMC',                        href: '/contact' },
-  { label: 'Process Engineering & Consultancy',   href: '/contact' },
-  { label: 'Automation Engineering',              href: '/contact' },
+  { label: 'Spares & AMC', href: '/contact' },
+  { label: 'Process Engineering & Consultancy', href: '/contact' },
+  { label: 'Automation Engineering', href: '/contact' },
 ];
 
 const navLinks = [
-  { label: 'About Us',    href: '/about' },
-  { label: 'Clients',     href: '/#clients' },
-  { label: 'Blogs',       href: '/blogs' },
-  { label: 'Contact Us',  href: '/contact' },
-  { label: 'Gallery',     href: '/gallery' },
-  { label: 'Videos',      href: '/videos' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Clients', href: '/#clients' },
+  { label: 'Blogs', href: '/blogs' },
+  { label: 'Contact Us', href: '/contact' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Videos', href: '/videos' },
 ];
 
-const linkCls = 'text-slate-600 hover:text-[#127e9f] transition-colors text-sm leading-relaxed';
+const linkCls = 'text-slate-600 hover:text-[#323373] transition-colors text-sm leading-relaxed';
 const headingCls = 'text-slate-800 font-bold text-base mb-3';
 
 export default function Footer() {
@@ -72,7 +72,7 @@ export default function Footer() {
             <ul className="flex flex-wrap gap-x-6 gap-y-2">
               {navLinks.map((n) => (
                 <li key={n.label}>
-                  <Link href={n.href} className="text-slate-600 hover:text-[#127e9f] font-medium text-sm transition-colors">
+                  <Link href={n.href} className="text-slate-600 hover:text-[#323373] font-medium text-sm transition-colors">
                     {n.label}
                   </Link>
                 </li>
@@ -83,7 +83,7 @@ export default function Footer() {
           <Link href="/contact">
             <button
               className="font-bold tracking-wider text-sm px-6 py-2 rounded transition-colors"
-              style={{ backgroundColor: '#127e9f', color: '#fff' }}
+              style={{ backgroundColor: '#323373', color: '#fff' }}
             >
               Resources
             </button>
@@ -135,7 +135,7 @@ export default function Footer() {
               </div>
             ))}
             <div className="pt-2">
-              <Link href="/contact" className="font-semibold transition-colors text-sm" style={{ color: '#127e9f' }}>
+              <Link href="/contact" className="font-semibold transition-colors text-sm" style={{ color: '#323373' }}>
                 Customer Support
               </Link>
             </div>
@@ -174,7 +174,7 @@ export default function Footer() {
       </div>
 
       {/* ── Bottom bar ── */}
-      <div style={{ borderTop: '1px solid #e2e8f0', padding: '1rem 0', backgroundColor: '#127e9f' }}>
+      <div style={{ borderTop: '1px solid #e2e8f0', padding: '1rem 0', backgroundColor: '#323373' }}>
         <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-white">
           <p>&copy; {new Date().getFullYear()} NK Dairy Equipments. All rights reserved.</p>
           <div className="flex gap-4">

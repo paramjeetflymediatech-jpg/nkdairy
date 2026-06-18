@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+import { v2 as cloudinary } from 'cloudinary';
+import { PassThrough } from 'stream';
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,28 +21,30 @@ export async function POST(req: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Secure the filename and create a unique name
-    const filename = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const uniqueFilename = `${Date.now()}-${filename}`;
-    
-    // Set upload directory to public/uploads
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    
-    // Ensure the directory exists
-    await mkdir(uploadDir, { recursive: true });
-    
-    // Full path to save the file
-    const filepath = path.join(uploadDir, uniqueFilename);
-    
-    // Write the file to the local filesystem
-    await writeFile(filepath, buffer);
+    // Upload to Cloudinary using a stream
+    const uploadResult = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { resource_type: 'auto', folder: 'nk-dairy' },
+        (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        }
+      );
+      
+      const readableStream = new PassThrough();
+      readableStream.end(buffer);
+      readableStream.pipe(uploadStream);
+    });
 
     // Return the public URL path
-    const fileUrl = `/uploads/${uniqueFilename}`;
+    const fileUrl = (uploadResult as any).secure_url;
 
     return NextResponse.json({ url: fileUrl }, { status: 200 });
   } catch (error) {
     console.error('Upload Error:', error);
-    return NextResponse.json({ error: 'Local image upload failed' }, { status: 500 });
+    return NextResponse.json({ error: 'Cloudinary upload failed' }, { status: 500 });
   }
 }

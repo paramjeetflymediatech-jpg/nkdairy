@@ -84,7 +84,7 @@ function TestimonialsCarousel() {
   return (
     <section style={{ background: '#ffffff', padding: '5rem 0' }}>
       <div className="container mx-auto px-6 md:px-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-center uppercase tracking-widest mb-2" style={{ color: '#127e9f' }}>
+        <h2 className="text-3xl md:text-4xl font-bold text-center uppercase tracking-widest mb-2" style={{ color: '#323373' }}>
           Testimonials
         </h2>
         <p className="text-center mb-12 text-lg" style={{ color: '#64748b' }}>
@@ -105,12 +105,12 @@ function TestimonialsCarousel() {
                     className="max-w-full max-h-full object-contain"
                   />
                 </div>
-                <h5 className="font-bold text-center text-sm hidden md:block" style={{ color: '#127e9f' }}>{t.company}</h5>
+                <h5 className="font-bold text-center text-sm hidden md:block" style={{ color: '#323373' }}>{t.company}</h5>
               </div>
 
               {/* Right — Text */}
               <div className="flex-1">
-                <h5 className="text-xl font-bold mb-4" style={{ color: '#127e9f' }}>{t.company}</h5>
+                <h5 className="text-xl font-bold mb-4" style={{ color: '#323373' }}>{t.company}</h5>
                 {t.text.map((para, i) => (
                   <p key={i} className="mb-3 leading-relaxed" style={{ color: '#475569', fontSize: '0.97rem' }}>{para}</p>
                 ))}
@@ -125,7 +125,7 @@ function TestimonialsCarousel() {
             className="absolute -left-5 md:-left-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition-all"
             style={{ background: 'rgba(18,126,159,0.1)', border: '2px solid rgba(18,126,159,0.4)' }}
           >
-            <ChevronLeft size={20} color="#127e9f" />
+            <ChevronLeft size={20} color="#323373" />
           </button>
           <button
             onClick={() => goTo(active + 1)}
@@ -133,7 +133,7 @@ function TestimonialsCarousel() {
             className="absolute -right-5 md:-right-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition-all"
             style={{ background: 'rgba(18,126,159,0.1)', border: '2px solid rgba(18,126,159,0.4)' }}
           >
-            <ChevronRight size={20} color="#127e9f" />
+            <ChevronRight size={20} color="#323373" />
           </button>
         </div>
 
@@ -148,7 +148,7 @@ function TestimonialsCarousel() {
               style={{
                 width: i === active ? '28px' : '10px',
                 height: '10px',
-                background: i === active ? '#127e9f' : '#cbd5e1',
+                background: i === active ? '#323373' : '#cbd5e1',
               }}
             />
           ))}
@@ -261,17 +261,17 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
       {/* 2. Business Segments Grid */}
       <section className="py-24 bg-white text-center">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#127e9f] mb-3 uppercase tracking-widest">Business Segments</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#323373] mb-3 uppercase tracking-widest">Business Segments</h2>
           <p className="text-slate-500 mb-16 font-medium text-lg">Explore the Innovative Possibilities Beyond Imagination</p>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 max-w-6xl mx-auto">
             {segments.map((seg, i) => (
               <div key={i} className="group cursor-pointer flex flex-col items-center">
-                <div className="w-32 h-32 rounded-full bg-gray-50 border-2 border-gray-100 flex items-center justify-center mb-4 overflow-hidden group-hover:border-[#127e9f] group-hover:shadow-xl transition-all duration-300 relative">
+                <div className="w-32 h-32 rounded-full bg-gray-50 border-2 border-gray-100 flex items-center justify-center mb-4 overflow-hidden group-hover:border-[#323373] group-hover:shadow-xl transition-all duration-300 relative">
                   {/* Real icons/images should be placed here, using standard lucide icon for demo */}
-                  <Factory size={32} className="text-[#127e9f] group-hover:scale-110 transition-transform duration-300" />
+                  <Factory size={32} className="text-[#323373] group-hover:scale-110 transition-transform duration-300" />
                 </div>
-                <span className="font-bold text-slate-700 group-hover:text-[#127e9f] transition-colors">{seg.name}</span>
+                <span className="font-bold text-slate-700 group-hover:text-[#323373] transition-colors">{seg.name}</span>
               </div>
             ))}
           </div>
@@ -281,14 +281,14 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
       {/* 3. Company Introduction */}
       <section className="py-24 bg-gray-50 border-y border-gray-100">
         <div className="container mx-auto px-6 md:px-12 text-center max-w-4xl">
-          <h2 className="text-3xl font-bold text-[#127e9f] mb-8 uppercase tracking-widest">About NK Dairy Equipments</h2>
+          <h2 className="text-3xl font-bold text-[#323373] mb-8 uppercase tracking-widest">About NK Dairy Equipments</h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-6 font-medium">
             NK Dairy Equipments is a leading manufacturer of comprehensive machinery portfolios covering every stage of the dairy and food manufacturing process. We provide technologically advanced, energy-efficient, and tailormade solutions.
           </p>
           <p className="text-slate-500 leading-relaxed mb-10">
             From Khoya Mawa machines, Curd making machines, to Bulk milk coolers and complete Pasteurization Plants, our equipment meets the highest global standards for hygiene and automation.
           </p>
-          <Link href="/about" className="inline-flex items-center gap-2 text-[#127e9f] font-bold uppercase tracking-widest hover:text-[#f3b216] transition-colors border-b-2 border-transparent hover:border-[#f3b216] pb-1">
+          <Link href="/about" className="inline-flex items-center gap-2 text-[#323373] font-bold uppercase tracking-widest hover:text-[#f3b216] transition-colors border-b-2 border-transparent hover:border-[#f3b216] pb-1">
             Read More About Us <ArrowRight size={16} />
           </Link>
         </div>
@@ -309,13 +309,13 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
             <div className="flex gap-4 justify-center lg:justify-start">
               <div
                 ref={swiperPrevRef}
-                className="w-14 h-14 rounded-full border-2 border-[#127e9f] text-[#127e9f] hover:bg-[#127e9f] hover:text-white flex items-center justify-center cursor-pointer transition-all hover:scale-110 z-20 shadow-sm swiper-slide-button swiper-button-prev"
+                className="w-14 h-14 rounded-full border-2 border-[#323373] text-[#323373] hover:bg-[#323373] hover:text-white flex items-center justify-center cursor-pointer transition-all hover:scale-110 z-20 shadow-sm swiper-slide-button swiper-button-prev"
               >
                 <ChevronLeft size={28} />
               </div>
               <div
                 ref={swiperNextRef}
-                className="w-14 h-14 rounded-full border-2 border-[#127e9f] text-[#127e9f] hover:bg-[#127e9f] hover:text-white flex items-center justify-center cursor-pointer transition-all hover:scale-110 z-20 shadow-sm swiper-slide-button swiper-button-next"
+                className="w-14 h-14 rounded-full border-2 border-[#323373] text-[#323373] hover:bg-[#323373] hover:text-white flex items-center justify-center cursor-pointer transition-all hover:scale-110 z-20 shadow-sm swiper-slide-button swiper-button-next"
               >
                 <ChevronRight size={28} />
               </div>
@@ -359,19 +359,19 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
                 return (
                   <SwiperSlide key={i} className="!h-auto card-item">
                     <Link href={`/products/${product.slug}`} className="block h-full card-link group">
-                      <div className="bg-[#127e9f] rounded-2xl overflow-hidden h-full flex flex-col shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(18,126,159,0.3)] transition-all duration-300 product-info-box">
+                      <div className="bg-[#323373] rounded-2xl overflow-hidden h-full flex flex-col shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(18,126,159,0.3)] transition-all duration-300 product-info-box">
                         {/* Image Background Container */}
                         <div className="bg-white p-6 pb-8 flex justify-center items-center h-64 relative gray-bg-box">
                           <img src={imageUrl} alt={product.name} className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500 home-product-img" />
                         </div>
 
-                        <div className="p-8 flex flex-col flex-1 text-center items-center bg-[#127e9f] relative">
+                        <div className="p-8 flex flex-col flex-1 text-center items-center bg-[#323373] relative">
                           {/* SVG triangle to create the angle effect if needed, omitted for modern clean look */}
                           <h5 className="text-xl font-bold text-white mb-3 line-clamp-2 productName">{product.name}</h5>
                           <p className="text-white/80 text-sm mb-6 line-clamp-3 productDesc">{product.description}</p>
 
                           <div className="mt-auto">
-                            <button className="inline-flex items-center gap-2 text-[#127e9f] bg-white hover:bg-[#f3b216] hover:text-white px-6 py-3 rounded-full font-bold tracking-widest text-sm transition-colors uppercase readBtn group/btn shadow-md">
+                            <button className="inline-flex items-center gap-2 text-[#323373] bg-white hover:bg-[#f3b216] hover:text-white px-6 py-3 rounded-full font-bold tracking-widest text-sm transition-colors uppercase readBtn group/btn shadow-md">
                               Read more
                               <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
                             </button>
@@ -392,7 +392,7 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
         <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* Left Side: Bullet Points */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#127e9f] mb-8 uppercase tracking-widest">Why NK Dairy Equipments?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#323373] mb-8 uppercase tracking-widest">Why NK Dairy Equipments?</h2>
             <div className="space-y-6">
               {[
                 { title: 'Technologically Advanced', desc: 'Our machines feature state-of-the-art automation for maximum yield and minimum waste.' },
@@ -413,7 +413,7 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
             </div>
 
             <div className="mt-10">
-              <Link href="/videos" className="inline-flex items-center gap-2 text-white bg-[#127e9f] hover:bg-blue-800 px-6 py-3 rounded font-bold tracking-widest uppercase transition-colors shadow-md">
+              <Link href="/videos" className="inline-flex items-center gap-2 text-white bg-[#323373] hover:bg-blue-500 px-6 py-3 rounded font-bold tracking-widest uppercase transition-colors shadow-md">
                 <Play size={18} fill="currentColor" /> Watch Corporate Video
               </Link>
             </div>
@@ -431,7 +431,7 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
                 <div key={i} className="border border-gray-100 rounded-lg overflow-hidden">
                   <button
                     onClick={() => setActiveAccordion(activeAccordion === i ? null : i)}
-                    className={`w-full flex items-center justify-between p-4 font-bold text-left transition-colors ${activeAccordion === i ? 'bg-[#127e9f] text-white' : 'bg-gray-50 text-slate-700 hover:bg-gray-100'}`}
+                    className={`w-full flex items-center justify-between p-4 font-bold text-left transition-colors ${activeAccordion === i ? 'bg-[#323373] text-white' : 'bg-gray-50 text-slate-700 hover:bg-gray-100'}`}
                   >
                     <span className="flex items-center gap-3">
                       <acc.icon size={20} className={activeAccordion === i ? 'text-white' : 'text-[#f3b216]'} />
@@ -460,7 +460,7 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
       <section className="bg-slate-50 py-24 overflow-hidden">
         {/* News & Updates */}
         <div className="container mx-auto px-6 md:px-12 text-center">
-          <h2 className="text-3xl font-bold text-[#127e9f] mb-12 uppercase tracking-widest">News & Updates</h2>
+          <h2 className="text-3xl font-bold text-[#323373] mb-12 uppercase tracking-widest">News & Updates</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
               { img: 'logo1-1.jpg', link: 'https://www.thehansindia.com/business/engineering-the-backbone-of-indias-dairy-processing-sector-1061882' },

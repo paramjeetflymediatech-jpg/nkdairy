@@ -7,15 +7,10 @@ import Image from 'next/image';
 import Swal from 'sweetalert2';
 
 // Dynamically import CKEditor to avoid SSR issues
-const CustomEditor = dynamic(() => {
-  return import('@ckeditor/ckeditor5-react').then((mod) => {
-    return import('@ckeditor/ckeditor5-build-classic').then((ClassicEditor) => {
-      return function Editor(props: any) {
-        return <mod.CKEditor editor={ClassicEditor.default} {...props} />;
-      };
-    });
-  });
-}, { ssr: false, loading: () => <div className="p-8 text-center text-gray-500 border rounded-lg">Loading Editor...</div> });
+const CustomEditor = dynamic(() => import('./CustomEditor'), { 
+  ssr: false, 
+  loading: () => <div className="p-8 text-center text-gray-500 border rounded-lg">Loading Editor...</div> 
+});
 
 export default function ProductForm({ initialData = null, mode = 'create' }: { initialData?: any, mode?: 'create' | 'edit' }) {
   const router = useRouter();

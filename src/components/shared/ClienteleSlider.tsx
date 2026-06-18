@@ -98,7 +98,7 @@ export default function ClienteleSlider() {
 
       {/* ── Heading ── */}
       <div style={{ textAlign: 'center', marginBottom: '2.5rem', padding: '0 1.5rem' }}>
-        <h2 style={{ color: '#f3b216', fontWeight: 800, fontSize: '2rem', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '0.5rem' }}>
+        <h2 style={{ color: 'white', fontWeight: 800, fontSize: '2rem', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '0.5rem' }}>
           Our Clients
         </h2>
         <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '1rem' }}>

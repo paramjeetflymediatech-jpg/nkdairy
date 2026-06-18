@@ -6,15 +6,10 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
 // Dynamically import CKEditor to avoid SSR issues
-const CustomEditor = dynamic(() => {
-  return import('@ckeditor/ckeditor5-react').then((mod) => {
-    return import('@ckeditor/ckeditor5-build-classic').then((ClassicEditor) => {
-      return function Editor(props: any) {
-        return <mod.CKEditor editor={ClassicEditor.default} {...props} />;
-      };
-    });
-  });
-}, { ssr: false, loading: () => <div className="p-8 text-center text-gray-400 border rounded-lg">Loading Editor...</div> });
+const CustomEditor = dynamic(() => import('./CustomEditor'), { 
+  ssr: false, 
+  loading: () => <div className="p-8 text-center text-gray-500 border rounded-lg">Loading Editor...</div> 
+});
 
 interface Category {
   id: number;

@@ -10,7 +10,7 @@ export default function PrivacyPolicyPage() {
   return (
     <div className="bg-[#f8fafc] min-h-screen pb-24">
       {/* Hero Section */}
-      <div className="bg-[#127e9f] text-white pt-32 md:pt-40 pb-32 relative overflow-hidden">
+      <div className="bg-[#323373] text-white pt-32 md:pt-40 pb-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10"></div>
         <div className="container mx-auto px-6 relative z-10 text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-6 backdrop-blur-sm">
@@ -26,13 +26,13 @@ export default function PrivacyPolicyPage() {
       {/* Content Section */}
       <div className="container mx-auto px-6 -mt-16 relative z-20">
         <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-8 md:p-12 max-w-4xl mx-auto">
-          
+
           <div className="prose prose-slate max-w-none">
             <p className="text-slate-500 mb-8 font-medium">Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
 
             <section className="mb-12">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-[#127e9f]">
+                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-[#323373]">
                   <Eye size={20} />
                 </div>
                 <h2 className="text-2xl font-bold text-slate-800 m-0">1. Information We Collect</h2>
@@ -49,7 +49,7 @@ export default function PrivacyPolicyPage() {
 
             <section className="mb-12">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-[#127e9f]">
+                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-[#323373]">
                   <Database size={20} />
                 </div>
                 <h2 className="text-2xl font-bold text-slate-800 m-0">2. How We Use Your Information</h2>
@@ -79,7 +79,7 @@ export default function PrivacyPolicyPage() {
 
             <section className="mb-12">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-[#127e9f]">
+                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-[#323373]">
                   <Lock size={20} />
                 </div>
                 <h2 className="text-2xl font-bold text-slate-800 m-0">3. Data Security</h2>
@@ -91,7 +91,7 @@ export default function PrivacyPolicyPage() {
 
             <section className="mb-12">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-[#127e9f]">
+                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-[#323373]">
                   <Server size={20} />
                 </div>
                 <h2 className="text-2xl font-bold text-slate-800 m-0">4. Third-Party Services</h2>
@@ -103,7 +103,7 @@ export default function PrivacyPolicyPage() {
 
             <section>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-[#127e9f]">
+                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-[#323373]">
                   <FileText size={20} />
                 </div>
                 <h2 className="text-2xl font-bold text-slate-800 m-0">5. Contact Us</h2>
