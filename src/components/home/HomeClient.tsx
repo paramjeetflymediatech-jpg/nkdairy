@@ -309,13 +309,13 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
             <div className="flex gap-4 justify-center lg:justify-start">
               <div
                 ref={swiperPrevRef}
-                className="w-14 h-14 rounded-full border-2 border-[#323373] text-[#323373] hover:bg-[#323373] hover:text-white flex items-center justify-center cursor-pointer transition-all hover:scale-110 z-20 shadow-sm swiper-slide-button swiper-button-prev"
+                className="w-14 h-14 rounded-full border-2 border-[#323373] text-[#323373] hover:bg-[#323373] hover:text-white flex items-center justify-center cursor-pointer transition-all hover:scale-110 z-20 shadow-sm swiper-slide-button"
               >
                 <ChevronLeft size={28} />
               </div>
               <div
                 ref={swiperNextRef}
-                className="w-14 h-14 rounded-full border-2 border-[#323373] text-[#323373] hover:bg-[#323373] hover:text-white flex items-center justify-center cursor-pointer transition-all hover:scale-110 z-20 shadow-sm swiper-slide-button swiper-button-next"
+                className="w-14 h-14 rounded-full border-2 border-[#323373] text-[#323373] hover:bg-[#323373] hover:text-white flex items-center justify-center cursor-pointer transition-all hover:scale-110 z-20 shadow-sm swiper-slide-button"
               >
                 <ChevronRight size={28} />
               </div>
