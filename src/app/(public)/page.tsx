@@ -1,8 +1,7 @@
 import HomeClient from '@/components/home/HomeClient';
 import { getSeoMetadata } from '@/lib/seo';
 import { connectDB } from '@/lib/db';
-import { Product } from '@/models/Product';
-import { Category } from '@/models/Category';
+import { Product, Category, Industry } from '@/models';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,5 +17,14 @@ export default async function Home() {
     limit: 10,
   });
 
-  return <HomeClient initialProducts={products.map(p => p.toJSON())} />;
+  const industries = await Industry.findAll({
+    order: [['id', 'ASC']]
+  });
+
+  return (
+    <HomeClient 
+      initialProducts={products.map(p => p.toJSON())} 
+      initialIndustries={industries.map(i => i.toJSON())} 
+    />
+  );
 }

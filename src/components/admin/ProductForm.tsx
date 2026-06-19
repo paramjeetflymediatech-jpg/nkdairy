@@ -17,6 +17,7 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
   const [categories, setCategories] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingModel, setUploadingModel] = useState(false);
 
   const parseEquipmentSolutions = (data: any) => {
     if (!data) return { enabled: false, title: '', subtitle: '', generalDescription: '', tabsHeader: '', tabs: [] };
@@ -57,6 +58,7 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
     heroSubtitle: initialData?.heroSubtitle || '',
     capacity: initialData?.capacity || '',
     images: initialData?.images ? (typeof initialData.images === 'string' ? JSON.parse(initialData.images) : initialData.images) : [],
+    model3d: initialData?.model3d || '',
     equipmentSolutions: parseEquipmentSolutions(initialData?.equipmentSolutions),
     pageSections: parsePageSections(initialData?.pageSections),
     faqs: parseFaqs(initialData?.faqs)
@@ -80,6 +82,11 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
 
   const toggleSection = (id: string) => setCollapsedSections(prev => ({ ...prev, [id]: !prev[id] }));
   const toggleFaq = (id: string) => setCollapsedFaqs(prev => ({ ...prev, [id]: !prev[id] }));
+
+  const [useHtmlDescription, setUseHtmlDescription] = useState(false);
+  const [useHtmlSections, setUseHtmlSections] = useState<Record<number, boolean>>({});
+  const [useHtmlEqGeneral, setUseHtmlEqGeneral] = useState(false);
+  const [useHtmlTabs, setUseHtmlTabs] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     fetchCategories();
@@ -135,6 +142,40 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
     } finally {
       setUploadingImage(false);
       // reset input
+      e.target.value = '';
+    }
+  };
+
+  const handleModelUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const extension = file.name.split('.').pop()?.toLowerCase();
+    if (extension !== 'glb' && extension !== 'gltf') {
+      Swal.fire('Error', 'Only .glb and .gltf files are supported for 3D models', 'error');
+      return;
+    }
+
+    setUploadingModel(true);
+    const form = new FormData();
+    form.append('file', file);
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: form
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setFormData({ ...formData, model3d: data.url });
+      } else {
+        Swal.fire('Error', '3D model upload failed', 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      Swal.fire('Error', 'Error uploading 3D model', 'error');
+    } finally {
+      setUploadingModel(false);
       e.target.value = '';
     }
   };
@@ -302,6 +343,7 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
         description: formData.description,
         capacity: formData.capacity,
         images: formData.images,
+        model3d: formData.model3d,
         equipmentSolutions: formData.equipmentSolutions,
         pageSections: formData.pageSections,
         faqs: formData.faqs
@@ -413,16 +455,33 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Full Description *</label>
-            <div className="border border-gray-200 rounded-lg overflow-hidden prose max-w-none">
-              <CustomEditor
-                data={formData.description}
-                onChange={(event: any, editor: any) => {
-                  const data = editor.getData();
-                  setFormData({...formData, description: data});
-                }}
-              />
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-semibold text-gray-700">Full Description *</label>
+              <button 
+                type="button" 
+                onClick={() => setUseHtmlDescription(!useHtmlDescription)}
+                className="text-xs font-semibold bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded-md transition-colors"
+              >
+                {useHtmlDescription ? 'Use Visual Editor (CKEditor)' : 'Use Raw HTML Editor'}
+              </button>
             </div>
+            {useHtmlDescription ? (
+              <textarea
+                required
+                rows={8}
+                value={formData.description}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 hover:bg-white transition-colors font-mono text-sm"
+                placeholder="Enter product description or paste raw HTML here..."
+              />
+            ) : (
+              <div className="border border-gray-200 rounded-lg overflow-hidden prose max-w-none bg-white">
+                <CustomEditor
+                  data={formData.description}
+                  onChange={(event: any, editor: any) => setFormData({...formData, description: editor.getData()})}
+                />
+              </div>
+            )}
           </div>
 
           <div className="pt-6 border-t border-gray-100">
@@ -496,16 +555,32 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
                     </div>
 
                     <div className="mb-4">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Section Content (HTML)</label>
-                      <div className="border border-gray-200 rounded-lg overflow-hidden prose max-w-none">
-                        <CustomEditor
-                          data={section.content}
-                          onChange={(event: any, editor: any) => {
-                            const data = editor.getData();
-                            handleSectionChange(idx, 'content', data);
-                          }}
-                        />
+                      <div className="flex justify-between items-center mb-2">
+                        <label className="block text-sm font-semibold text-gray-700">Section Content</label>
+                        <button 
+                          type="button" 
+                          onClick={() => setUseHtmlSections(prev => ({ ...prev, [idx]: !prev[idx] }))}
+                          className="text-xs font-semibold bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded-md transition-colors"
+                        >
+                          {useHtmlSections[idx] ? 'Use Visual Editor (CKEditor)' : 'Use Raw HTML Editor'}
+                        </button>
                       </div>
+                      {useHtmlSections[idx] ? (
+                        <textarea
+                          rows={8}
+                          value={section.content}
+                          onChange={(e) => handleSectionChange(idx, 'content', e.target.value)}
+                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 hover:bg-white transition-colors font-mono text-sm"
+                          placeholder="Enter description or paste raw HTML here..."
+                        />
+                      ) : (
+                        <div className="border border-gray-200 rounded-lg overflow-hidden prose max-w-none bg-white">
+                          <CustomEditor
+                            data={section.content}
+                            onChange={(event: any, editor: any) => handleSectionChange(idx, 'content', editor.getData())}
+                          />
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex items-center gap-6">
@@ -580,16 +655,32 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">General Description</label>
-                  <div className="border border-gray-200 rounded-lg overflow-hidden prose max-w-none">
-                    <CustomEditor
-                      data={formData.equipmentSolutions.generalDescription}
-                      onChange={(event: any, editor: any) => {
-                        const data = editor.getData();
-                        setFormData({...formData, equipmentSolutions: {...formData.equipmentSolutions, generalDescription: data}});
-                      }}
-                    />
+                  <div className="flex justify-between items-center mb-2">
+                    <label className="block text-sm font-semibold text-gray-700">General Description</label>
+                    <button 
+                      type="button" 
+                      onClick={() => setUseHtmlEqGeneral(!useHtmlEqGeneral)}
+                      className="text-xs font-semibold bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded-md transition-colors"
+                    >
+                      {useHtmlEqGeneral ? 'Use Visual Editor (CKEditor)' : 'Use Raw HTML Editor'}
+                    </button>
                   </div>
+                  {useHtmlEqGeneral ? (
+                    <textarea
+                      rows={8}
+                      value={formData.equipmentSolutions.generalDescription}
+                      onChange={(e) => setFormData({...formData, equipmentSolutions: {...formData.equipmentSolutions, generalDescription: e.target.value}})}
+                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 hover:bg-white transition-colors font-mono text-sm"
+                      placeholder="Enter description or paste raw HTML here..."
+                    />
+                  ) : (
+                    <div className="border border-gray-200 rounded-lg overflow-hidden prose max-w-none bg-white">
+                      <CustomEditor
+                        data={formData.equipmentSolutions.generalDescription}
+                        onChange={(event: any, editor: any) => setFormData({...formData, equipmentSolutions: {...formData.equipmentSolutions, generalDescription: editor.getData()}})}
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -635,16 +726,32 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
                             className="w-full mb-3 px-3 py-2 border border-gray-200 rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 font-semibold text-[#323373]"
                             placeholder="e.g. Tomato Paste"
                           />
-                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Tab HTML Content</label>
-                          <div className="border border-gray-200 rounded-lg overflow-hidden prose max-w-none bg-white">
-                            <CustomEditor
-                              data={tab.content}
-                              onChange={(event: any, editor: any) => {
-                                const data = editor.getData();
-                                handleTabChange(idx, 'content', data);
-                              }}
-                            />
+                          <div className="flex justify-between items-center mb-1">
+                            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Tab HTML Content</label>
+                            <button 
+                              type="button" 
+                              onClick={() => setUseHtmlTabs(prev => ({ ...prev, [idx]: !prev[idx] }))}
+                              className="text-xs font-semibold bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded-md transition-colors"
+                            >
+                              {useHtmlTabs[idx] ? 'Use Visual Editor (CKEditor)' : 'Use Raw HTML Editor'}
+                            </button>
                           </div>
+                          {useHtmlTabs[idx] ? (
+                            <textarea
+                              rows={8}
+                              value={tab.content}
+                              onChange={(e) => handleTabChange(idx, 'content', e.target.value)}
+                              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 hover:bg-white transition-colors font-mono text-sm"
+                              placeholder="Enter tab content or paste raw HTML here..."
+                            />
+                          ) : (
+                            <div className="border border-gray-200 rounded-lg overflow-hidden prose max-w-none bg-white">
+                              <CustomEditor
+                                data={tab.content}
+                                onChange={(event: any, editor: any) => handleTabChange(idx, 'content', editor.getData())}
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -700,9 +807,53 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
                 </>
               )}
             </div>
-        </div>
-      </div>
+          </div>
 
+          <div className="border border-gray-200 rounded-xl p-5 bg-gray-50">
+            <label className="block text-sm font-semibold text-gray-700 mb-4">Product 3D Model (.glb, .gltf)</label>
+            
+            {formData.model3d ? (
+              <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-sm mb-4">
+                <div className="flex items-center gap-3 overflow-hidden">
+                  <span className="text-2xl">📦</span>
+                  <div className="overflow-hidden text-left">
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">3D Model URL</p>
+                    <p className="text-sm font-semibold text-[#323373] truncate max-w-[150px]" title={formData.model3d}>{formData.model3d.split('/').pop()}</p>
+                  </div>
+                </div>
+                <button 
+                  type="button" 
+                  onClick={() => setFormData({...formData, model3d: ''})}
+                  className="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors"
+                  title="Remove Model"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            ) : (
+              <div className="relative border-2 border-dashed border-gray-300 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:border-blue-500 transition-colors bg-white cursor-pointer min-h-[150px]">
+                {uploadingModel ? (
+                  <div className="flex flex-col items-center text-blue-500">
+                    <Loader2 className="animate-spin mb-2" size={24} />
+                    <span className="text-sm font-medium">Uploading Model...</span>
+                  </div>
+                ) : (
+                  <>
+                    <span className="text-3xl mb-3">📦</span>
+                    <span className="text-sm text-gray-600 font-medium">Click to upload 3D model</span>
+                    <span className="text-xs text-gray-400 mt-1">GLB, GLTF up to 15MB</span>
+                    <input 
+                      type="file" 
+                      accept=".glb,.gltf"
+                      onChange={handleModelUpload}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Dynamic FAQs Section */}

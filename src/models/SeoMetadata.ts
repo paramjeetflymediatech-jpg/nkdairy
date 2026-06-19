@@ -22,7 +22,7 @@ SeoMetadata.init(
     pagePath: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: 'pagePath',
       comment: 'e.g. /, /about, /contact'
     },
     metaTitle: {
@@ -34,7 +34,7 @@ SeoMetadata.init(
       allowNull: true,
     },
     metaKeywords: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     ogImage: {

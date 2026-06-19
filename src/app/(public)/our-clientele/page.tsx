@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 import OurClienteleClient from './OurClienteleClient';
+import { getSeoMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Our Clientele | NK Dairy Equipments',
-  description: 'Discover the prestigious institutes and research centers that trust NK Dairy Equipments.',
-};
+export async function generateMetadata() {
+  return await getSeoMetadata('/our-clientele');
+}
 
 export default function OurClientelePage() {
   return <OurClienteleClient />;

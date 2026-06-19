@@ -21,6 +21,7 @@ export class Product extends Model {
   declare equipmentSolutions?: any;
   declare pageSections?: any;
   declare faqs?: any;
+  declare model3d?: string;
 }
 
 Product.init(
@@ -97,6 +98,10 @@ Product.init(
     },
     faqs: {
       type: DataTypes.JSON,
+      allowNull: true,
+    },
+    model3d: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
   },

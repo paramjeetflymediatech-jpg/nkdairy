@@ -64,32 +64,7 @@ export default function Footer() {
   return (
     <footer style={{ backgroundColor: '#f8fafc', borderTop: '1px solid #e2e8f0' }}>
 
-      {/* ── Top nav bar ── */}
-      <div style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0', padding: '1.25rem 0' }}>
-        <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-4">
-          {/* Nav links */}
-          <nav>
-            <ul className="flex flex-wrap gap-x-6 gap-y-2">
-              {navLinks.map((n) => (
-                <li key={n.label}>
-                  <Link href={n.href} className="text-slate-600 hover:text-[#323373] font-medium text-sm transition-colors">
-                    {n.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          {/* Resources button */}
-          <Link href="/contact">
-            <button
-              className="font-bold tracking-wider text-sm px-6 py-2 rounded transition-colors"
-              style={{ backgroundColor: '#323373', color: '#fff' }}
-            >
-              Resources
-            </button>
-          </Link>
-        </div>
-      </div>
+    
 
       {/* ── Main footer grid ── */}
       <div className="container mx-auto px-6 md:px-12 py-12">

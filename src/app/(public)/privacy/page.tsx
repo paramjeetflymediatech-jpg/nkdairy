@@ -1,12 +1,13 @@
 import React from 'react';
 import { Shield, Lock, Eye, FileText, Database, Server } from 'lucide-react';
+import { getSeoMetadata } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Privacy Policy | NK Dairy Equipments',
-  description: 'Privacy Policy and data protection guidelines for NK Dairy Equipments.',
-};
+export async function generateMetadata() {
+  return await getSeoMetadata('/privacy');
+}
 
 export default function PrivacyPolicyPage() {
+
   return (
     <div className="bg-[#f8fafc] min-h-screen pb-24">
       {/* Hero Section */}
@@ -121,7 +122,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
           </div>
-        </div>
+    </div>
       </div>
     </div>
   );

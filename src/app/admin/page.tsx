@@ -35,6 +35,7 @@ export default async function AdminDashboard() {
 
   return (
     <div className="space-y-6">
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         {stats.map((stat) => (

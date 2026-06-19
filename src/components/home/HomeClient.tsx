@@ -158,7 +158,19 @@ function TestimonialsCarousel() {
   );
 }
 
-export default function HomeClient({ initialProducts = [] }: { initialProducts?: any[] }) {
+const stripHtml = (html: string) => {
+  if (!html) return '';
+  // Basic regex to strip tags and decode common entities
+  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
+};
+
+export default function HomeClient({ 
+  initialProducts = [],
+  initialIndustries = []
+}: { 
+  initialProducts?: any[];
+  initialIndustries?: any[];
+}) {
   const [activeAccordion, setActiveAccordion] = useState<number | null>(0);
   const [currentSlide, setCurrentSlide] = useState(0);
   const marqueeRef = useRef<HTMLDivElement>(null);
@@ -195,14 +207,16 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
     return () => clearInterval(timer);
   }, [heroSlides.length]);
 
-  const segments = [
-    { name: 'Dairy', icon: '/logo.png' }, // placeholder
-    { name: 'Fruits & Vegetables', icon: '/logo.png' },
-    { name: 'Food', icon: '/logo.png' },
-    { name: 'Cosmetics', icon: '/logo.png' },
-    { name: 'Beverages', icon: '/logo.png' },
-    { name: 'Allied Industry', icon: '/logo.png' },
-  ];
+  const segments = initialIndustries && initialIndustries.length > 0
+    ? initialIndustries
+    : [
+        { name: 'Dairy', image: '/segments/dairy.png', slug: 'dairy' },
+        { name: 'Fruits & Vegetables', image: '/segments/fruits.png', slug: 'fruits-vegetables' },
+        { name: 'Food', image: '/segments/food.png', slug: 'food' },
+        { name: 'Cosmetics', image: '/segments/cosmetics.png', slug: 'cosmetics' },
+        { name: 'Beverages', image: '/segments/beverages.png', slug: 'beverages' },
+        { name: 'Allied Industry', image: '/segments/allied.png', slug: 'allied-industry' },
+      ];
 
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans">
@@ -266,13 +280,12 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 max-w-6xl mx-auto">
             {segments.map((seg, i) => (
-              <div key={i} className="group cursor-pointer flex flex-col items-center">
+              <Link key={i} href={`/industries/${seg.slug}`} className="group cursor-pointer flex flex-col items-center">
                 <div className="w-32 h-32 rounded-full bg-gray-50 border-2 border-gray-100 flex items-center justify-center mb-4 overflow-hidden group-hover:border-[#323373] group-hover:shadow-xl transition-all duration-300 relative">
-                  {/* Real icons/images should be placed here, using standard lucide icon for demo */}
-                  <Factory size={32} className="text-[#323373] group-hover:scale-110 transition-transform duration-300" />
+                  <img src={seg.image} alt={seg.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                 </div>
-                <span className="font-bold text-slate-700 group-hover:text-[#323373] transition-colors">{seg.name}</span>
-              </div>
+                <span className="font-bold text-slate-700 group-hover:text-[#323373] text-center transition-colors">{seg.name}</span>
+              </Link>
             ))}
           </div>
         </div>
@@ -368,7 +381,7 @@ export default function HomeClient({ initialProducts = [] }: { initialProducts?:
                         <div className="p-8 flex flex-col flex-1 text-center items-center bg-[#323373] relative">
                           {/* SVG triangle to create the angle effect if needed, omitted for modern clean look */}
                           <h5 className="text-xl font-bold text-white mb-3 line-clamp-2 productName">{product.name}</h5>
-                          <p className="text-white/80 text-sm mb-6 line-clamp-3 productDesc">{product.description}</p>
+                          <p className="text-white/80 text-sm mb-6 line-clamp-3 productDesc">{stripHtml(product.description)}</p>
 
                           <div className="mt-auto">
                             <button className="inline-flex items-center gap-2 text-[#323373] bg-white hover:bg-[#f3b216] hover:text-white px-6 py-3 rounded-full font-bold tracking-widest text-sm transition-colors uppercase readBtn group/btn shadow-md">

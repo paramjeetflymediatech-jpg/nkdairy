@@ -16,9 +16,11 @@ const MobileNavItem = ({ item, depth = 0, setNavOpen }: { item: any, depth?: num
         <Link
           href={href}
           onClick={() => { if (!hasSubcategories) setNavOpen(false); }}
-          className="flex-1"
+          className="flex-1 flex items-center gap-2"
         >
-          {depth > 0 && <span className="mr-2 opacity-50">-</span>} {item.name}
+          {depth > 0 && <span className="mr-2 opacity-50">-</span>} 
+          {item.image && <img src={item.image} alt={item.name} className="w-5 h-5 object-contain" />}
+          <span>{item.name}</span>
         </Link>
         {hasSubcategories && (
           <button onClick={() => setIsExpanded(!isExpanded)} className="p-2 -mr-2 text-gray-500">
@@ -51,6 +53,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
+  const [industries, setIndustries] = useState<any[]>([]);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   useEffect(() => {
@@ -76,10 +79,37 @@ export default function Navbar() {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    const fetchIndustries = async () => {
+      try {
+        const res = await fetch('/api/industries');
+        if (res.ok) {
+          const data = await res.json();
+          setIndustries(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch industries', error);
+      }
+    };
+    fetchIndustries();
+  }, []);
+
   // Create the nav structure
   const navItems = [
     { name: 'Home', href: '/', isDynamic: false, isMegaMenu: false },
     { name: 'About Us', href: '/about', isDynamic: false, isMegaMenu: false },
+    {
+      name: 'Industries',
+      href: '#',
+      isDynamic: true,
+      isMegaMenu: false,
+      subcategories: industries.map(ind => ({
+        id: ind.id,
+        name: ind.name,
+        slug: `industries/${ind.slug}`,
+        image: ind.image
+      }))
+    },
     {
       name: 'Equipment & Solutions',
       href: '#',
@@ -107,7 +137,7 @@ export default function Navbar() {
 
     return (
       <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 w-max min-w-[700px] max-w-[90vw] z-50 transition-all duration-300 ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0'}`}>
-        <div className="bg-white shadow-2xl border border-gray-100 rounded-2xl p-8 relative">
+        <div className="bg-white  border border-gray-100 rounded-2xl p-8 relative">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-5">
             {allProducts.map((prod: any) => (
               <div key={prod.id} className="border-b border-gray-100 pb-3">
@@ -134,9 +164,16 @@ export default function Navbar() {
         <ul className="bg-white shadow-xl border border-gray-100 rounded-lg py-2">
         {items.map((sub: any) => (
           <li key={sub.id} className="relative group/sub">
-            <Link href={`/${sub.slug}`} className="block px-5 py-2 text-sm text-[#323373] hover:bg-gray-50 hover:text-blue-600 transition-colors flex justify-between items-center whitespace-nowrap gap-4">
-              {sub.name}
-              {sub.subcategories && sub.subcategories.length > 0 && <ChevronDown size={14} className="-rotate-90 text-gray-400" />}
+            <Link 
+              href={`/${sub.slug}`} 
+              onClick={() => setIsOpen(false)}
+              className="block px-5 py-2.5 text-sm text-[#323373] hover:bg-gray-50 hover:text-blue-600 transition-colors flex items-center gap-3 whitespace-nowrap"
+            >
+              {sub.image && (
+                <img src={sub.image} alt={sub.name} className="w-5 h-5 object-contain" />
+              )}
+              <span>{sub.name}</span>
+              {sub.subcategories && sub.subcategories.length > 0 && <ChevronDown size={14} className="ml-auto -rotate-90 text-gray-400" />}
             </Link>
 
             {/* Infinite Recursive Dropdown */}

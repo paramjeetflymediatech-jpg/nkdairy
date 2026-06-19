@@ -29,3 +29,14 @@ export async function getSeoMetadata(pagePath: string): Promise<Metadata> {
     description: 'World-class industrial manufacturing for next-generation dairy plants. Precision, efficiency, and scale—designed for modern industry.',
   };
 }
+
+export async function getRawSeoMetadata(pagePath: string) {
+  try {
+    await connectDB();
+    const seo = await SeoMetadata.findOne({ where: { pagePath } });
+    return seo ? seo.get({ plain: true }) : null;
+  } catch (error) {
+    console.error('Error fetching raw SEO metadata for', pagePath, error);
+    return null;
+  }
+}

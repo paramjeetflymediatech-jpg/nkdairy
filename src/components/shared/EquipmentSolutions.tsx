@@ -41,7 +41,8 @@ export default function EquipmentSolutions({ data }: { data: EquipmentSolutionsD
           )}
           {data.generalDescription && (
             <div 
-              className="text-gray-600 leading-relaxed max-w-4xl prose"
+              className={`text-gray-600 leading-relaxed max-w-4xl ${data.generalDescription.includes('style=') ? '' : 'prose'}`}
+              ref={(el) => { if (el) console.log("RAW HTML PASSED TO INNERHTML:", data.generalDescription, "ACTUAL INNERHTML:", el.innerHTML) }}
               dangerouslySetInnerHTML={{ __html: data.generalDescription }}
             />
           )}
@@ -84,7 +85,7 @@ export default function EquipmentSolutions({ data }: { data: EquipmentSolutionsD
             <div className="bg-gray-50/50 rounded-xl p-6 md:p-8 border border-gray-100 h-full">
               {activeContent ? (
                 <div 
-                  className="prose prose-blue max-w-none prose-headings:text-[#323373] prose-a:text-blue-600"
+                  className={`max-w-none ${activeContent.includes('style=') ? '' : 'prose prose-blue prose-headings:text-[#323373] prose-a:text-blue-600'}`}
                   dangerouslySetInnerHTML={{ __html: activeContent }}
                 />
               ) : (

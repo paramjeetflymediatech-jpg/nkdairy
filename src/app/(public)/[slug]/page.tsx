@@ -6,6 +6,7 @@ import { Category } from '@/models/Category';
 import { Product } from '@/models/Product';
 import { connectDB } from '@/lib/db';
 import { Metadata } from 'next';
+import { SeoMetadata } from '@/models/SeoMetadata';
 import EquipmentSolutions from '@/components/shared/EquipmentSolutions';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -14,6 +15,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const category = await Category.findOne({ where: { slug } });
 
   if (!category) return { title: 'Not Found' };
+
+  const path = `/${slug}`;
+  const seo = await SeoMetadata.findOne({ where: { pagePath: path } });
+
+  if (seo) {
+    return {
+      title: seo.metaTitle,
+      description: seo.metaDescription,
+      keywords: seo.metaKeywords ? seo.metaKeywords.split(',').map(k => k.trim()) : undefined,
+      openGraph: {
+        title: seo.metaTitle,
+        description: seo.metaDescription || undefined,
+        images: seo.ogImage ? [seo.ogImage] : undefined,
+      }
+    };
+  }
 
   return {
     title: `${category.name} | NK Dairy Equipments`,

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Scale, CheckCircle2, AlertTriangle, Copyright, HelpCircle, FileText } from 'lucide-react';
+import { getSeoMetadata } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Terms of Service | NK Dairy Equipments',
-  description: 'Terms of Service and conditions for using NK Dairy Equipments website and services.',
-};
+export async function generateMetadata() {
+  return await getSeoMetadata('/terms');
+}
 
 export default function TermsOfServicePage() {
+
   return (
     <div className="bg-[#f8fafc] min-h-screen pb-24">
       {/* Hero Section */}
@@ -116,7 +117,7 @@ export default function TermsOfServicePage() {
             </section>
 
           </div>
-        </div>
+    </div>
       </div>
     </div>
   );

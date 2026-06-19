@@ -9,6 +9,23 @@ import { Testimonial } from './Testimonial';
 import { Certificate } from './Certificate';
 import { Gallery } from './Gallery';
 import { SeoMetadata } from './SeoMetadata';
+import { Industry } from './Industry';
+import { ProductIndustry } from './ProductIndustry';
+
+// Many-to-many associations between Product and Industry
+Product.belongsToMany(Industry, { 
+  through: ProductIndustry, 
+  as: 'industries', 
+  foreignKey: 'productId',
+  otherKey: 'industryId'
+});
+
+Industry.belongsToMany(Product, { 
+  through: ProductIndustry, 
+  as: 'products', 
+  foreignKey: 'industryId',
+  otherKey: 'productId'
+});
 
 export const syncDB = async () => {
   try {
@@ -34,4 +51,6 @@ export {
   Certificate,
   Gallery,
   SeoMetadata,
+  Industry,
+  ProductIndustry,
 };

@@ -1,10 +1,10 @@
 import YoutubeGallery from '@/components/home/YoutubeGallery';
 import { Metadata } from 'next';
+import { getSeoMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Videos | NK Dairy Equipments',
-  description: 'Watch our latest equipment demonstrations and updates.',
-};
+export async function generateMetadata() {
+  return await getSeoMetadata('/videos');
+}
 
 export default function VideosPage() {
   return (

@@ -4,16 +4,22 @@ import { ArrowRight, Filter, Package } from 'lucide-react';
 import { connectDB } from '@/lib/db';
 import { Product } from '@/models/Product';
 import { Category } from '@/models/Category';
+import { getSeoMetadata } from '@/lib/seo';
 
 import ProductFilter from '@/components/public/ProductFilter';
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata() {
+  return await getSeoMetadata('/products');
+}
 
 export default async function ProductsPage(
   props: { searchParams: Promise<{ category?: string }> }
 ) {
   const searchParams = await props.searchParams;
   await connectDB();
+
 
   // Fetch categories for the filter
   const categories = await Category.findAll({

@@ -7,6 +7,8 @@ import ProductSchema from '@/components/seo/ProductSchema';
 import EquipmentSolutions from '@/components/shared/EquipmentSolutions';
 import FAQAccordion from '@/components/home/FAQAccordion';
 import { Metadata } from 'next';
+import { SeoMetadata } from '@/models/SeoMetadata';
+import ProductMediaViewer from '@/components/shared/ProductMediaViewer';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -14,6 +16,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const product = await Product.findOne({ where: { slug } });
 
   if (!product) return { title: 'Product Not Found' };
+
+  const path = `/products/${slug}`;
+  const seo = await SeoMetadata.findOne({ where: { pagePath: path } });
+
+  if (seo) {
+    return {
+      title: seo.metaTitle,
+      description: seo.metaDescription,
+      keywords: seo.metaKeywords ? seo.metaKeywords.split(',').map(k => k.trim()) : undefined,
+      openGraph: {
+        title: seo.metaTitle,
+        description: seo.metaDescription || undefined,
+        images: seo.ogImage ? [seo.ogImage] : undefined,
+      }
+    };
+  }
 
   return {
     title: product.metaTitle || `${product.name} | NK Dairy Equipments`,
@@ -96,14 +114,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 {product.heroSubtitle || 'Designed For Food, Milk Processing, Curd, Yoghurt, & Ice-Cream Processing Plants'}
               </p>
             </div>
-            <div className="relative h-[400px] lg:h-[500px] flex items-center justify-center">
-              {imageUrl ? (
-                <img src={imageUrl} alt={product.name} className="object-contain w-full h-full drop-shadow-2xl" />
-              ) : (
-                <div className="w-full h-full border-2 border-dashed border-white/20 rounded-xl flex items-center justify-center text-white/50">
-                  <span className="text-2xl">No Image Available</span>
-                </div>
-              )}
+            <div className="w-full">
+              <ProductMediaViewer 
+                imageUrl={imageUrl} 
+                modelUrl={product.model3d || null} 
+                productName={product.name} 
+              />
             </div>
           </div>
         </div>
@@ -148,7 +164,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                       )}
                       {section.content && (
                         <div
-                          className="prose max-w-none text-gray-600 prose-headings:text-[#323373] prose-li:marker:text-[#f3b216] prose-a:text-[#f3b216]"
+                          className={`max-w-none text-gray-600 ${section.content.includes('style=') ? '' : 'prose prose-headings:text-[#323373] prose-li:marker:text-[#f3b216] prose-a:text-[#f3b216]'}`}
                           dangerouslySetInnerHTML={{ __html: section.content }}
                         />
                       )}
@@ -168,7 +184,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               <h2 className="text-3xl font-bold mb-6 text-[#323373]">{productName} Overview</h2>
               {product.description ? (
                 <div
-                  className="prose max-w-none text-gray-600 prose-headings:text-[#323373] prose-li:marker:text-[#f3b216]"
+                  className={`max-w-none text-gray-600 ${product.description.includes('style=') ? '' : 'prose prose-headings:text-[#323373] prose-li:marker:text-[#f3b216]'}`}
                   dangerouslySetInnerHTML={{ __html: product.description }}
                 />
               ) : (

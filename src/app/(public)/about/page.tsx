@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 import AboutClient from './AboutClient';
+import { getSeoMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'About Us | Pioneering Dairy Technology | NK Dairy Equipments',
-  description: 'Learn about NK Dairy Equipments. We are a team of qualified technocrats manufacturing and exporting high-capacity dairy processing plants globally.',
-};
+export async function generateMetadata() {
+  return await getSeoMetadata('/about');
+}
 
 export default function AboutPage() {
   return <AboutClient />;
