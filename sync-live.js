@@ -15,11 +15,19 @@ const sequelize = new Sequelize(
   }
 );
 
+// Define Category Model to satisfy foreign key constraints
+const Category = sequelize.define('Category', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  name: { type: DataTypes.STRING },
+  slug: { type: DataTypes.STRING }
+}, { tableName: 'categories', timestamps: true });
+
 // Define Product Model
 const Product = sequelize.define('Product', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING },
   slug: { type: DataTypes.STRING },
+  categoryId: { type: DataTypes.INTEGER },
   description: { type: DataTypes.TEXT('long') },
   pageSections: { type: DataTypes.JSON },
   images: { type: DataTypes.JSON }
@@ -50,7 +58,7 @@ async function syncAll() {
     await sequelize.authenticate();
     console.log('Database connected successfully!');
 
-    const allDbProducts = await Product.findAll();
+    let allDbProducts = await Product.findAll();
     let counter = 1;
 
     for (const slug of wpSlugs) {
@@ -68,15 +76,33 @@ async function syncAll() {
         const page = data[0];
         const content = page.content.rendered;
         
-        // 2. Find in DB
+        // 2. Find or Create in DB
         let dbProduct = allDbProducts.find((p) => p.slug === slug);
         if (!dbProduct) {
           dbProduct = allDbProducts.find((p) => p.slug.replace(/-/g, '') === slug.replace(/-/g, ''));
         }
 
         if (!dbProduct) {
-          console.log(`❌ Not found in local DB: ${slug}`);
-          continue;
+          console.log(`⚠️ Not found in live DB: ${slug}. Creating it automatically...`);
+          
+          let defaultCat = await Category.findOne();
+          if (!defaultCat) {
+             defaultCat = await Category.create({ name: 'Equipment & Solutions', slug: 'equipment-solutions' });
+          }
+
+          const rawTitle = page.title && page.title.rendered ? page.title.rendered : slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+          
+          dbProduct = await Product.create({
+            name: rawTitle.replace(/&#8211;/g, '-').replace(/&#8217;/g, "'").replace(/&amp;/g, '&'),
+            slug: slug,
+            categoryId: defaultCat.id,
+            description: content,
+            pageSections: [],
+            images: []
+          });
+          
+          // Re-fetch all products to keep our array up to date
+          allDbProducts = await Product.findAll();
         }
 
         // 3. Extract Image for Product Main Image
