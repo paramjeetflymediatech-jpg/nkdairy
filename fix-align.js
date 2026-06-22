@@ -1,10 +1,16 @@
+require('dotenv').config({ path: ['.env.local', '.env'] });
 const { Sequelize, DataTypes } = require('sequelize');
 
-const sequelize = new Sequelize('nk-dairy', 'root', 'root', {
-  host: 'localhost',
-  dialect: 'mysql',
-  logging: false
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME || 'nk-dairy', 
+  process.env.DB_USER || 'root', 
+  process.env.DB_PASSWORD || process.env.DB_PASS || 'root', 
+  {
+    host: process.env.DB_HOST || 'localhost',
+    dialect: 'mysql',
+    logging: false
+  }
+);
 
 const Product = sequelize.define('Product', {
   id: { type: DataTypes.INTEGER, primaryKey: true },
