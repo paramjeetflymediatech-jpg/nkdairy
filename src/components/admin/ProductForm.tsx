@@ -49,6 +49,20 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
     }
   };
 
+  const parseImages = (data: any) => {
+    if (!data) return [];
+    if (Array.isArray(data)) return data;
+    if (typeof data === 'string') {
+      try {
+        const parsed = JSON.parse(data);
+        return Array.isArray(parsed) ? parsed : [data];
+      } catch (e) {
+        return [data];
+      }
+    }
+    return [];
+  };
+
   const [formData, setFormData] = useState({
     id: initialData?.id || '',
     name: initialData?.name || '',
@@ -57,7 +71,7 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
     description: initialData?.description || '',
     heroSubtitle: initialData?.heroSubtitle || '',
     capacity: initialData?.capacity || '',
-    images: initialData?.images ? (typeof initialData.images === 'string' ? JSON.parse(initialData.images) : initialData.images) : [],
+    images: parseImages(initialData?.images),
     model3d: initialData?.model3d || '',
     equipmentSolutions: parseEquipmentSolutions(initialData?.equipmentSolutions),
     pageSections: parsePageSections(initialData?.pageSections),
@@ -118,30 +132,39 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
     setUploadingImage(true);
-    const form = new FormData();
-    form.append('file', file);
-
+    
     try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: form
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setFormData({ ...formData, images: [...formData.images, data.url] });
-      } else {
-        Swal.fire('Error', 'Image upload failed', 'error');
+      const uploadedUrls: string[] = [];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const form = new FormData();
+        form.append('file', file);
+
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          body: form
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          uploadedUrls.push(data.url);
+        } else {
+          Swal.fire('Error', `Image ${file.name} upload failed`, 'error');
+        }
+      }
+      
+      if (uploadedUrls.length > 0) {
+        setFormData(prev => ({ ...prev, images: [...prev.images, ...uploadedUrls] }));
       }
     } catch (err) {
       console.error(err);
-      Swal.fire('Error', 'Error uploading image', 'error');
+      Swal.fire('Error', 'Error uploading images', 'error');
     } finally {
       setUploadingImage(false);
-      // reset input
       e.target.value = '';
     }
   };
@@ -151,8 +174,9 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
     if (!file) return;
 
     const extension = file.name.split('.').pop()?.toLowerCase();
-    if (extension !== 'glb' && extension !== 'gltf') {
-      Swal.fire('Error', 'Only .glb and .gltf files are supported for 3D models', 'error');
+    const validExtensions = ['glb', 'gltf', 'png', 'jpg', 'jpeg', 'webp', 'gif'];
+    if (!validExtensions.includes(extension || '')) {
+      Swal.fire('Error', 'Only .glb, .gltf, and image files are supported', 'error');
       return;
     }
 
@@ -767,57 +791,17 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
           </div>
         </div>
 
-        {/* Sidebar Image Upload Column */}
+        {/* Sidebar Column */}
         <div className="lg:col-span-1 space-y-6">
           <div className="border border-gray-200 rounded-xl p-5 bg-gray-50">
-            <label className="block text-sm font-semibold text-gray-700 mb-4">Product Images</label>
-            
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              {formData.images.map((img: string, i: number) => (
-                <div key={i} className="relative aspect-square bg-gray-200 rounded-lg overflow-hidden border border-gray-300">
-                  <Image src={img} alt={`Preview ${i}`} fill className="object-cover" />
-                  <button 
-                    type="button" 
-                    onClick={() => removeImage(i)}
-                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 shadow-sm"
-                  >
-                    <X size={14} />
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            <div className="relative border-2 border-dashed border-gray-300 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:border-blue-500 transition-colors bg-white cursor-pointer min-h-[150px]">
-              {uploadingImage ? (
-                <div className="flex flex-col items-center text-blue-500">
-                  <Loader2 className="animate-spin mb-2" size={24} />
-                  <span className="text-sm font-medium">Uploading...</span>
-                </div>
-              ) : (
-                <>
-                  <ImageIcon className="text-gray-400 mb-3" size={32} />
-                  <span className="text-sm text-gray-600 font-medium">Click to upload image</span>
-                  <span className="text-xs text-gray-400 mt-1">PNG, JPG up to 5MB</span>
-                  <input 
-                    type="file" 
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  />
-                </>
-              )}
-            </div>
-          </div>
-
-          <div className="border border-gray-200 rounded-xl p-5 bg-gray-50">
-            <label className="block text-sm font-semibold text-gray-700 mb-4">Product 3D Model (.glb, .gltf)</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-4">Product 3D Model or Image</label>
             
             {formData.model3d ? (
               <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between shadow-sm mb-4">
                 <div className="flex items-center gap-3 overflow-hidden">
                   <span className="text-2xl">📦</span>
                   <div className="overflow-hidden text-left">
-                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">3D Model URL</p>
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Model / Image URL</p>
                     <p className="text-sm font-semibold text-[#323373] truncate max-w-[150px]" title={formData.model3d}>{formData.model3d.split('/').pop()}</p>
                   </div>
                 </div>
@@ -840,17 +824,64 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
                 ) : (
                   <>
                     <span className="text-3xl mb-3">📦</span>
-                    <span className="text-sm text-gray-600 font-medium">Click to upload 3D model</span>
-                    <span className="text-xs text-gray-400 mt-1">GLB, GLTF up to 15MB</span>
+                    <span className="text-sm text-gray-600 font-medium">Click to upload 3D model or Image</span>
+                    <span className="text-xs text-gray-400 mt-1">GLB, GLTF, JPG, PNG, WEBP</span>
                     <input 
                       type="file" 
-                      accept=".glb,.gltf"
+                      accept=".glb,.gltf,image/*"
                       onChange={handleModelUpload}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
                   </>
                 )}
               </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Product Images Full Width Section */}
+      <div className="border-t border-gray-100 pt-8 mt-8">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-[#323373]">Product Images</h3>
+        </div>
+        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
+            {formData.images.map((img: string, i: number) => (
+              <div key={i} className="relative aspect-square bg-gray-200 rounded-lg overflow-hidden border border-gray-300 group">
+                <Image src={img} alt={`Preview ${i}`} fill className="object-cover" />
+                <button 
+                  type="button" 
+                  onClick={() => removeImage(i)}
+                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-sm"
+                  title="Remove Image"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="relative border-2 border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:border-blue-500 transition-colors bg-white cursor-pointer min-h-[200px]">
+            {uploadingImage ? (
+              <div className="flex flex-col items-center text-blue-500">
+                <Loader2 className="animate-spin mb-4" size={32} />
+                <span className="text-base font-medium">Uploading images...</span>
+              </div>
+            ) : (
+              <>
+                <ImageIcon className="text-gray-400 mb-4" size={48} />
+                <span className="text-base text-gray-700 font-bold mb-1">Click to upload multiple images</span>
+                <span className="text-sm text-gray-500">Select multiple PNG, JPG files up to 5MB each</span>
+                <input 
+                  type="file" 
+                  multiple
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  title="Upload Images"
+                />
+              </>
             )}
           </div>
         </div>
@@ -873,18 +904,18 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
           {formData.faqs.map((faq: any, idx: number) => {
             const isCollapsed = collapsedFaqs[faq.id];
             return (
-            <div key={faq.id} className="relative bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center cursor-pointer" onClick={() => toggleFaq(faq.id)}>
-                <span className="font-semibold text-gray-700 flex items-center gap-2">
+            <div key={faq.id} className="bg-white border border-gray-200 rounded-2xl relative shadow-sm overflow-hidden">
+              <div className="flex justify-between items-center bg-gray-50 px-6 py-4 border-b border-gray-100 cursor-pointer" onClick={() => toggleFaq(faq.id)}>
+                <h4 className="font-bold text-gray-700 flex items-center gap-2">
                   {isCollapsed ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
                   FAQ Item {idx + 1} {faq.question ? `- ${faq.question}` : ''}
-                </span>
+                </h4>
                 <button 
                   type="button"
                   onClick={(e) => { e.stopPropagation(); handleRemoveFaq(idx); }}
-                  className="text-red-500 hover:text-red-700 text-sm font-medium flex items-center gap-1"
+                  className="text-sm text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-md transition-all font-semibold"
                 >
-                  <X size={14} /> Remove
+                  Remove
                 </button>
               </div>
               {!isCollapsed && (
@@ -921,22 +952,33 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
         </div>
       </div>
 
-      <div className="border-t border-gray-100 pt-6 flex items-center justify-end gap-4 mt-6">
-        <button 
-          type="button" 
-          onClick={() => router.push('/admin/products')}
-          className="px-6 py-3 text-gray-600 font-semibold hover:bg-gray-100 rounded-lg transition-colors"
-        >
-          Cancel
-        </button>
-        <button 
-          type="submit" 
-          disabled={saving}
-          className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors flex items-center gap-2 disabled:opacity-70 shadow-lg shadow-blue-500/30"
-        >
-          {saving && <Loader2 size={18} className="animate-spin" />}
-          {mode === 'create' ? 'Publish Product' : 'Save Changes'}
-        </button>
+      <div className="sticky bottom-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 py-4 px-6 md:px-8 -mx-6 md:-mx-8 -mb-6 md:-mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] rounded-b-xl">
+        <div className="text-sm text-gray-500 font-medium hidden sm:block">
+          Make sure to review all details before proceeding.
+        </div>
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <button 
+            type="button" 
+            onClick={() => router.push('/admin/products')}
+            className="flex-1 sm:flex-none px-6 py-3 text-gray-600 font-semibold hover:bg-gray-100 rounded-lg transition-colors text-center"
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            disabled={saving || uploadingImage || uploadingModel}
+            className="flex-1 sm:flex-none px-8 py-3 bg-[#323373] hover:bg-blue-800 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-70 shadow-lg shadow-[#323373]/20 hover:shadow-[#323373]/40 hover:-translate-y-0.5"
+          >
+            {saving ? (
+              <>
+                <Loader2 size={18} className="animate-spin" />
+                Processing...
+              </>
+            ) : (
+              mode === 'create' ? 'Proceed & Publish' : 'Proceed & Save'
+            )}
+          </button>
+        </div>
       </div>
     </form>
   );

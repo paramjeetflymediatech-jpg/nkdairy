@@ -9,6 +9,8 @@ import FAQAccordion from '@/components/home/FAQAccordion';
 import { Metadata } from 'next';
 import { SeoMetadata } from '@/models/SeoMetadata';
 import ProductMediaViewer from '@/components/shared/ProductMediaViewer';
+import ProductGallery from '@/components/shared/ProductGallery';
+import ZigZagContent from '@/components/shared/ZigZagContent';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -52,11 +54,13 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const productName = product.name;
 
   let imageUrl = null;
+  let allImages: string[] = [];
   if (product.images) {
     try {
       const parsed = typeof product.images === 'string' ? JSON.parse(product.images) : product.images;
       if (Array.isArray(parsed) && parsed.length > 0) {
         imageUrl = parsed[0];
+        allImages = parsed;
       }
     } catch (e) { }
   }
@@ -115,10 +119,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               </p>
             </div>
             <div className="w-full">
-              <ProductMediaViewer 
-                imageUrl={imageUrl} 
-                modelUrl={product.model3d || null} 
-                productName={product.name} 
+              <ProductMediaViewer
+                imageUrl={imageUrl}
+                modelUrl={product.model3d || null}
+                productName={product.name}
               />
             </div>
           </div>
@@ -179,43 +183,16 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       ) : (
         /* Fallback for products without dynamic sections */
         <div className="py-20 container mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-            <div>
-              <h2 className="text-3xl font-bold mb-6 text-[#323373]">{productName} Overview</h2>
-              {product.description ? (
-                <div
-                  className={`max-w-none text-gray-600 ${product.description.includes('style=') ? '' : 'prose prose-headings:text-[#323373] prose-li:marker:text-[#f3b216]'}`}
-                  dangerouslySetInnerHTML={{ __html: product.description }}
-                />
-              ) : (
-                <p className="text-gray-600 text-lg">Detailed description coming soon.</p>
-              )}
-            </div>
-
-            <div className="bg-gray-50 border border-gray-200 p-8 rounded-xl">
-              <h3 className="text-xl font-bold mb-6 text-[#323373]">Technical Specifications</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-                <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-                  <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Capacity</p>
-                  <p className="font-bold text-[#323373]">{product.capacity || 'Customizable'}</p>
-                </div>
-                <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-                  <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Material</p>
-                  <p className="font-bold text-[#323373]">SS 304 / SS 316</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <Link href="/contact" className="flex-1 bg-[#f3b216] hover:bg-yellow-500 text-white px-6 py-3 rounded font-bold text-center transition-colors">
-                  Request Quote
-                </Link>
-                <button className="flex-1 bg-white border-2 border-[#323373] text-[#323373] hover:bg-gray-50 px-6 py-3 rounded font-bold transition-colors flex justify-center items-center gap-2">
-                  <Download size={18} /> Brochure
-                </button>
-              </div>
-            </div>
-          </div>
+          {product.description ? (
+            <ZigZagContent html={product.description} />
+          ) : (
+            <p className="text-gray-600 text-lg text-center">Detailed description coming soon.</p>
+          )}
         </div>
       )}
+
+      {/* Product Equipment Gallery */}
+      <ProductGallery images={allImages} productName={productName} />
 
       {/* 3. Equipment & Solutions Tabs */}
       {eqSolutions && eqSolutions.enabled && (
@@ -225,13 +202,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       )}
 
       {/* 4. Frequently Asked Questions */}
-      {faqs && faqs.length > 0 && (
-        <FAQAccordion
-          title="Frequently Asked Questions"
-          subtitle=""
-          data={faqs}
-        />
-      )}
+      <FAQAccordion
+        title="Frequently Asked Questions"
+        subtitle="Common questions about our products and services"
+        data={faqs && faqs.length > 0 ? faqs : undefined}
+      />
 
     </div>
   );

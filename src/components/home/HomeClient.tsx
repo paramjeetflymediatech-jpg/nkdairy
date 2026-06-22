@@ -97,8 +97,8 @@ function TestimonialsCarousel() {
             <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center md:items-start">
 
               {/* Left — Logo */}
-              <div className="flex-shrink-0 flex flex-col items-center gap-3" style={{ minWidth: '160px' }}>
-                <div className="w-36 h-36 bg-white rounded-2xl flex items-center justify-center shadow-xl p-4">
+              <div className="flex-shrink-0 flex flex-col items-center gap-3 mx-auto md:mx-0" style={{ minWidth: '140px' }}>
+                <div className="w-28 h-28 md:w-36 md:h-36 bg-white rounded-2xl flex items-center justify-center shadow-xl p-4">
                   <img
                     src={t.logo}
                     alt={t.company}
@@ -122,7 +122,7 @@ function TestimonialsCarousel() {
           <button
             onClick={() => goTo(active - 1)}
             aria-label="Previous testimonial"
-            className="absolute -left-5 md:-left-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition-all"
+            className="hidden md:flex absolute -left-5 md:-left-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all"
             style={{ background: 'rgba(18,126,159,0.1)', border: '2px solid rgba(18,126,159,0.4)' }}
           >
             <ChevronLeft size={20} color="#323373" />
@@ -130,7 +130,7 @@ function TestimonialsCarousel() {
           <button
             onClick={() => goTo(active + 1)}
             aria-label="Next testimonial"
-            className="absolute -right-5 md:-right-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition-all"
+            className="hidden md:flex absolute -right-5 md:-right-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all"
             style={{ background: 'rgba(18,126,159,0.1)', border: '2px solid rgba(18,126,159,0.4)' }}
           >
             <ChevronRight size={20} color="#323373" />
@@ -278,10 +278,10 @@ export default function HomeClient({
           <h2 className="text-3xl md:text-4xl font-bold text-[#323373] mb-3 uppercase tracking-widest">Business Segments</h2>
           <p className="text-slate-500 mb-16 font-medium text-lg">Explore the Innovative Possibilities Beyond Imagination</p>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 max-w-6xl mx-auto">
             {segments.map((seg, i) => (
               <Link key={i} href={`/industries/${seg.slug}`} className="group cursor-pointer flex flex-col items-center">
-                <div className="w-32 h-32 rounded-full bg-gray-50 border-2 border-gray-100 flex items-center justify-center mb-4 overflow-hidden group-hover:border-[#323373] group-hover:shadow-xl transition-all duration-300 relative">
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-50 border-2 border-gray-100 flex items-center justify-center mb-4 overflow-hidden group-hover:border-[#323373] group-hover:shadow-xl transition-all duration-300 relative">
                   <img src={seg.image} alt={seg.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                 </div>
                 <span className="font-bold text-slate-700 group-hover:text-[#323373] text-center transition-colors">{seg.name}</span>
@@ -314,7 +314,7 @@ export default function HomeClient({
           {/* Arrow Box Product Slider */}
           <div className="w-full lg:w-1/3 flex flex-col justify-center arrow-box-product-slider z-10 text-center lg:text-left pr-0 lg:pr-8">
             <h2 className="text-3xl md:text-5xl font-extrabold text-[#323373] mb-4 MainHeading">
-              Our Products
+              Our Plants
             </h2>
             <p className="text-[#64748b] text-lg font-medium mb-10 productSubtitle">
               Discover Our Technologically Advanced Food Processing Machines

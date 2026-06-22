@@ -12,34 +12,25 @@ const industries = [
 ];
 
 const equipmentCol1 = [
-  { label: 'Milk Pasteurizer System', href: '/products' },
-  { label: 'Juice Pasteurizer System', href: '/products' },
-  { label: 'CIP Systems', href: '/products' },
-  { label: 'Aseptic Storage Tank', href: '/products' },
-  { label: 'Membrane Filtration System', href: '/products' },
-  { label: 'UHT Steriliser Module', href: '/products' },
-  { label: 'Dairy Separators', href: '/products' },
-  { label: 'Spiral Cooling Solutions', href: '/products' },
-  { label: 'Spiral Air Freezing Solutions', href: '/products' },
-  { label: 'IQF Technology', href: '/products' },
-  { label: 'Milk Reception Modules', href: '/products' },
-  { label: 'Powder Mixing Systems', href: '/products' },
-  { label: 'Contherm Skid', href: '/products' },
+  { label: 'Paneer Plant', href: '/products' },
+  { label: 'Dairy Turnkey Projects', href: '/products' },
+  { label: 'Greek Yogurt Plant in India', href: '/products' },
+  { label: 'Cream Pasteurizer Plant', href: '/products' },
+  { label: 'Milk Plant', href: '/products' },
+  { label: 'Ghee Plant', href: '/products' },
+  { label: 'Dahi and Lassi Plant', href: '/products' },
+  { label: 'Milk Pasteurizer Plant', href: '/products' },
 ];
 
 const equipmentCol2 = [
-  { label: 'Tomato Processing', href: '/products' },
-  { label: 'Mango Processing', href: '/products' },
-  { label: 'Citrus Processing', href: '/products' },
-  { label: 'Ice Cream Mix Processing', href: '/products' },
-  { label: 'CSD Processing', href: '/products' },
-  { label: 'Juice Processing', href: '/products' },
-  { label: 'Honey Processing', href: '/products' },
-  { label: 'Paneer & Cheese Press', href: '/products' },
-  { label: 'Butter Melting Vats', href: '/products' },
-  { label: 'Evaporator', href: '/products' },
-  { label: 'Turbo Extractor', href: '/products' },
-  { label: 'Hot Water Modules', href: '/products' },
+  { label: 'Khoya Mawa Making Machine', href: '/products' },
+  { label: 'Butter Churner', href: '/products' },
+  { label: 'Curd Making Plant Manufacturer', href: '/products' },
+  { label: 'Dairy Plant', href: '/products' },
+  { label: 'Milk Chilling Plant', href: '/products' },
+  { label: 'Cream Separator', href: '/products' },
+  { label: 'Batch Pasteurizer (200 Ltr to 2000 Ltr)', href: '/products' },
+  { label: 'HTST Milk Processing Plant', href: '/products' },
 ];
 
 const services = [

@@ -18,7 +18,7 @@ const MobileNavItem = ({ item, depth = 0, setNavOpen }: { item: any, depth?: num
           onClick={() => { if (!hasSubcategories) setNavOpen(false); }}
           className="flex-1 flex items-center gap-2"
         >
-          {depth > 0 && <span className="mr-2 opacity-50">-</span>} 
+          {depth > 0 && <span className="mr-2 opacity-50">-</span>}
           {item.image && <img src={item.image} alt={item.name} className="w-5 h-5 object-contain" />}
           <span>{item.name}</span>
         </Link>
@@ -123,27 +123,35 @@ export default function Navbar() {
     { name: 'Contact Us', href: '/contact', isDynamic: false, isMegaMenu: false },
   ];
 
-  const renderMegaMenu = (items: any[], isOpen: boolean) => {
-    if (!items || items.length === 0) return null;
+  const renderMegaMenu = (categories: any[], isOpen: boolean) => {
+    if (!categories || categories.length === 0) return null;
 
-    const allProducts = items.reduce((acc: any[], rootCat: any) => {
-      if (rootCat.allNestedProducts) {
-        return [...acc, ...rootCat.allNestedProducts];
-      }
-      return acc;
-    }, []);
-
-    if (allProducts.length === 0) return null;
+    // Filter out categories that have no products
+    const validCategories = categories.filter(c => c.allNestedProducts && c.allNestedProducts.length > 0);
+    if (validCategories.length === 0) return null;
 
     return (
-      <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 w-max min-w-[700px] max-w-[90vw] z-50 transition-all duration-300 ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0'}`}>
-        <div className="bg-white  border border-gray-100 rounded-2xl p-8 relative">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-5">
-            {allProducts.map((prod: any) => (
-              <div key={prod.id} className="border-b border-gray-100 pb-3">
-                <Link href={`/products/${prod.slug}`} className="block text-gray-800 hover:text-blue-600 hover:underline hover:underline-offset-4 transition-all text-base font-medium w-full">
-                  {prod.name}
-                </Link>
+      <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 w-max min-w-[800px] max-w-[95vw] z-50 transition-all duration-300 ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0'}`}>
+        <div className="bg-white border-t-4 border-[#323373] rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-8 relative">
+          <div className="flex gap-12">
+            {validCategories.map((category: any, index: number) => (
+              <div key={category.id} className="flex-1">
+                {/* Category Header */}
+                <div className="flex items-center gap-3 mb-5 pb-3 border-b border-[#f3b216]">
+                  {index % 2 === 0 ? <Box className="text-[#64748b]" size={22} /> : <Layers className="text-[#64748b]" size={22} />}
+                  <span className="font-semibold text-[#323373] text-lg">{category.name}</span>
+                </div>
+
+                {/* Products Grid (2 columns per category) */}
+                <div className="grid grid-cols-2 gap-x-8 gap-y-0">
+                  {category.allNestedProducts.map((prod: any) => (
+                    <div key={prod.id} className="border-b border-gray-100 py-2.5">
+                      <Link href={`/products/${prod.slug}`} className="block text-gray-600 hover:text-[#323373] hover:translate-x-1 transition-transform text-sm font-medium w-full">
+                        {prod.name}
+                      </Link>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -162,24 +170,24 @@ export default function Navbar() {
     return (
       <div className={wrapperClasses}>
         <ul className="bg-white shadow-xl border border-gray-100 rounded-lg py-2">
-        {items.map((sub: any) => (
-          <li key={sub.id} className="relative group/sub">
-            <Link 
-              href={`/${sub.slug}`} 
-              onClick={() => setIsOpen(false)}
-              className="block px-5 py-2.5 text-sm text-[#323373] hover:bg-gray-50 hover:text-blue-600 transition-colors flex items-center gap-3 whitespace-nowrap"
-            >
-              {sub.image && (
-                <img src={sub.image} alt={sub.name} className="w-5 h-5 object-contain" />
-              )}
-              <span>{sub.name}</span>
-              {sub.subcategories && sub.subcategories.length > 0 && <ChevronDown size={14} className="ml-auto -rotate-90 text-gray-400" />}
-            </Link>
+          {items.map((sub: any) => (
+            <li key={sub.id} className="relative group/sub">
+              <Link
+                href={`/${sub.slug}`}
+                onClick={() => setIsOpen(false)}
+                className="block px-5 py-2.5 text-sm text-[#323373] hover:bg-gray-50 hover:text-blue-600 transition-colors flex items-center gap-3 whitespace-nowrap"
+              >
+                {sub.image && (
+                  <img src={sub.image} alt={sub.name} className="w-5 h-5 object-contain" />
+                )}
+                <span>{sub.name}</span>
+                {sub.subcategories && sub.subcategories.length > 0 && <ChevronDown size={14} className="ml-auto -rotate-90 text-gray-400" />}
+              </Link>
 
-            {/* Infinite Recursive Dropdown */}
-            {sub.subcategories && sub.subcategories.length > 0 && renderDropdown(sub.subcategories, depth + 1)}
-          </li>
-        ))}
+              {/* Infinite Recursive Dropdown */}
+              {sub.subcategories && sub.subcategories.length > 0 && renderDropdown(sub.subcategories, depth + 1)}
+            </li>
+          ))}
         </ul>
       </div>
     );

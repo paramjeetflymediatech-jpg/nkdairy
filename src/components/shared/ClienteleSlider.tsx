@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const row1 = [
+const allClients = [
   'dandy-shadow-logo-slide-10.webp', 'dendairy-logo-slide.webp', 'mother-dairy-logo-slide-33.webp', 'nature-delight-logo-slide.webp',
   'heritage-logo-slide-23.webp', 'amul-logo-slide-2.webp', 'apte-logo-slide-4.webp', 'brookside-logo-slide.webp',
   'dairy-power-logo-slide.webp', 'dinshaws-logo-slide-13.webp', 'govind-logo-slide-18.webp', 'sakas-logo-slide.webp',
@@ -17,9 +17,6 @@ const row1 = [
   'parle-agro-pvt-ltd-logo-slide-36.webp', 'sab-logo-slide.webp', 'desai-bandhu-logo-slide.webp', 'newgen-agro-logo-slide.webp',
   'clarion-logo-slide.webp', 'loreal-logo-slide-29.webp', 'omniactive-logo-slide.webp', 'gsk-logo-slide-19.webp',
   'pepsico-logo-slide.webp', 'adinath-agro-logo-slide.webp', 'food-steps-logo-slide.webp',
-];
-
-const row2 = [
   'danone-logo-slide.webp', 'gayatri-logo-slide.webp', 'hatsun-logo-slide.webp', 'itc-limited-logo-slide-27.webp',
   'ananda-logo-slide-3.webp', 'banas-dairy-logo-slide-5.webp', 'countryside-logo-slide-51.webp', 'godrej-jersey-logo-slide.webp',
   'dodla-logo-slide-14.webp', 'graviss-logo-slide.webp', 'jammu-and-kashmir-milk-producer-logo-slide.webp', 'the-kuthe-group-logo-slide.webp',
@@ -39,18 +36,11 @@ const JUMP = 440;
 
 export default function ClienteleSlider() {
   const row1Ref = useRef<HTMLDivElement>(null);
-  const row2Ref = useRef<HTMLDivElement>(null);
   const raf1 = useRef<number>(0);
-  const raf2 = useRef<number>(0);
   const paused = useRef(false);
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    // Start row2 at mid-point so it scrolls rightward
-    if (row2Ref.current) {
-      row2Ref.current.scrollLeft = row2Ref.current.scrollWidth / 2;
-    }
-
     const tick1 = () => {
       if (!paused.current && row1Ref.current) {
         row1Ref.current.scrollLeft += SPEED;
@@ -60,21 +50,10 @@ export default function ClienteleSlider() {
       raf1.current = requestAnimationFrame(tick1);
     };
 
-    const tick2 = () => {
-      if (!paused.current && row2Ref.current) {
-        row2Ref.current.scrollLeft -= SPEED;
-        const half = row2Ref.current.scrollWidth / 2;
-        if (row2Ref.current.scrollLeft <= 0) row2Ref.current.scrollLeft += half;
-      }
-      raf2.current = requestAnimationFrame(tick2);
-    };
-
     raf1.current = requestAnimationFrame(tick1);
-    raf2.current = requestAnimationFrame(tick2);
 
     return () => {
       cancelAnimationFrame(raf1.current);
-      cancelAnimationFrame(raf2.current);
     };
   }, []);
 
@@ -85,7 +64,6 @@ export default function ClienteleSlider() {
 
     const delta = dir === 'right' ? JUMP : -JUMP;
     row1Ref.current?.scrollBy({ left: delta, behavior: 'smooth' });
-    row2Ref.current?.scrollBy({ left: -delta, behavior: 'smooth' });
 
     // Resume after smooth scroll finishes (~500 ms)
     resumeTimer.current = setTimeout(() => {
@@ -107,7 +85,7 @@ export default function ClienteleSlider() {
       </div>
 
       {/* ── Slider with side buttons ── */}
-      <div style={{ position: 'relative', padding: '0 3.5rem' }}>
+      <div className="relative px-0 md:px-14">
 
         {/* Left Arrow */}
         <button
@@ -145,59 +123,28 @@ export default function ClienteleSlider() {
           style={{
             display: 'flex',
             overflowX: 'hidden',
-            marginBottom: '16px',
           }}
         >
-          {[...row1, ...row1].map((img, idx) => (
+          {[...allClients, ...allClients].map((img, idx) => (
             <div
               key={`r1-${idx}`}
               style={{
-                minWidth: '120px', width: '120px', height: '120px',
-                margin: '0 10px', flexShrink: 0,
+                minWidth: '150px', width: '150px', height: '120px',
+                margin: '0 12px', flexShrink: 0,
                 backgroundColor: '#fff', borderRadius: '12px',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0 4px 14px rgba(0,0,0,0.2)',
+                boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
               }}
             >
               <img
                 src={`/image-clients/${img}`}
                 alt="Client Logo"
-                style={{ maxWidth: '90px', maxHeight: '90px', objectFit: 'contain' }}
+                style={{ maxWidth: '110px', maxHeight: '90px', objectFit: 'contain' }}
                 loading="lazy"
               />
             </div>
           ))}
         </div>
-
-        {/* ── Row 2 scrolls RIGHT ── */}
-        <div
-          ref={row2Ref}
-          style={{
-            display: 'flex',
-            overflowX: 'hidden',
-          }}
-        >
-          {[...row2, ...row2].map((img, idx) => (
-            <div
-              key={`r2-${idx}`}
-              style={{
-                minWidth: '120px', width: '120px', height: '120px',
-                margin: '0 10px', flexShrink: 0,
-                backgroundColor: '#fff', borderRadius: '12px',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0 4px 14px rgba(0,0,0,0.2)',
-              }}
-            >
-              <img
-                src={`/image-clients/${img}`}
-                alt="Client Logo"
-                style={{ maxWidth: '90px', maxHeight: '90px', objectFit: 'contain' }}
-                loading="lazy"
-              />
-            </div>
-          ))}
-        </div>
-
       </div>
     </section>
   );

@@ -14,22 +14,26 @@ const Product3DViewer = dynamic(() => import('@/components/shared/Product3DViewe
   )
 });
 
-export default function ProductMediaViewer({ 
-  imageUrl, 
-  modelUrl, 
-  productName 
-}: { 
-  imageUrl: string | null; 
-  modelUrl: string | null; 
-  productName: string; 
+export default function ProductMediaViewer({
+  imageUrl,
+  modelUrl,
+  productName
+}: {
+  imageUrl: string | null;
+  modelUrl: string | null;
+  productName: string;
 }) {
-  // Default to 3D view if 3D model is present, otherwise show image
-  const [viewMode, setViewMode] = useState<'2d' | '3d'>(modelUrl ? '3d' : '2d');
+  const is3DModel = modelUrl ? !!modelUrl.match(/\.(glb|gltf)$/i) : false;
+  // If model is an image, treat it as the imageUrl if no other imageUrl is provided
+  const displayImageUrl = (!is3DModel && modelUrl) ? modelUrl : imageUrl;
+
+  // Default to 3D view if valid 3D model is present, otherwise show image
+  const [viewMode, setViewMode] = useState<'2d' | '3d'>(is3DModel ? '3d' : '2d');
 
   return (
     <div className="w-full flex flex-col items-center">
-      {/* 2D/3D Mode Switcher (only shown if modelUrl is available) */}
-      {modelUrl && (
+      {/* 2D/3D Mode Switcher (only shown if a valid 3D model is available) */}
+      {is3DModel && modelUrl && (
         <div className="flex bg-slate-950/80 backdrop-blur-md p-1 rounded-xl border border-white/10 mb-6 gap-1.5 z-20 shadow-lg">
           <button
             type="button"
@@ -50,15 +54,15 @@ export default function ProductMediaViewer({
 
       {/* Main View Area */}
       <div className="relative w-full h-[400px] lg:h-[450px] flex items-center justify-center">
-        {viewMode === '3d' && modelUrl ? (
+        {viewMode === '3d' && is3DModel && modelUrl ? (
           <div className="w-full h-full">
             <Product3DViewer modelUrl={modelUrl} />
           </div>
-        ) : imageUrl ? (
-          <img 
-            src={imageUrl} 
-            alt={productName} 
-            className="object-contain w-full h-full drop-shadow-2xl transition-all duration-500" 
+        ) : displayImageUrl ? (
+          <img
+            src={displayImageUrl}
+            alt={productName}
+            className="object-contain w-full h-full drop-shadow-2xl transition-all duration-500"
           />
         ) : (
           <div className="w-full h-full border-2 border-dashed border-white/20 rounded-2xl flex items-center justify-center text-white/50 bg-slate-900/10">
