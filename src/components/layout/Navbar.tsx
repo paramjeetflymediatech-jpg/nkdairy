@@ -7,21 +7,34 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const MobileNavItem = ({ item, depth = 0, setNavOpen }: { item: any, depth?: number, setNavOpen: any }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const hasSubcategories = item.subcategories && item.subcategories.length > 0;
-  const href = item.href || `/${item.slug}`;
+  const hasSubcategories = (item.subcategories && item.subcategories.length > 0) || (item.allNestedProducts && item.allNestedProducts.length > 0);
+  const isHeaderOnly = hasSubcategories && (!item.href || item.href === '#');
+  const href = item.href || (item.slug ? (item.slug.startsWith('/') ? item.slug : `/${item.slug}`) : '#');
 
   return (
     <div className={`${depth === 0 ? 'border-b border-gray-50 pb-2' : ''}`}>
-      <div className={`flex justify-between items-center py-2 ${depth === 0 ? 'text-[#323373] font-semibold text-base' : 'text-gray-600 text-sm'}`}>
-        <Link
-          href={href}
-          onClick={() => { if (!hasSubcategories) setNavOpen(false); }}
-          className="flex-1 flex items-center gap-2"
-        >
-          {depth > 0 && <span className="mr-2 opacity-50">-</span>}
-          {item.image && <img src={item.image} alt={item.name} className="w-5 h-5 object-contain" />}
-          <span>{item.name}</span>
-        </Link>
+      <div className={`flex justify-between items-center py-2 ${depth === 0 ? 'text-[#323373] font-semibold text-base' : 'text-[#323373] font-medium text-sm'}`}>
+        {isHeaderOnly ? (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="flex-1 flex items-center gap-2 text-left"
+          >
+            {depth > 0 && <span className="mr-2 text-gray-400 font-normal">-</span>}
+            {item.image && <img src={item.image} alt={item.name} className="w-5 h-5 object-contain" />}
+            <span className={depth > 0 ? "font-bold text-[#f3b216]" : ""}>{item.name}</span>
+          </button>
+        ) : (
+          <Link
+            href={href}
+            onClick={() => { if (!hasSubcategories) setNavOpen(false); }}
+            className="flex-1 flex items-center gap-2"
+          >
+            {depth > 0 && <span className="mr-2 text-gray-400 font-normal">-</span>}
+            {item.image && <img src={item.image} alt={item.name} className="w-5 h-5 object-contain" />}
+            <span className={depth > 1 ? "text-gray-600 font-normal" : ""}>{item.name}</span>
+          </Link>
+        )}
+        
         {hasSubcategories && (
           <button onClick={() => setIsExpanded(!isExpanded)} className="p-2 -mr-2 text-gray-500">
             <ChevronDown size={16} className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
@@ -38,8 +51,11 @@ const MobileNavItem = ({ item, depth = 0, setNavOpen }: { item: any, depth?: num
             className="overflow-hidden"
           >
             <div className={`mt-1 space-y-1 ${depth === 0 ? 'pl-4 border-l-2 border-gray-100' : 'pl-4'}`}>
-              {item.subcategories.map((sub: any) => (
-                <MobileNavItem key={sub.id || sub.name} item={sub} depth={depth + 1} setNavOpen={setNavOpen} />
+              {item.subcategories?.map((sub: any) => (
+                <MobileNavItem key={sub.id || sub.name} item={{...sub, href: sub.href || (sub.slug ? `/${sub.slug}` : '#')}} depth={depth + 1} setNavOpen={setNavOpen} />
+              ))}
+              {item.allNestedProducts?.map((prod: any) => (
+                <MobileNavItem key={prod.id || prod.name} item={{ name: prod.name, href: `/products/${prod.slug}` }} depth={depth + 1} setNavOpen={setNavOpen} />
               ))}
             </div>
           </motion.div>
