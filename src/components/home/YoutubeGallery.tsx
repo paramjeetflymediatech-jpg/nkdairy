@@ -66,6 +66,7 @@ export default function YoutubeGallery() {
                       title={activeVideo.title}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
+                      referrerPolicy="strict-origin-when-cross-origin"
                     ></iframe>
                   </div>
                   
