@@ -37,40 +37,40 @@ export default function ProductFilter({ categories }: { categories: any[] }) {
     : 'All Products';
 
   return (
-    <div className="relative mt-6 md:mt-0" ref={dropdownRef}>
+    <div className="relative mt-6 lg:mt-0" ref={dropdownRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 bg-white border border-gray-200 px-5 py-2.5 rounded-lg hover:bg-gray-50 transition-colors text-sm font-semibold shadow-sm text-slate-700 w-full md:w-auto justify-between"
+        className="flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-3.5 rounded-full hover:bg-white/20 transition-all font-bold shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-white w-full md:w-auto justify-between group"
       >
         <div className="flex items-center gap-2">
-          <Filter size={18} className={currentCategory ? "text-blue-600" : "text-gray-500"} />
-          <span className={currentCategory ? "text-blue-700" : ""}>{activeCategoryName}</span>
+          <Filter size={18} className={currentCategory ? "text-[#00b4d8]" : "text-white/70"} />
+          <span>{activeCategoryName}</span>
         </div>
-        <ChevronDown size={16} className={`text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown size={18} className={`text-white/50 transition-transform duration-300 group-hover:text-white ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute top-full mt-2 right-0 w-full md:w-64 bg-white border border-gray-100 rounded-xl shadow-xl z-50 py-2 max-h-80 overflow-y-auto">
+        <div className="absolute top-full mt-3 right-0 w-full md:w-72 bg-white rounded-2xl shadow-[0_20px_50px_rgba(13,27,46,0.2)] z-50 py-3 max-h-96 overflow-y-auto border border-gray-100 origin-top-right animate-in fade-in zoom-in-95 duration-200">
           <button
             onClick={() => handleSelect(null)}
-            className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 flex items-center justify-between transition-colors"
+            className="w-full text-left px-5 py-3 text-sm hover:bg-slate-50 flex items-center justify-between transition-colors"
           >
-            <span className={!currentCategory ? "font-semibold text-blue-600" : "text-gray-700"}>All Products</span>
-            {!currentCategory && <Check size={16} className="text-blue-600" />}
+            <span className={!currentCategory ? "font-extrabold text-[#0077b6]" : "text-slate-700 font-medium"}>All Products</span>
+            {!currentCategory && <Check size={18} className="text-[#0077b6]" />}
           </button>
           
-          <div className="h-px bg-gray-100 my-1 mx-2" />
+          <div className="h-px bg-slate-100 my-2 mx-4" />
           
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => handleSelect(cat.slug)}
-              className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 flex items-center justify-between transition-colors"
+              className="w-full text-left px-5 py-3 text-sm hover:bg-slate-50 flex items-center justify-between transition-colors group"
             >
-              <span className={currentCategory === cat.slug ? "font-semibold text-blue-600" : "text-gray-700"}>
+              <span className={currentCategory === cat.slug ? "font-extrabold text-[#0077b6]" : "text-slate-700 font-medium group-hover:text-[#0d1b2e]"}>
                 {cat.name}
               </span>
-              {currentCategory === cat.slug && <Check size={16} className="text-blue-600" />}
+              {currentCategory === cat.slug && <Check size={18} className="text-[#0077b6]" />}
             </button>
           ))}
         </div>

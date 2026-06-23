@@ -210,14 +210,18 @@ export default function Navbar() {
   };
 
   return (
-    <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md py-4 shadow-sm' : 'bg-white py-6 border-b border-gray-100'
+    <div className={`fixed z-50 transition-all duration-300 w-full flex justify-center ${scrolled ? 'top-4 px-4 md:px-8' : 'top-0'}`}>
+      <nav
+        className={`w-full max-w-[1600px] transition-all duration-500 relative ${
+          scrolled 
+            ? 'bg-white/90 backdrop-blur-lg py-3 shadow-[0_10px_40px_rgba(0,0,0,0.1)] rounded-2xl md:rounded-[2.5rem] border border-white/50' 
+            : 'bg-white py-5 border-b border-gray-100'
         }`}
-    >
-      <div className="container mx-auto px-4 md:px-8 flex justify-between items-center w-full relative">
-        <Link href="/" className="flex items-center group flex-shrink-0">
-          <Image src="/logo.png" alt="NK Dairy Logo" width={150} height={50} className="object-contain" priority />
-        </Link>
+      >
+        <div className={`w-full flex justify-between items-center relative transition-all duration-500 ${scrolled ? 'px-6 md:px-10' : 'container mx-auto px-4 md:px-8'}`}>
+          <Link href="/" className="flex items-center group flex-shrink-0">
+            <Image src="/logo.png" alt="NK Dairy Logo" width={150} height={50} className={`object-contain transition-all duration-500 ${scrolled ? 'scale-90' : 'scale-100'}`} priority />
+          </Link>
 
         {/* Desktop Nav - Centered */}
         <div className="hidden lg:flex flex-1 justify-center items-center gap-6 xl:gap-8 px-4 h-full">
@@ -236,7 +240,7 @@ export default function Navbar() {
                     setActiveDropdown(activeDropdown === link.name ? null : link.name);
                   }
                 }}
-                className={`flex items-center gap-1 text-sm font-semibold tracking-wide transition-colors py-2 ${activeDropdown === link.name ? 'text-blue-600' : 'text-[#323373] hover:text-blue-600'}`}
+                className={`flex items-center gap-1 text-[13px] 2xl:text-sm font-semibold tracking-wide transition-colors py-2 ${activeDropdown === link.name ? 'text-[#0077b6]' : 'text-[#0d1b2e] hover:text-[#0077b6]'}`}
               >
                 {link.name}
                 {link.isDynamic && <ChevronDown size={14} className={`transition-transform duration-300 ${activeDropdown === link.name ? 'rotate-180' : 'group-hover:rotate-180'}`} />}
@@ -285,5 +289,6 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </nav>
+    </div>
   );
 }

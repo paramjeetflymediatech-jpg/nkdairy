@@ -9,150 +9,147 @@ import { Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import ClienteleSlider from '@/components/shared/ClienteleSlider';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const testimonials = [
   {
-    company: 'RJ Corp Limited',
-    logo: '/image-clients/rj-crop-testimonial.webp',
+    company: 'Nestlé',
+    logo: '/CLIENTELE/image-6.jpg',
     text: [
-      'Mr. Ravindra & Mr. Rajendra of NK Dairy Equipments LLP have worked with us for over 7 years now and we are delighted with the work carried out so far. Our company RJ Corp Limited & Group companies — Sameer Agriculture, Devyani Food Industries, Varun Food & Beverages Ltd established in India & abroad are into the business of Food, Beverages & Dairy. These companies function under the brand names of PEPSI, Cream bell, Daima, Fresh Dairy, Ole Spring, etc.',
-      'Where high-quality work with precision and dedication is required, NK Dairy Equipments LLP always stands out. They are responsible for providing high-quality processing equipment. NK Dairy Equipments LLP understands the high standards that our company has and is most efficient in delivering well within time limits. I would highly recommend working with them.',
+      'Partnering with NK Dairy Equipments LLP has significantly elevated our production capabilities. Their state-of-the-art processing solutions and deep understanding of the dairy and food industry have made them an invaluable partner.',
+      'Their team consistently delivers high-quality equipment on time, ensuring our high standards for safety and efficiency are always met without compromise.'
     ],
   },
   {
-    company: 'Dodla Dairy',
-    logo: '/image-clients/Dodla-Dairy-testimonial.webp',
+    company: 'Nandini (KMF)',
+    logo: '/CLIENTELE/image-2.jpg',
     text: [
-      'NK Dairy Equipments LLP is a well-organized engineering company with a line of technocrats to execute our dairy projects on a turn-key basis with a lot of commitment and sense of responsibility. We appreciate their technological up-gradation work, consistency, best-in-class performance, and workmanship.',
+      'We have relied on NK Dairy Equipments LLP for our dairy processing needs, and they have consistently delivered flawlessly engineered solutions. Their technical expertise is unmatched in the industry.',
+      'From installation to post-sales support, their team demonstrates exceptional commitment to our operational success.'
     ],
   },
   {
-    company: 'Hatsun Agro Product Ltd.',
-    logo: '/image-clients/Hatsun-testimonial.webp',
+    company: 'Aavin',
+    logo: '/CLIENTELE/image-3.jpg',
     text: [
-      'NK Dairy Equipments LLP meet the customer requirement in a systematic way of working. They ensure to supply quality material, consistently meeting the delivery schedules, and complete the projects on time as per their commitment.',
+      'The custom processing lines provided by NK Dairy Equipments LLP have helped us streamline our operations while maintaining the utmost hygiene and quality standards required for our milk products.',
+      'Their turn-key project execution is brilliant, taking all the stress off our shoulders and delivering a perfect plant.'
     ],
   },
   {
-    company: 'ITC-Limited',
-    logo: '/image-clients/ITC-limited-testimonial.webp',
+    company: 'Vijaya Dairy (Telangana)',
+    logo: '/CLIENTELE/image-1.jpg',
     text: [
-      'NK Dairy Equipments LLP understood our requirements and delivered a perfectly engineered process solution to us for the beverage manufacturing plant in Bangalore, India. The system is compact and easily expandable and flexible. The compact footprint of equipment has saved critical floor space in the Brownfield project.',
-      'Our company had given challenging timelines to NK Dairy Equipments LLP at the time of awarding the contract. NK Dairy Equipments LLP has professionally managed the project as well as all agencies involved to fast track the project. NK Dairy Equipments LLP is one who has all expertise under one roof.',
+      'NK Dairy Equipments LLP understood our complex requirements perfectly and delivered a highly efficient, compact milk processing plant. Their ability to innovate within tight floor spaces is remarkable.',
+      'We highly recommend them for their precision engineering and excellent site coordination during installation.'
     ],
   },
   {
-    company: 'Dabur India',
-    logo: '/image-clients/dabur-india-testimonial.webp',
+    company: 'NDRI (National Dairy Research Institute)',
+    logo: '/CLIENTELE/image-5.jpg',
     text: [
-      'We acknowledge the sincere efforts, hard work, flawless site coordination, consistent progress on daily activities and delivery of quality work done by the team on site. The NK Dairy Equipments LLP\' Project team has shown exceptional commitment towards every support needed by us throughout the project.',
-      'Thanks again for being such an amazing partner to work with. We are excited to work together in the upcoming phase IV work for the Aseptic PET line juice backend system.',
+      'For our specialized research applications, we require equipment that offers unparalleled precision and reliability. NK Dairy Equipments LLP delivered exactly that, helping us advance our dairy technology research.',
+      'Their engineers are highly knowledgeable and a pleasure to collaborate with.'
     ],
   },
   {
-    company: 'Varun Beverages Limited, DRC',
-    logo: '/image-clients/varun-beverages-testimonial.webp',
+    company: 'KOMUL',
+    logo: '/CLIENTELE/image-4.jpg',
     text: [
-      'We have been working with NK Dairy Equipments LLP for the past 10-12 years and they have understood our needs and requirements and provided us with meticulously designed process solutions each time.',
-      'We acknowledge the sincere efforts, hard work, flawless site coordination, consistent progress on daily activities and delivery of quality work done by Installation team on site.',
+      'Upgrading our facilities with NK Dairy Equipments LLP has been a smooth and highly rewarding experience. Their automated systems have reduced our manual overhead and increased our daily throughput significantly.',
     ],
-  },
-  {
-    company: 'Hamdard',
-    logo: '/image-clients/humdard-testimonial.webp',
-    text: [
-      'We wanted to expand our business into the milk-based beverages and fusion drinks line. The team at NK Dairy Equipments LLP, with just product information, helped set up an entire plant. Other companies suggested having multiple lines for multiple products, but NK Dairy Equipments LLP suggested doing it all in a single processing line. It ultimately saved us on resources.',
-    ],
-  },
+  }
 ];
 
 function TestimonialsCarousel() {
-  const [active, setActive] = useState(0);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const goTo = (idx: number) => {
-    setActive((idx + testimonials.length) % testimonials.length);
-  };
-
-  useEffect(() => {
-    timerRef.current = setTimeout(() => goTo(active + 1), 3000);
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [active]);
-
-  const t = testimonials[active];
-
   return (
-    <section style={{ background: '#ffffff', padding: '5rem 0' }}>
-      <div className="container mx-auto px-6 md:px-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-center uppercase tracking-widest mb-2" style={{ color: '#323373' }}>
-          Testimonials
-        </h2>
-        <p className="text-center mb-12 text-lg" style={{ color: '#64748b' }}>
-          Here&apos;s What Our Customers Have to Say About Us
-        </p>
+    <section className="py-24 bg-gradient-to-b from-white to-[#f8f9fa] relative overflow-hidden">
+      
+      {/* Decorative Background Quote */}
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 text-[300px] text-gray-50 leading-none font-serif opacity-50 z-0 select-none">
+        &ldquo;
+      </div>
 
-        <div className="relative max-w-5xl mx-auto">
-          {/* Slide */}
-          <div className="rounded-2xl p-8 md:p-12" style={{ background: '#f8fafc', border: '1px solid #e2e8f0', boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}>
-            <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center md:items-start">
+      <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 relative z-10">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-[#0d1b2e] mb-4 MainHeading">
+            Client <span className="text-[#0077b6]">Testimonials</span>
+          </h2>
+          <p className="text-[#64748b] text-lg font-medium">
+            Here's What Our Customers Have to Say About Us
+          </p>
+        </div>
 
-              {/* Left — Logo */}
-              <div className="flex-shrink-0 flex flex-col items-center gap-3 mx-auto md:mx-0" style={{ minWidth: '140px' }}>
-                <div className="w-28 h-28 md:w-36 md:h-36 bg-white rounded-2xl flex items-center justify-center shadow-xl p-4">
-                  <img
-                    src={t.logo}
-                    alt={t.company}
-                    className="max-w-full max-h-full object-contain"
-                  />
+        <div className="relative mx-auto w-full max-w-[1400px]">
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            navigation={{ nextEl: '.testi-next', prevEl: '.testi-prev' }}
+            autoplay={{ delay: 5000, disableOnInteraction: false }}
+            spaceBetween={30}
+            slidesPerView={1}
+            breakpoints={{
+              768: { slidesPerView: 2 },
+              1280: { slidesPerView: 3 },
+            }}
+            className="py-8 px-4"
+          >
+            {testimonials.map((t, i) => (
+              <SwiperSlide key={i} className="h-auto">
+                <div className="bg-white rounded-[2rem] p-8 md:p-10 border border-gray-100 shadow-[0_10px_40px_rgba(0,119,182,0.06)] hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,119,182,0.12)] transition-all duration-300 h-full min-h-[420px] flex flex-col relative group">
+                  
+                  {/* Absolute smaller quote mark */}
+                  <div className="absolute top-6 right-8 text-6xl text-[#00b4d8] font-serif leading-none opacity-10 group-hover:opacity-20 transition-opacity">
+                    &rdquo;
+                  </div>
+
+                  {/* Logo Box */}
+                  <div className="w-20 h-20 bg-gradient-to-br from-gray-50 to-white rounded-2xl flex items-center justify-center p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 mb-8 flex-shrink-0">
+                    <img
+                      src={t.logo}
+                      alt={t.company}
+                      className="max-w-full max-h-full object-contain"
+                    />
+                  </div>
+
+                  {/* Text Content */}
+                  <div className="flex-1 flex flex-col">
+                    <h5 className="text-xl font-bold mb-4 text-[#0d1b2e] line-clamp-1">
+                      {t.company}
+                    </h5>
+                    <div className="space-y-3 flex-1">
+                      <p className="text-gray-600 leading-relaxed text-base italic line-clamp-[7]">
+                        "{t.text[0]}"
+                      </p>
+                    </div>
+                  </div>
+
                 </div>
-                <h5 className="font-bold text-center text-sm hidden md:block" style={{ color: '#323373' }}>{t.company}</h5>
-              </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
 
-              {/* Right — Text */}
-              <div className="flex-1">
-                <h5 className="text-xl font-bold mb-4" style={{ color: '#323373' }}>{t.company}</h5>
-                {t.text.map((para, i) => (
-                  <p key={i} className="mb-3 leading-relaxed" style={{ color: '#475569', fontSize: '0.97rem' }}>{para}</p>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Prev / Next */}
+          {/* Prev / Next Buttons */}
           <button
-            onClick={() => goTo(active - 1)}
             aria-label="Previous testimonial"
-            className="hidden md:flex absolute -left-5 md:-left-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all"
-            style={{ background: 'rgba(18,126,159,0.1)', border: '2px solid rgba(18,126,159,0.4)' }}
+            className="testi-prev hidden md:flex absolute -left-4 lg:-left-12 top-1/2 -translate-y-1/2 w-14 h-14 bg-white rounded-full items-center justify-center transition-all border border-gray-100 shadow-lg text-[#0077b6] hover:bg-[#0077b6] hover:text-white hover:scale-110 z-20 group"
           >
-            <ChevronLeft size={20} color="#323373" />
+            <ChevronLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
           </button>
+          
           <button
-            onClick={() => goTo(active + 1)}
             aria-label="Next testimonial"
-            className="hidden md:flex absolute -right-5 md:-right-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all"
-            style={{ background: 'rgba(18,126,159,0.1)', border: '2px solid rgba(18,126,159,0.4)' }}
+            className="testi-next hidden md:flex absolute -right-4 lg:-right-12 top-1/2 -translate-y-1/2 w-14 h-14 bg-white rounded-full items-center justify-center transition-all border border-gray-100 shadow-lg text-[#0077b6] hover:bg-[#0077b6] hover:text-white hover:scale-110 z-20 group"
           >
-            <ChevronRight size={20} color="#323373" />
+            <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
 
-        {/* Dots */}
-        <div className="flex justify-center gap-2 mt-8">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goTo(i)}
-              aria-label={`Go to slide ${i + 1}`}
-              className="rounded-full transition-all duration-300"
-              style={{
-                width: i === active ? '28px' : '10px',
-                height: '10px',
-                background: i === active ? '#323373' : '#cbd5e1',
-              }}
-            />
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -172,40 +169,62 @@ export default function HomeClient({
   initialIndustries?: any[];
 }) {
   const [activeAccordion, setActiveAccordion] = useState<number | null>(0);
-  const [currentSlide, setCurrentSlide] = useState(0);
   const marqueeRef = useRef<HTMLDivElement>(null);
-  const swiperPrevRef = useRef<HTMLDivElement>(null);
-  const swiperNextRef = useRef<HTMLDivElement>(null);
 
-  const heroSlides = [
-    {
-      image: '/gallery-banner.png',
-      title: 'Complete Processing Solutions',
-      subtitle: 'Tailormade Process Equipment for Dairy, Food, and Beverage Industries.'
-    },
-    {
-      image: '/processing-tank-placeholder.png',
-      title: 'Advanced Processing Tanks',
-      subtitle: 'High-grade SS 304 and SS 316 tanks for hygienic milk processing.'
-    },
-    {
-      image: '/milking-machine-placeholder.png',
-      title: 'State-of-the-Art Milking Systems',
-      subtitle: 'Efficient, safe, and automated milking machinery for modern dairy farms.'
-    },
-    {
-      image: '/dairy-farm-placeholder.png',
-      title: 'End-to-End Dairy Solutions',
-      subtitle: 'From farm to processing plant, we deliver excellence at every step.'
+  // GSAP Products Section Refs
+  const productsSectionRef = useRef<HTMLElement>(null);
+  const productsTrackRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (productsTrackRef.current && productsSectionRef.current) {
+      const track = productsTrackRef.current;
+
+      // Entrance animation for header
+      gsap.from(".products-header", {
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: productsSectionRef.current,
+          start: "top 80%",
+        }
+      });
+
+      // Horizontal Scroll for desktop, simple scroll on mobile is handled by CSS, we only animate if enough width
+      let mm = gsap.matchMedia();
+      mm.add("(min-width: 1024px)", () => {
+        const scrollWidth = track.scrollWidth - window.innerWidth + 100;
+        if (scrollWidth > 0) {
+          gsap.to(track, {
+            x: -scrollWidth,
+            ease: "none",
+            scrollTrigger: {
+              trigger: productsSectionRef.current,
+              pin: true,
+              scrub: 1,
+              start: "center center",
+              end: () => `+=${scrollWidth}`,
+              invalidateOnRefresh: true,
+            }
+          });
+        }
+      });
+
+      // Stagger entrance for cards
+      gsap.from(".gsap-card", {
+        y: 100,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: productsTrackRef.current,
+          start: "top 85%",
+        }
+      });
     }
-  ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000); // Change slide every 5 seconds
-    return () => clearInterval(timer);
-  }, [heroSlides.length]);
+  }, { scope: productsSectionRef });
 
   const segments = initialIndustries && initialIndustries.length > 0
     ? initialIndustries
@@ -220,71 +239,107 @@ export default function HomeClient({
 
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans">
-      {/* 1. Hero Banner with Image Slider */}
-      <section className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-slate-900">
+      {/* 1. Static Modern Hero Banner */}
+      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-gray-50 overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-[#00b4d8]/10 blur-3xl z-0"></div>
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-[#0077b6]/10 blur-3xl z-0"></div>
 
-        {/* Background Slider */}
-        {heroSlides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out z-0 ${index === currentSlide ? 'opacity-100' : 'opacity-0'
-              }`}
-          >
-            <img
-              src={slide.image}
-              alt={slide.title}
-              className="absolute inset-0 w-full h-full object-cover opacity-80"
-            />
-          </div>
-        ))}
+        <div className="w-full max-w-[1440px] mx-auto px-6 xl:px-12 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-10 xl:gap-20 items-center">
 
-        {/* Overlays for text readability */}
-        <div className="absolute inset-0 bg-[#0d7293]/40 mix-blend-multiply z-0"></div>
-        <div className="absolute inset-0 bg-slate-900/50 z-0"></div>
+            {/* Left Content */}
+            <div className="w-full xl:pr-8">
+             
+              <h1 className="text-4xl md:text-5xl lg:text-[56px] xl:text-[64px] font-extrabold text-[#0d1b2e] leading-[1.1] mb-6 drop-shadow-sm">
+                Complete Processing <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077b6] to-[#00b4d8]">Solutions</span>
+              </h1>
+              <p className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed font-medium">
+                Tailormade Process Equipment for Dairy, Food, and Beverage Industries. From farm to processing plant, we deliver excellence at every step.
+              </p>
 
-        {/* Slider Controls */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-          {heroSlides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all ${index === currentSlide ? 'bg-[#f3b216] scale-125' : 'bg-white/50 hover:bg-white'
-                }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
+              <div className="flex flex-wrap gap-4">
+                <Link href="/products">
+                  <button className="bg-gradient-to-r from-[#0077b6] to-[#00b4d8] hover:from-[#00b4d8] hover:to-[#0077b6] text-white px-8 py-4 rounded-full font-bold tracking-widest transition-all shadow-lg shadow-[#00b4d8]/30 hover:shadow-[#00b4d8]/50 hover:-translate-y-1 flex items-center gap-2">
+                    EXPLORE SOLUTIONS
+                    <ArrowRight size={18} />
+                  </button>
+                </Link>
+                <Link href="/contact">
+                  <button className="bg-white text-[#0077b6] border-2 border-[#0077b6] hover:bg-gray-50 px-8 py-4 rounded-full font-bold tracking-widest transition-all hover:-translate-y-1">
+                    GET A QUOTE
+                  </button>
+                </Link>
+              </div>
 
-        <div className="relative z-10 text-center max-w-5xl px-6 mt-16 transition-opacity duration-500">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight drop-shadow-2xl transition-all duration-700 ease-in-out">
-            {heroSlides[currentSlide].title}
-          </h1>
-          <p className="text-lg md:text-2xl text-white/90 mb-10 font-light drop-shadow-md max-w-3xl mx-auto transition-all duration-700 ease-in-out delay-100">
-            {heroSlides[currentSlide].subtitle}
-          </p>
-          <div className="flex justify-center gap-4">
-            <Link href="/products">
-              <button className="bg-[#f3b216] hover:bg-yellow-500 text-slate-900 px-8 py-4 rounded font-bold tracking-widest transition-colors shadow-lg">
-                EXPLORE SOLUTIONS
-              </button>
-            </Link>
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-4 md:gap-6 mt-16 pt-8 border-t border-gray-200">
+                <div>
+                  <h4 className="text-3xl md:text-4xl font-extrabold text-[#0077b6]">500+</h4>
+                  <p className="text-xs md:text-sm text-gray-500 font-bold tracking-wider mt-1 uppercase">Clients</p>
+                </div>
+                <div>
+                  <h4 className="text-3xl md:text-4xl font-extrabold text-[#0077b6]">25+</h4>
+                  <p className="text-xs md:text-sm text-gray-500 font-bold tracking-wider mt-1 uppercase">Years</p>
+                </div>
+                <div>
+                  <h4 className="text-3xl md:text-4xl font-extrabold text-[#0077b6]">18+</h4>
+                  <p className="text-xs md:text-sm text-gray-500 font-bold tracking-wider mt-1 uppercase">States</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Image/Composition */}
+            <div className="relative mt-16 lg:mt-0">
+              {/* Decorative blob behind image */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-gradient-to-tr from-[#00b4d8]/20 to-[#0077b6]/20 rounded-full blur-3xl z-0 animate-blob"></div>
+
+              <div className="relative z-10 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,119,182,0.15)] border-4 border-white">
+                <img
+                  src="/gallery-banner.png"
+                  alt="Dairy Processing Plant Equipment"
+                  className="w-full h-[400px] md:h-[500px] object-cover rounded-2xl transform hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+
+              {/* Floating Badge */}
+              <div className="absolute -bottom-8 -left-8 md:bottom-10 md:-left-12 bg-white p-4 md:p-5 rounded-2xl shadow-2xl flex items-center gap-4 border border-gray-100 z-20 hover:-translate-y-2 transition-transform duration-300">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#0077b6] to-[#00b4d8] flex items-center justify-center text-white shadow-inner">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <div>
+                  <p className="text-sm md:text-base font-extrabold text-[#0d1b2e]">Highest Standard</p>
+                  <p className="text-xs md:text-sm text-[#0077b6] font-semibold">Quality Tested</p>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
 
       {/* 2. Business Segments Grid */}
-      <section className="py-24 bg-white text-center">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#323373] mb-3 uppercase tracking-widest">Business Segments</h2>
-          <p className="text-slate-500 mb-16 font-medium text-lg">Explore the Innovative Possibilities Beyond Imagination</p>
+      <section className="py-24 bg-slate-50 text-center relative overflow-hidden">
+        {/* Clean Dotted Background Pattern */}
+        <div className="absolute inset-0 z-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(#0d1b2e 2px, transparent 2px)', backgroundSize: '32px 32px' }}></div>
+        
+        {/* Subtle glowing orbs for extra "clean" interest */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none z-0">
+          <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-cyan-100 blur-3xl"></div>
+          <div className="absolute top-1/2 right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-50 blur-3xl"></div>
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d1b2e] mb-3 uppercase tracking-widest">Business Segments</h2>
+          <p className="text-[#0077b6] mb-16 font-semibold tracking-wide text-lg">Explore the Innovative Possibilities Beyond Imagination</p>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 max-w-6xl mx-auto">
             {segments.map((seg, i) => (
               <Link key={i} href={`/industries/${seg.slug}`} className="group cursor-pointer flex flex-col items-center">
-                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-50 border-2 border-gray-100 flex items-center justify-center mb-4 overflow-hidden group-hover:border-[#323373] group-hover:shadow-xl transition-all duration-300 relative">
-                  <img src={seg.image} alt={seg.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-white border border-gray-100 flex items-center justify-center mb-4 overflow-hidden group-hover:border-[#00b4d8] shadow-[0_4px_20px_rgba(0,0,0,0.04)] group-hover:shadow-[#00b4d8]/20 transition-all duration-300 relative group-hover:-translate-y-2">
+                  <img src={seg.image} alt={seg.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 </div>
-                <span className="font-bold text-slate-700 group-hover:text-[#323373] text-center transition-colors">{seg.name}</span>
+                <span className="font-bold text-[#0d1b2e] group-hover:text-[#0077b6] text-center transition-colors">{seg.name}</span>
               </Link>
             ))}
           </div>
@@ -292,74 +347,93 @@ export default function HomeClient({
       </section>
 
       {/* 3. Company Introduction */}
-      <section className="py-24 bg-gray-50 border-y border-gray-100">
-        <div className="container mx-auto px-6 md:px-12 text-center max-w-4xl">
-          <h2 className="text-3xl font-bold text-[#323373] mb-8 uppercase tracking-widest">About NK Dairy Equipments</h2>
-          <p className="text-lg text-slate-600 leading-relaxed mb-6 font-medium">
-            NK Dairy Equipments is a leading manufacturer of comprehensive machinery portfolios covering every stage of the dairy and food manufacturing process. We provide technologically advanced, energy-efficient, and tailormade solutions.
-          </p>
-          <p className="text-slate-500 leading-relaxed mb-10">
-            From Khoya Mawa machines, Curd making machines, to Bulk milk coolers and complete Pasteurization Plants, our equipment meets the highest global standards for hygiene and automation.
-          </p>
-          <Link href="/about" className="inline-flex items-center gap-2 text-[#323373] font-bold uppercase tracking-widest hover:text-[#f3b216] transition-colors border-b-2 border-transparent hover:border-[#f3b216] pb-1">
-            Read More About Us <ArrowRight size={16} />
-          </Link>
+      <section className="py-24 lg:py-32 bg-white relative overflow-hidden">
+        {/* Subtle background decoration */}
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-[#f8f9fa] skew-x-12 translate-x-32 z-0 hidden lg:block"></div>
+        
+        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 relative z-10">
+          <div className="flex flex-col lg:flex-row gap-16 items-center">
+            
+            {/* Image Side */}
+            <div className="w-full lg:w-1/2 relative">
+              <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3] group border-8 border-white">
+                <img 
+                  src="/processing-tank-placeholder.png" 
+                  alt="NK Dairy Equipment Manufacturing" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b2e]/60 to-transparent"></div>
+              </div>
+              
+              {/* Floating Experience Badge */}
+              <div className="absolute -bottom-6 -right-6 md:bottom-8 md:-right-8 bg-white p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,119,182,0.15)] flex flex-col items-center justify-center border border-gray-50 z-20 animate-bounce" style={{ animationDuration: '4s' }}>
+                <span className="text-4xl font-extrabold text-[#0077b6] mb-1">20+</span>
+                <span className="text-sm font-bold text-[#0d1b2e] uppercase tracking-wider text-center leading-tight">Years of<br/>Excellence</span>
+              </div>
+            </div>
+
+            {/* Text Side */}
+            <div className="w-full lg:w-1/2">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-50 border border-cyan-100 mb-6">
+                <span className="w-2 h-2 rounded-full bg-[#00b4d8] animate-pulse"></span>
+                <span className="text-xs font-bold tracking-widest uppercase text-[#0077b6]">Who We Are</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-extrabold text-[#0d1b2e] mb-6 tracking-tight leading-tight">
+                Pioneering the Future of <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077b6] to-[#00b4d8]">Dairy Technology</span>
+              </h2>
+              
+              <div className="space-y-6 text-lg text-slate-600 font-medium mb-10">
+                <p>
+                  NK Dairy Equipments is a leading manufacturer of comprehensive machinery portfolios covering every stage of the dairy and food manufacturing process. We provide technologically advanced, energy-efficient, and tailormade solutions.
+                </p>
+                <p className="text-slate-500">
+                  From Khoya Mawa machines, Curd making machines, to Bulk milk coolers and complete Pasteurization Plants, our equipment meets the highest global standards for hygiene and automation.
+                </p>
+              </div>
+              
+              <Link href="/about" className="inline-flex items-center gap-3 bg-[#0d1b2e] hover:bg-[#0077b6] text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 group">
+                Discover Our Story
+                <div className="bg-white/20 p-1.5 rounded-full group-hover:translate-x-1 transition-transform">
+                  <ArrowRight size={16} />
+                </div>
+              </Link>
+            </div>
+
+          </div>
         </div>
       </section>
 
-      {/* 4. Our Products Carousel (Swiper JS) */}
-      <section className="py-24 bg-[#f8f9fa] overflow-hidden relative home-product-slider">
-        <div className="container mx-auto px-6 md:px-12 flex flex-col lg:flex-row gap-12 items-center lg:items-stretch relative">
+      {/* 4. Our Products Horizontal Scroll (GSAP) */}
+      <section
+        className="py-24 bg-[#f8f9fa] overflow-hidden relative home-product-slider"
+        ref={productsSectionRef}
+      >
+        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col gap-12 relative">
 
-          {/* Arrow Box Product Slider */}
-          <div className="w-full lg:w-1/3 flex flex-col justify-center arrow-box-product-slider z-10 text-center lg:text-left pr-0 lg:pr-8">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#323373] mb-4 MainHeading">
-              Our Plants
-            </h2>
-            <p className="text-[#64748b] text-lg font-medium mb-10 productSubtitle">
-              Discover Our Technologically Advanced Food Processing Machines
-            </p>
-            <div className="flex gap-4 justify-center lg:justify-start">
-              <div
-                ref={swiperPrevRef}
-                className="w-14 h-14 rounded-full border-2 border-[#323373] text-[#323373] hover:bg-[#323373] hover:text-white flex items-center justify-center cursor-pointer transition-all hover:scale-110 z-20 shadow-sm swiper-slide-button"
-              >
-                <ChevronLeft size={28} />
-              </div>
-              <div
-                ref={swiperNextRef}
-                className="w-14 h-14 rounded-full border-2 border-[#323373] text-[#323373] hover:bg-[#323373] hover:text-white flex items-center justify-center cursor-pointer transition-all hover:scale-110 z-20 shadow-sm swiper-slide-button"
-              >
-                <ChevronRight size={28} />
-              </div>
+          {/* Header */}
+          <div className="w-full flex flex-col md:flex-row md:items-end justify-between gap-6 z-10 text-center md:text-left products-header">
+            <div>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-[#0d1b2e] mb-4 MainHeading">
+                Our <span className="text-[#0077b6]">Plants</span>
+              </h2>
+              <p className="text-[#64748b] text-lg font-medium productSubtitle max-w-2xl">
+                Discover Our Technologically Advanced Food Processing Machines
+              </p>
+            </div>
+            <div className="hidden md:flex gap-4">
+              <Link href="/products">
+                <button className="bg-white text-[#0077b6] border border-gray-200 hover:border-[#0077b6] px-8 py-3 rounded-full font-bold tracking-widest transition-all hover:shadow-lg shadow-sm text-sm">
+                  VIEW ALL PRODUCTS
+                </button>
+              </Link>
             </div>
           </div>
 
-          {/* Swiper Slider Wrapper */}
-          <div className="w-full lg:w-2/3 lg:-mr-[30vw] relative z-0 card-wrapper">
-            <Swiper
-              modules={[Navigation, Autoplay]}
-              spaceBetween={30}
-              slidesPerView={1.2}
-              loop={initialProducts.length > 3}
-              autoplay={{ delay: 3000, disableOnInteraction: false }}
-              breakpoints={{
-                640: { slidesPerView: 2.2 },
-                1024: { slidesPerView: 2.5 },
-                1280: { slidesPerView: 3.2 }
-              }}
-              navigation={{
-                prevEl: swiperPrevRef.current,
-                nextEl: swiperNextRef.current,
-              }}
-              onBeforeInit={(swiper) => {
-                // @ts-ignore
-                swiper.params.navigation.prevEl = swiperPrevRef.current;
-                // @ts-ignore
-                swiper.params.navigation.nextEl = swiperNextRef.current;
-              }}
-              className="!pb-12 !pt-8 !px-4"
-            >
+          {/* GSAP Horizontal Scroll Wrapper */}
+          <div className="w-full relative z-0 overflow-x-auto lg:overflow-visible pb-12 snap-x snap-mandatory lg:snap-none hide-scrollbar">
+            <div className="flex gap-8 w-max px-4 lg:px-0" ref={productsTrackRef}>
               {initialProducts.map((product, i) => {
                 let imageUrl = 'https://images.unsplash.com/photo-1596229983446-24e525145cd5?q=80&w=800';
                 if (product.images) {
@@ -370,41 +444,40 @@ export default function HomeClient({
                 }
 
                 return (
-                  <SwiperSlide key={i} className="!h-auto card-item">
+                  <div key={i} className="w-[300px] md:w-[400px] shrink-0 gsap-card snap-center">
                     <Link href={`/products/${product.slug}`} className="block h-full card-link group">
-                      <div className="bg-[#323373] rounded-2xl overflow-hidden h-full flex flex-col shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(18,126,159,0.3)] transition-all duration-300 product-info-box">
+                      <div className="bg-white rounded-2xl overflow-hidden h-full flex flex-col border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,119,182,0.12)] transition-all duration-300">
                         {/* Image Background Container */}
-                        <div className="bg-white p-6 pb-8 flex justify-center items-center h-64 relative gray-bg-box">
-                          <img src={imageUrl} alt={product.name} className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500 home-product-img" />
+                        <div className="bg-gradient-to-b from-gray-50 to-white p-6 flex justify-center items-center h-[280px] relative border-b border-gray-50">
+                          <img src={imageUrl} alt={product.name} className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-700" />
                         </div>
 
-                        <div className="p-8 flex flex-col flex-1 text-center items-center bg-[#323373] relative">
-                          {/* SVG triangle to create the angle effect if needed, omitted for modern clean look */}
+                        <div className="p-6 md:p-8 flex flex-col flex-1 relative bg-white">
                           <h5
-                            className="text-xl font-bold text-white mb-3 productName overflow-hidden"
+                            className="text-xl font-bold text-[#0d1b2e] mb-3 group-hover:text-[#0077b6] transition-colors overflow-hidden"
                             style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}
                           >
                             {product.name}
                           </h5>
                           <p
-                            className="text-white/80 text-sm mb-6 productDesc overflow-hidden"
+                            className="text-gray-500 text-sm mb-6 leading-relaxed overflow-hidden"
                             style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}
                           >
-                            {stripHtml(product.description)}
+                            {product.heroSubtitle || stripHtml(product.description) || 'Explore our technologically advanced and highly efficient processing solutions.'}
                           </p>
-                          <div className="mt-auto">
-                            <button className="inline-flex items-center gap-2 text-[#323373] bg-white hover:bg-[#f3b216] hover:text-white px-6 py-3 rounded-full font-bold tracking-widest text-sm transition-colors uppercase readBtn group/btn shadow-md">
-                              Read more
-                              <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
-                            </button>
+                          <div className="mt-auto pt-4 border-t border-gray-100">
+                            <span className="inline-flex items-center gap-2 text-[#0077b6] font-bold tracking-widest text-sm uppercase group-hover:text-[#00b4d8] transition-colors">
+                              Explore Plant
+                              <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform duration-300" />
+                            </span>
                           </div>
                         </div>
                       </div>
                     </Link>
-                  </SwiperSlide>
+                  </div>
                 );
               })}
-            </Swiper>
+            </div>
           </div>
         </div>
       </section>

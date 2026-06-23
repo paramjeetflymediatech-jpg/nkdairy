@@ -1,10 +1,17 @@
 'use client';
 
+import { useRef } from 'react';
 import { Award, Shield, Target, Users, CheckCircle2, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
-import { motion, Variants } from 'framer-motion';
 import FAQAccordion from '@/components/home/FAQAccordion';
 import Link from 'next/link';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const faqs = [
   { q: "What is the price of dairy processing equipment in India?", a: "Dairy processing equipment price in India depends on the machine type, capacity, and automation level. Small machines used by startups and small dairy units are usually affordable. For large-scale production, high-capacity machines with a high automation level may cost more." },
@@ -20,52 +27,68 @@ const faqs = [
 ];
 
 export default function AboutClient() {
-  const fadeInUp: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-  };
+  const mainRef = useRef<HTMLDivElement>(null);
 
-  const staggerContainer: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
+  useGSAP(() => {
+    if (!mainRef.current) return;
+
+    // 1. Hero Animations
+    const tlHero = gsap.timeline();
+    tlHero.from(".hero-badge", { y: -20, opacity: 0, duration: 0.6, ease: "power2.out" })
+          .from(".hero-title", { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.3")
+          .from(".hero-desc", { y: 20, opacity: 0, duration: 0.6, ease: "power2.out" }, "-=0.4");
+
+    // 2. Story Animations
+    gsap.from(".story-img", {
+      x: -50, opacity: 0, duration: 0.8, ease: "power3.out",
+      scrollTrigger: { trigger: ".story-section", start: "top 80%" }
+    });
+    
+    gsap.from(".story-text > *", {
+      y: 30, opacity: 0, duration: 0.6, stagger: 0.15, ease: "power2.out",
+      scrollTrigger: { trigger: ".story-section", start: "top 75%" }
+    });
+
+    // 3. Values Animations
+    gsap.from(".value-card", {
+      y: 40, opacity: 0, duration: 0.6, stagger: 0.1, ease: "back.out(1.2)",
+      scrollTrigger: { trigger: ".values-section", start: "top 80%" }
+    });
+
+    // 4. FAQ Animation
+    gsap.from(".faq-container", {
+      y: 30, opacity: 0, duration: 0.8, ease: "power3.out",
+      scrollTrigger: { trigger: ".faq-section", start: "top 85%" }
+    });
+
+  }, { scope: mainRef });
 
   return (
-    <div className="min-h-screen bg-slate-50 overflow-hidden">
+    <div className="min-h-screen bg-slate-50 overflow-hidden" ref={mainRef}>
 
       {/* 1. Immersive Hero Section */}
-      <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 bg-[#323373] text-white overflow-hidden">
+      <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 bg-[#0d1b2e] text-white overflow-hidden">
         {/* Subtle Background Elements */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
-          <div className="absolute top-[-10%] right-[-5%] w-96 h-96 rounded-full bg-white blur-3xl"></div>
-          <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#f3b216] blur-3xl"></div>
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
+          <div className="absolute top-[-10%] right-[-5%] w-96 h-96 rounded-full bg-[#00b4d8] blur-3xl"></div>
+          <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#0077b6] blur-3xl"></div>
         </div>
 
         <div className="container mx-auto px-6 md:px-12 relative z-10">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="max-w-4xl mx-auto text-center"
-          >
-            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
-              <span className="w-2 h-2 rounded-full bg-[#f3b216] animate-pulse"></span>
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="hero-badge inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
+              <span className="w-2 h-2 rounded-full bg-[#00b4d8] animate-pulse"></span>
               <span className="text-sm font-semibold tracking-wider uppercase text-white/90">Who We Are</span>
-            </motion.div>
+            </div>
 
-            <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 tracking-tight leading-tight">
-              Pioneering <span className="text-[#f3b216]">Dairy Technology</span>
-            </motion.h1>
+            <h1 className="hero-title text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 tracking-tight leading-tight">
+              Pioneering <span className="text-[#00b4d8]">Dairy Technology</span>
+            </h1>
 
-            <motion.p variants={fadeInUp} className="text-lg md:text-xl text-white/80 leading-relaxed font-medium max-w-3xl mx-auto">
+            <p className="hero-desc text-lg md:text-xl text-white/80 leading-relaxed font-medium max-w-3xl mx-auto">
               NK Dairy Equipments is a team of qualified technocrats with an engineering background, supported by skilled technicians and craftsmen. We engineer, manufacture, and export high-capacity dairy processing plants that set global standards for efficiency.
-            </motion.p>
-          </motion.div>
+            </p>
+          </div>
         </div>
 
         {/* Curved Bottom Divider */}
@@ -77,19 +100,13 @@ export default function AboutClient() {
       </section>
 
       {/* 2. Our Story & Manufacturing Excellence */}
-      <section className="py-20 md:py-32 bg-slate-50">
+      <section className="story-section py-20 md:py-32 bg-slate-50">
         <div className="container mx-auto px-6 md:px-12">
           <div className="flex flex-col lg:flex-row gap-16 items-center">
 
             {/* Image/Graphic Side */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="w-full lg:w-5/12 relative"
-            >
-              <div className="aspect-[4/5] rounded-3xl overflow-hidden relative shadow-2xl flex items-center justify-center p-8 border-4 border-white group">
+            <div className="story-img w-full lg:w-5/12 relative">
+              <div className="aspect-[4/5] rounded-3xl overflow-hidden relative shadow-[0_20px_50px_rgba(0,119,182,0.15)] flex items-center justify-center p-8 border-4 border-white group">
                 {/* Background Image */}
                 <Image 
                   src="/processing-tank-placeholder.png" 
@@ -99,70 +116,64 @@ export default function AboutClient() {
                 />
                 
                 {/* Dark overlay to ensure text readability */}
-                <div className="absolute inset-0 bg-[#323373]/80 group-hover:bg-[#323373]/70 transition-colors duration-500"></div>
+                <div className="absolute inset-0 bg-[#0d1b2e]/80 group-hover:bg-[#0d1b2e]/70 transition-colors duration-500"></div>
                 
                 <div className="relative z-10 text-center mt-8">
                   <div className="w-28 h-28 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-8 border border-white/30 shadow-xl">
-                    <Award className="text-[#f3b216]" size={50} />
+                    <Award className="text-[#00b4d8]" size={50} />
                   </div>
                   <h3 className="text-4xl font-extrabold text-white mb-2 drop-shadow-md">20+</h3>
-                  <p className="text-xl text-[#f3b216] font-bold tracking-wider uppercase drop-shadow-md">Years Of Excellence</p>
+                  <p className="text-xl text-[#00b4d8] font-bold tracking-wider uppercase drop-shadow-md">Years Of Excellence</p>
                 </div>
               </div>
 
               {/* Floating Element */}
               <div className="absolute -bottom-8 -right-8 md:-right-12 bg-white p-6 rounded-2xl shadow-xl border border-gray-100 flex items-center gap-4 animate-bounce" style={{ animationDuration: '4s' }}>
-                <div className="bg-green-100 p-3 rounded-full text-green-600">
+                <div className="bg-cyan-50 p-3 rounded-full text-[#00b4d8]">
                   <CheckCircle2 size={24} />
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 font-medium">Trusted by</p>
-                  <p className="font-bold text-[#323373]">500+ Clients</p>
+                  <p className="font-bold text-[#0d1b2e]">500+ Clients</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* Text Side */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={staggerContainer}
-              className="w-full lg:w-7/12"
-            >
-              <motion.h2 variants={fadeInUp} className="text-3xl md:text-5xl font-bold mb-8 text-[#323373] tracking-tight leading-tight">
-                Our Manufacturing <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#323373] to-[#f3b216]">Excellence</span>
-              </motion.h2>
+            <div className="story-text w-full lg:w-7/12">
+              <h2 className="text-3xl md:text-5xl font-bold mb-8 text-[#0d1b2e] tracking-tight leading-tight">
+                Our Manufacturing <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077b6] to-[#00b4d8]">Excellence</span>
+              </h2>
 
               <div className="space-y-6 text-gray-600 leading-relaxed text-lg font-medium">
-                <motion.p variants={fadeInUp}>
-                  It is monitored by an energetic woman <strong className="text-[#323373]">Mrs. Himpreet Kaur</strong>. Under her able leadership, the firm has installed and executed many projects in Milk Processing Plants. Her mindset of suggesting exact requirements to the Client and appropriate machinery for the Plant has proved the Projects quite successful, achieving required rated capacity.
-                </motion.p>
-                <motion.p variants={fadeInUp}>
+                <p>
+                  It is monitored by an energetic woman <strong className="text-[#0d1b2e]">Mrs. Himpreet Kaur</strong>. Under her able leadership, the firm has installed and executed many projects in Milk Processing Plants. Her mindset of suggesting exact requirements to the Client and appropriate machinery for the Plant has proved the Projects quite successful, achieving required rated capacity.
+                </p>
+                <p>
                   Due to this, many of our Clients have repeated their orders for expansion of Plant Capacity. We have a full-fledged Workshop for fabrication, as well as an up-to-date machine shop for precision machining. Our skilled workers are quite confident to take up any assignment of setting up a complete Milk Processing Plant.
-                </motion.p>
-                <motion.p variants={fadeInUp}>
+                </p>
+                <p>
                   We follow N.D.D.B. norms and fabricate the equipment as per the guidance of our qualified engineers. We have separate teams to work on-site, for site fabrication, installation of equipment/machinery, piping, and its commissioning. A cordial relationship with the Client on-site helps in troubleshooting any difficulty to the satisfaction of the Client.
-                </motion.p>
+                </p>
               </div>
 
-              <motion.div variants={fadeInUp} className="mt-10">
-                <Link href="/contact" className="inline-flex items-center gap-2 bg-[#323373] hover:bg-[#232454] text-white px-8 py-4 rounded-full font-bold tracking-widest text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 uppercase group">
+              <div className="mt-10">
+                <Link href="/contact" className="inline-flex items-center gap-2 bg-[#0d1b2e] hover:bg-[#0077b6] text-white px-8 py-4 rounded-full font-bold tracking-widest text-sm transition-all shadow-lg hover:shadow-[0_10px_20px_rgba(0,119,182,0.3)] hover:-translate-y-1 uppercase group">
                   Get in Touch
                   <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* 3. Core Values (Features) */}
-      <section className="py-20 md:py-32 bg-white relative">
+      <section className="values-section py-20 md:py-32 bg-white relative">
         <div className="container mx-auto px-6 md:px-12 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#323373] mb-4 uppercase tracking-widest">Why Choose Us</h2>
-            <div className="w-24 h-1 bg-[#f3b216] mx-auto rounded-full"></div>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d1b2e] mb-4 uppercase tracking-widest">Why Choose Us</h2>
+            <div className="w-24 h-1 bg-[#00b4d8] mx-auto rounded-full"></div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -172,37 +183,28 @@ export default function AboutClient() {
               { icon: Users, title: 'Turnkey Execution', desc: 'End-to-end project management, from design to installation.' },
               { icon: Award, title: 'Global Standards', desc: 'ISO 9001:2015 & CE Certified machinery for global markets.' }
             ].map((item, i) => (
-              <motion.div
+              <div
                 key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group bg-slate-50 border border-gray-100 p-8 rounded-3xl text-center hover:bg-[#323373] transition-all duration-500 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-default"
+                className="value-card group bg-slate-50 border border-gray-100 p-8 rounded-3xl text-center hover:bg-[#0d1b2e] transition-all duration-500 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-default"
               >
                 <div className="w-20 h-20 bg-white shadow-md rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 group-hover:rotate-3">
-                  <item.icon className="text-[#323373] group-hover:text-[#f3b216] transition-colors duration-500" size={36} />
+                  <item.icon className="text-[#0077b6] group-hover:text-[#00b4d8] transition-colors duration-500" size={36} />
                 </div>
-                <h3 className="text-xl font-bold mb-4 text-[#323373] group-hover:text-white transition-colors duration-500">{item.title}</h3>
+                <h3 className="text-xl font-bold mb-4 text-[#0d1b2e] group-hover:text-white transition-colors duration-500">{item.title}</h3>
                 <p className="text-gray-500 group-hover:text-white/80 transition-colors duration-500 font-medium leading-relaxed">{item.desc}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* 4. FAQs Section */}
-      <section className="py-20 md:py-32 bg-slate-50 border-t border-gray-100">
+      <section className="faq-section py-20 md:py-32 bg-slate-50 border-t border-gray-100">
         <div className="container mx-auto px-6 md:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-7xl mx-auto bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100"
-          >
+          <div className="faq-container max-w-7xl mx-auto bg-white p-8 md:p-12 rounded-[2rem] shadow-[0_20px_50px_rgba(0,119,182,0.05)] border border-gray-100">
             <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-bold text-[#323373] tracking-tight mb-4">Frequently Asked Questions</h2>
-              <p className="text-gray-500 font-medium">Everything you need to know about our dairy processing equipment.</p>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d1b2e] tracking-tight mb-4">Frequently Asked Questions</h2>
+              <p className="text-gray-500 font-medium text-lg">Everything you need to know about our dairy processing equipment.</p>
             </div>
 
             <FAQAccordion
@@ -211,7 +213,7 @@ export default function AboutClient() {
               noWrapper={true}
               data={faqs.map(f => ({ question: f.q, answer: f.a }))}
             />
-          </motion.div>
+          </div>
         </div>
       </section>
 

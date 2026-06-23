@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaFacebook, FaLinkedin, FaYoutube, FaInstagram } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 const industries = [
   { label: 'Dairy', href: '/products?category=dairy' },
@@ -48,17 +51,76 @@ const navLinks = [
   { label: 'Videos', href: '/videos' },
 ];
 
-const linkCls = 'text-slate-600 hover:text-[#323373] transition-colors text-sm leading-relaxed';
-const headingCls = 'text-slate-800 font-bold text-base mb-3';
+const linkCls = 'text-slate-600 hover:text-[#0077b6] transition-colors text-sm leading-relaxed';
+const headingCls = 'text-[#0d1b2e] font-bold text-base mb-3 uppercase tracking-wider text-sm';
 
 export default function Footer() {
   return (
-    <footer style={{ backgroundColor: '#f8fafc', borderTop: '1px solid #e2e8f0' }}>
+    <footer className="relative bg-gradient-to-b from-[#f8f9fa] to-[#e0f2fe] border-t border-gray-100 overflow-hidden pt-12">
 
-    
+      {/* --- Animated Background Effects --- */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        
+        {/* Floating Milk Drops */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={`drop-${i}`}
+            className="absolute rounded-full bg-white opacity-40 blur-[2px]"
+            style={{
+              width: Math.random() * 60 + 20 + 'px',
+              height: Math.random() * 80 + 30 + 'px',
+              left: Math.random() * 100 + '%',
+              top: Math.random() * 100 + '%',
+              borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%', // Milk drop shape
+            }}
+            animate={{
+              y: [0, -100, 0],
+              x: [0, Math.random() * 50 - 25, 0],
+              scale: [1, 1.1, 1],
+            }}
+            transition={{
+              duration: Math.random() * 10 + 10,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+
+        {/* Slowly Rotating Gears */}
+        {[...Array(4)].map((_, i) => (
+          <motion.svg
+            key={`gear-${i}`}
+            className="absolute opacity-[0.03]"
+            style={{
+              width: Math.random() * 200 + 100 + 'px',
+              height: Math.random() * 200 + 100 + 'px',
+              left: Math.random() * 100 + '%',
+              top: Math.random() * 100 + '%',
+            }}
+            viewBox="0 0 100 100"
+            fill="#0d1b2e"
+            animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
+            transition={{
+              duration: Math.random() * 40 + 30,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          >
+            <path d="M50,15 A35,35 0 1,1 49.9,15 z M50,30 A20,20 0 1,0 50.1,30 z" />
+            <rect x="45" y="0" width="10" height="15" />
+            <rect x="45" y="85" width="10" height="15" />
+            <rect x="0" y="45" width="15" height="10" />
+            <rect x="85" y="45" width="15" height="10" />
+            <rect x="14" y="14" width="15" height="10" transform="rotate(45 21.5 19)" />
+            <rect x="71" y="71" width="15" height="10" transform="rotate(45 78.5 76)" />
+            <rect x="14" y="71" width="10" height="15" transform="rotate(-45 19 78.5)" />
+            <rect x="71" y="14" width="10" height="15" transform="rotate(-45 76 21.5)" />
+          </motion.svg>
+        ))}
+      </div>
 
       {/* ── Main footer grid ── */}
-      <div className="container mx-auto px-6 md:px-12 py-12">
+      <div className="container mx-auto px-6 md:px-12 py-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
 
           {/* Col 1 — Industries (3 cols) */}
@@ -140,12 +202,12 @@ export default function Footer() {
       </div>
 
       {/* ── Bottom bar ── */}
-      <div style={{ borderTop: '1px solid #e2e8f0', padding: '1rem 0', backgroundColor: '#323373' }}>
-        <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-white">
+      <div className="border-t border-[#00b4d8]/20 bg-[#0d1b2e] py-6 relative z-10">
+        <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4 text-xs md:text-sm text-gray-400">
           <p>&copy; {new Date().getFullYear()} NK Dairy Equipments. All rights reserved.</p>
-          <div className="flex gap-4">
-            <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
-            <Link href="/terms" className="hover:underline">Terms of Service</Link>
+          <div className="flex gap-6">
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

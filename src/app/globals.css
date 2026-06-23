@@ -12,6 +12,10 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-brand-indigo: #323373;
+  --color-primary-blue: #0077b6;
+  --color-primary-cyan: #00b4d8;
+  --color-primary-light: #90e0ef;
+  --color-text-dark: #0d1b2e;
   --animate-blob: blob 7s infinite;
 }
 
