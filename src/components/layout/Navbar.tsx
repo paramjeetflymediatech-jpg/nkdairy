@@ -133,9 +133,6 @@ export default function Navbar() {
       isMegaMenu: true,
       subcategories: categories
     },
-    { name: 'Our Clientele', href: '/our-clientele', isDynamic: false, isMegaMenu: false },
-    { name: 'Blog', href: '/blogs', isDynamic: false, isMegaMenu: false },
-    { name: 'Videos', href: '/videos', isDynamic: false, isMegaMenu: false },
     { name: 'Contact Us', href: '/contact', isDynamic: false, isMegaMenu: false },
   ];
 
@@ -220,7 +217,7 @@ export default function Navbar() {
       >
         <div className={`w-full flex justify-between items-center relative transition-all duration-500 ${scrolled ? 'px-6 md:px-10' : 'container mx-auto px-4 md:px-8'}`}>
           <Link href="/" className="flex items-center group flex-shrink-0">
-            <Image src="/logo.png" alt="NK Dairy Logo" width={150} height={50} className={`object-contain transition-all duration-500 ${scrolled ? 'scale-90' : 'scale-100'}`} priority />
+            <Image src="/logo.png" alt="NK Dairy Logo" width={220} height={75} className={`object-contain transition-all duration-500 ${scrolled ? 'scale-90' : 'scale-100'}`} priority />
           </Link>
 
         {/* Desktop Nav - Centered */}

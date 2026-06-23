@@ -319,7 +319,7 @@ export default function HomeClient({
       </section>
 
       {/* 2. Business Segments Grid */}
-      <section className="py-24 bg-slate-50 text-center relative overflow-hidden">
+      <section className="py-24 bg-slate-50 relative overflow-hidden">
         {/* Clean Dotted Background Pattern */}
         <div className="absolute inset-0 z-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(#0d1b2e 2px, transparent 2px)', backgroundSize: '32px 32px' }}></div>
         
@@ -329,17 +329,39 @@ export default function HomeClient({
           <div className="absolute top-1/2 right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-50 blur-3xl"></div>
         </div>
 
-        <div className="container mx-auto px-6 relative z-10">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d1b2e] mb-3 uppercase tracking-widest">Business Segments</h2>
-          <p className="text-[#0077b6] mb-16 font-semibold tracking-wide text-lg">Explore the Innovative Possibilities Beyond Imagination</p>
+        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-[#0d1b2e] mb-4 tracking-tight">
+              Industries <span className="text-[#0077b6]">We Serve</span>
+            </h2>
+            <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">
+              Precision Engineering for the World's Most Demanding Industries
+            </p>
+          </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {segments.map((seg, i) => (
-              <Link key={i} href={`/industries/${seg.slug}`} className="group cursor-pointer flex flex-col items-center">
-                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-white border border-gray-100 flex items-center justify-center mb-4 overflow-hidden group-hover:border-[#00b4d8] shadow-[0_4px_20px_rgba(0,0,0,0.04)] group-hover:shadow-[#00b4d8]/20 transition-all duration-300 relative group-hover:-translate-y-2">
-                  <img src={seg.image} alt={seg.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+              <Link key={i} href={`/industries/${seg.slug}`} className="group relative overflow-hidden rounded-[2rem] aspect-[4/3] md:aspect-auto md:h-[350px] block shadow-[0_10px_30px_rgba(13,27,46,0.08)] hover:shadow-[0_20px_40px_rgba(0,119,182,0.15)] transition-all duration-500 border-4 border-white">
+                {/* Background Image */}
+                <img 
+                  src={`${seg.image}?v=new`}
+                  alt={seg.name} 
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                {/* Dark Gradient Overlay for Text Readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b2e]/90 via-[#0d1b2e]/30 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"></div>
+                
+                {/* Content */}
+                <div className="absolute inset-0 p-8 flex flex-col justify-end items-start text-left">
+                  <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-2 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-300 ease-out drop-shadow-md">
+                    {seg.name}
+                  </h3>
+                  {/* Animated Arrow/Button */}
+                  <div className="flex items-center gap-2 text-[#00b4d8] font-bold opacity-0 group-hover:opacity-100 transform translate-y-6 group-hover:translate-y-0 transition-all duration-300 delay-75 ease-out">
+                    <span className="uppercase tracking-widest text-xs">Explore Solutions</span>
+                    <ArrowRight size={16} />
+                  </div>
                 </div>
-                <span className="font-bold text-[#0d1b2e] group-hover:text-[#0077b6] text-center transition-colors">{seg.name}</span>
               </Link>
             ))}
           </div>

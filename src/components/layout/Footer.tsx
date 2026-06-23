@@ -156,16 +156,17 @@ export default function Footer() {
 
           {/* Col 3 — Services + Social + ISO (3 cols) */}
           <div className="md:col-span-3">
-            <h5 className={headingCls}>Services</h5>
-            {services.map((item) => (
-              <div key={item.label} className="pt-2">
-                <Link href={item.href} className={linkCls}>{item.label}</Link>
-              </div>
-            ))}
+
+
+            <h5 className={headingCls}>Quick Links</h5>
             <div className="pt-2">
-              <Link href="/contact" className="font-semibold transition-colors text-sm" style={{ color: '#323373' }}>
-                Customer Support
-              </Link>
+              <Link href="/our-clientele" className={linkCls}>Our Clientele</Link>
+            </div>
+            <div className="pt-2">
+              <Link href="/blogs" className={linkCls}>Blog</Link>
+            </div>
+            <div className="pt-2">
+              <Link href="/videos" className={linkCls}>Videos</Link>
             </div>
 
             {/* Social */}
