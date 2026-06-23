@@ -62,7 +62,7 @@ export default function YoutubeGallery() {
                   <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-inner">
                     <iframe
                       className="absolute inset-0 w-full h-full border-0"
-                      src={`https://www.youtube-nocookie.com/embed/${activeVideo.id}?autoplay=1&mute=1&rel=0&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
+                      src={`https://www.youtube-nocookie.com/embed/${activeVideo.id}?autoplay=1&mute=1&rel=0`}
                       title={activeVideo.title}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
