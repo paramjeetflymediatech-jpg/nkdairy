@@ -504,11 +504,8 @@ export default function HomeClient({
         </div>
       </section>
 
+      {/* 6. Clientele & News */}
 
-      {/* 6. Testimonials */}
-      <TestimonialsCarousel />
-
-      {/* 7. Clientele & News */}
       <ClienteleSlider />
 
       <section className="bg-slate-50 py-24 overflow-hidden">
@@ -535,6 +532,95 @@ export default function HomeClient({
         </div>
       </section>
 
+      {/* 7. Testimonials */}
+      <TestimonialsCarousel />
+
+      
+
+      <FAQSection />
+
     </div>
+  );
+}
+
+const faqs = [
+  {
+    question: "What types of industries does NK Dairy Equipments serve?",
+    answer: "We specialize in engineering high-quality processing equipment and turn-key solutions for Dairy, Food, Beverages, Cosmetics, and Allied Industries."
+  },
+  {
+    question: "Do you provide turnkey project solutions?",
+    answer: "Yes, we offer comprehensive turnkey solutions—from initial layout design and custom manufacturing to installation, automation, and final commissioning of your plant."
+  },
+  {
+    question: "Are your machines compliant with international quality standards?",
+    answer: "Absolutely. All our equipment is manufactured using high-grade stainless steel (SS 304/316) and strictly complies with international food safety and hygiene standards."
+  },
+  {
+    question: "Do you offer after-sales support and spare parts?",
+    answer: "Yes, we provide extensive after-sales support, Annual Maintenance Contracts (AMC), and readily available spare parts to ensure minimal downtime for your operations."
+  },
+  {
+    question: "Can you customize equipment to suit our specific capacity and floor space?",
+    answer: "Customization is our core strength. Our engineering team designs tailormade solutions that perfectly match your specific production capacity and facility layout requirements."
+  }
+];
+
+function FAQSection() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const toggleFaq = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  return (
+    <section className="py-24 bg-white relative overflow-hidden border-t border-gray-100">
+      {/* Decorative Blur */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#00b4d8]/5 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div className="w-full max-w-[1000px] mx-auto px-6 md:px-12 relative z-10">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-50 border border-cyan-100 mb-6">
+            <span className="w-2 h-2 rounded-full bg-[#00b4d8]"></span>
+            <span className="text-xs font-bold tracking-widest uppercase text-[#0077b6]">Support & Info</span>
+          </div>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-[#0d1b2e] mb-4 tracking-tight">
+            Frequently Asked <span className="text-[#0077b6]">Questions</span>
+          </h2>
+          <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">
+            Everything you need to know about our equipment, manufacturing capabilities, and services.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          {faqs.map((faq, index) => (
+            <div 
+              key={index} 
+              className={`border border-gray-100 rounded-2xl overflow-hidden transition-all duration-300 ${openIndex === index ? 'bg-white shadow-[0_10px_40px_rgba(0,119,182,0.06)] border-[#00b4d8]/20' : 'bg-slate-50 hover:bg-white hover:shadow-md'}`}
+            >
+              <button
+                className="w-full flex items-center justify-between p-6 md:px-8 md:py-6 text-left focus:outline-none"
+                onClick={() => toggleFaq(index)}
+              >
+                <h3 className={`text-lg md:text-xl font-bold pr-8 transition-colors ${openIndex === index ? 'text-[#0077b6]' : 'text-[#0d1b2e]'}`}>
+                  {faq.question}
+                </h3>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${openIndex === index ? 'bg-[#0077b6] text-white rotate-180' : 'bg-white text-[#0077b6] shadow-sm'}`}>
+                  <ChevronDown size={20} />
+                </div>
+              </button>
+              
+              <div 
+                className={`transition-all duration-300 ease-in-out ${openIndex === index ? 'max-h-96 opacity-100 pb-6 md:pb-8' : 'max-h-0 opacity-0'}`}
+              >
+                <div className="px-6 md:px-8 text-slate-600 leading-relaxed text-base">
+                  {faq.answer}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
