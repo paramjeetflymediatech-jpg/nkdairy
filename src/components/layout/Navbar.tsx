@@ -34,7 +34,7 @@ const MobileNavItem = ({ item, depth = 0, setNavOpen }: { item: any, depth?: num
             <span className={depth > 1 ? "text-gray-600 font-normal" : ""}>{item.name}</span>
           </Link>
         )}
-        
+
         {hasSubcategories && (
           <button onClick={() => setIsExpanded(!isExpanded)} className="p-2 -mr-2 text-gray-500">
             <ChevronDown size={16} className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
@@ -52,7 +52,7 @@ const MobileNavItem = ({ item, depth = 0, setNavOpen }: { item: any, depth?: num
           >
             <div className={`mt-1 space-y-1 ${depth === 0 ? 'pl-4 border-l-2 border-gray-100' : 'pl-4'}`}>
               {item.subcategories?.map((sub: any) => (
-                <MobileNavItem key={sub.id || sub.name} item={{...sub, href: sub.href || (sub.slug ? `/${sub.slug}` : '#')}} depth={depth + 1} setNavOpen={setNavOpen} />
+                <MobileNavItem key={sub.id || sub.name} item={{ ...sub, href: sub.href || (sub.slug ? `/${sub.slug}` : '#') }} depth={depth + 1} setNavOpen={setNavOpen} />
               ))}
               {item.allNestedProducts?.map((prod: any) => (
                 <MobileNavItem key={prod.id || prod.name} item={{ name: prod.name, href: `/products/${prod.slug}` }} depth={depth + 1} setNavOpen={setNavOpen} />

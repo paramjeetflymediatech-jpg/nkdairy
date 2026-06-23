@@ -164,10 +164,10 @@ const stripHtml = (html: string) => {
   return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
 };
 
-export default function HomeClient({ 
+export default function HomeClient({
   initialProducts = [],
   initialIndustries = []
-}: { 
+}: {
   initialProducts?: any[];
   initialIndustries?: any[];
 }) {
@@ -210,13 +210,13 @@ export default function HomeClient({
   const segments = initialIndustries && initialIndustries.length > 0
     ? initialIndustries
     : [
-        { name: 'Dairy', image: '/segments/dairy.png', slug: 'dairy' },
-        { name: 'Fruits & Vegetables', image: '/segments/fruits.png', slug: 'fruits-vegetables' },
-        { name: 'Food', image: '/segments/food.png', slug: 'food' },
-        { name: 'Cosmetics', image: '/segments/cosmetics.png', slug: 'cosmetics' },
-        { name: 'Beverages', image: '/segments/beverages.png', slug: 'beverages' },
-        { name: 'Allied Industry', image: '/segments/allied.png', slug: 'allied-industry' },
-      ];
+      { name: 'Dairy', image: '/segments/dairy.png', slug: 'dairy' },
+      { name: 'Fruits & Vegetables', image: '/segments/fruits.png', slug: 'fruits-vegetables' },
+      { name: 'Food', image: '/segments/food.png', slug: 'food' },
+      { name: 'Cosmetics', image: '/segments/cosmetics.png', slug: 'cosmetics' },
+      { name: 'Beverages', image: '/segments/beverages.png', slug: 'beverages' },
+      { name: 'Allied Industry', image: '/segments/allied.png', slug: 'allied-industry' },
+    ];
 
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans">
@@ -380,9 +380,18 @@ export default function HomeClient({
 
                         <div className="p-8 flex flex-col flex-1 text-center items-center bg-[#323373] relative">
                           {/* SVG triangle to create the angle effect if needed, omitted for modern clean look */}
-                          <h5 className="text-xl font-bold text-white mb-3 line-clamp-2 productName">{product.name}</h5>
-                          <p className="text-white/80 text-sm mb-6 line-clamp-3 productDesc">{stripHtml(product.description)}</p>
-
+                          <h5
+                            className="text-xl font-bold text-white mb-3 productName overflow-hidden"
+                            style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}
+                          >
+                            {product.name}
+                          </h5>
+                          <p
+                            className="text-white/80 text-sm mb-6 productDesc overflow-hidden"
+                            style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}
+                          >
+                            {stripHtml(product.description)}
+                          </p>
                           <div className="mt-auto">
                             <button className="inline-flex items-center gap-2 text-[#323373] bg-white hover:bg-[#f3b216] hover:text-white px-6 py-3 rounded-full font-bold tracking-widest text-sm transition-colors uppercase readBtn group/btn shadow-md">
                               Read more
@@ -400,69 +409,6 @@ export default function HomeClient({
         </div>
       </section>
 
-      {/* 5. Why Choose Us (Split Layout) */}
-      <section className="py-24 bg-slate-50 border-y border-gray-100">
-        <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left Side: Bullet Points */}
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#323373] mb-8 uppercase tracking-widest">Why NK Dairy Equipments?</h2>
-            <div className="space-y-6">
-              {[
-                { title: 'Technologically Advanced', desc: 'Our machines feature state-of-the-art automation for maximum yield and minimum waste.' },
-                { title: 'FSSAI & Global Compliance', desc: 'Designed keeping strict hygienic engineering guidelines and sanitary standards in mind.' },
-                { title: 'Tailormade Solutions', desc: 'We don’t just sell equipment; we customize full plant layouts based on your specific requirements.' },
-                { title: 'ISO Certified Manufacturing', desc: 'Manufactured in our modern facility guaranteeing strict quality control at every step.' },
-              ].map((item, i) => (
-                <div key={i} className="flex gap-4">
-                  <div className="shrink-0 mt-1">
-                    <CheckCircle2 className="text-[#f3b216]" size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-800 text-lg mb-1">{item.title}</h4>
-                    <p className="text-slate-600">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-10">
-              <Link href="/videos" className="inline-flex items-center gap-2 text-white bg-[#323373] hover:bg-blue-500 px-6 py-3 rounded font-bold tracking-widest uppercase transition-colors shadow-md">
-                <Play size={18} fill="currentColor" /> Watch Corporate Video
-              </Link>
-            </div>
-          </div>
-
-          {/* Right Side: Accordions */}
-          <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-            <h3 className="text-2xl font-bold text-slate-800 mb-6">Our Commitments</h3>
-            <div className="space-y-4">
-              {[
-                { title: 'Comprehensive Services', icon: Settings, content: 'We offer end-to-end services from initial consultation, 3D plant layout design, manufacturing, on-site installation, to extensive after-sales support and maintenance.' },
-                { title: 'Uncompromising Quality', icon: ShieldCheck, content: 'Quality is embedded in our DNA. Every component undergoes rigorous testing to ensure it meets our exacting standards before it ever reaches your facility.' },
-                { title: 'Global Execution', icon: Factory, content: 'With successful installations across multiple countries, we have the logistical and technical capability to execute turnkey projects worldwide.' },
-              ].map((acc, i) => (
-                <div key={i} className="border border-gray-100 rounded-lg overflow-hidden">
-                  <button
-                    onClick={() => setActiveAccordion(activeAccordion === i ? null : i)}
-                    className={`w-full flex items-center justify-between p-4 font-bold text-left transition-colors ${activeAccordion === i ? 'bg-[#323373] text-white' : 'bg-gray-50 text-slate-700 hover:bg-gray-100'}`}
-                  >
-                    <span className="flex items-center gap-3">
-                      <acc.icon size={20} className={activeAccordion === i ? 'text-white' : 'text-[#f3b216]'} />
-                      {acc.title}
-                    </span>
-                    <ChevronDown size={20} className={`transition-transform duration-300 ${activeAccordion === i ? 'rotate-180' : ''}`} />
-                  </button>
-                  <div className={`transition-all duration-300 overflow-hidden ${activeAccordion === i ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                    <div className="p-5 text-slate-600 bg-white border-t border-gray-100">
-                      {acc.content}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 6. Testimonials */}
       <TestimonialsCarousel />

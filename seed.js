@@ -222,40 +222,6 @@ const industriesData = [
     ]
   },
   {
-    name: 'Fruits & Vegetables',
-    slug: 'fruits-vegetables',
-    description: 'Advanced engineering systems for fruit juice extraction, pulping, vegetable washing, and sorting lines, designed to maintain peak nutritional value.',
-    image: '/segments/fruits.png',
-    metaTitle: 'Fruits & Vegetables Processing Plants & Machinery | NK Dairy',
-    metaDescription: 'Explore our processing machinery for fruits and vegetables. High-efficiency pulpers, washers, and juice extraction systems.',
-    equipmentSolutions: {
-      enabled: true,
-      title: 'Fruits & Vegetables Solutions',
-      subtitle: 'Nutrient-preserving extraction and wash systems',
-      generalDescription: 'Our machinery ensures delicate handling and hygienic processing of organic crops and pulp production.',
-      tabsHeader: 'Available Lines:',
-      tabs: [
-        {
-          id: 'washing-sorting',
-          label: 'Washing & Sorting',
-          content: '<p>Bubble washers, spray elevators, and roller sorting conveyors designed to remove contaminants from raw produce gently.</p>'
-        },
-        {
-          id: 'extraction-pulping',
-          label: 'Pulping & Extraction',
-          content: '<p>High-capacity cold/hot break extraction units and turbo pulpers that separate seeds and skin from juices and puree cleanly.</p>'
-        }
-      ]
-    },
-    faqs: [
-      {
-        id: 'faq-1',
-        question: 'Can your pulpers handle stony fruits like mangoes or peaches?',
-        answer: 'Yes, our fruit pulping machines are equipped with adjustable screen sizes and specialized paddles designed to cleanly extract pulp from stone fruits without cracking seeds.'
-      }
-    ]
-  },
-  {
     name: 'Food',
     slug: 'food',
     description: 'Turnkey machinery systems for prepared foods, sauces, mayonnaise, ready-to-eat meals, and confectioneries using high-efficiency cooking vats and mixers.',
