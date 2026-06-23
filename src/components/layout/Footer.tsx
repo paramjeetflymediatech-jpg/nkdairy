@@ -12,25 +12,25 @@ const industries = [
 ];
 
 const equipmentCol1 = [
-  { label: 'Paneer Plant', href: '/products' },
-  { label: 'Dairy Turnkey Projects', href: '/products' },
-  { label: 'Greek Yogurt Plant in India', href: '/products' },
-  { label: 'Cream Pasteurizer Plant', href: '/products' },
-  { label: 'Milk Plant', href: '/products' },
-  { label: 'Ghee Plant', href: '/products' },
-  { label: 'Dahi and Lassi Plant', href: '/products' },
-  { label: 'Milk Pasteurizer Plant', href: '/products' },
+  { label: 'Paneer Plant', href: '/products/paneer-plant' },
+  { label: 'Dairy Turnkey Projects', href: '/products/dairy-turnkey-projects' },
+  { label: 'Greek Yogurt Plant in India', href: '/products/greek-yogurt-plant-in-india' },
+  { label: 'Cream Pasteurizer Plant', href: '/products/cream-pasteurizer-plant' },
+  { label: 'Milk Plant', href: '/products/milk-plant' },
+  { label: 'Ghee Plant', href: '/products/ghee-plant' },
+  { label: 'Dahi and Lassi Plant', href: '/products/dahi-and-lassi-plant' },
+  { label: 'Milk Pasteurizer Plant', href: '/products/milk-pasteurizer-plant' },
 ];
 
 const equipmentCol2 = [
-  { label: 'Khoya Mawa Making Machine', href: '/products' },
-  { label: 'Butter Churner', href: '/products' },
-  { label: 'Curd Making Plant Manufacturer', href: '/products' },
-  { label: 'Dairy Plant', href: '/products' },
-  { label: 'Milk Chilling Plant', href: '/products' },
-  { label: 'Cream Separator', href: '/products' },
-  { label: 'Batch Pasteurizer (200 Ltr to 2000 Ltr)', href: '/products' },
-  { label: 'HTST Milk Processing Plant', href: '/products' },
+  { label: 'Khoya Mawa Making Machine', href: '/products/khoya-mawa-making-machine' },
+  { label: 'Butter Churner', href: '/products/butter-churner' },
+  { label: 'Curd Making Plant Manufacturer', href: '/products/curd-making-plant-manufacturer' },
+  { label: 'Dairy Plant', href: '/products/dairy-plant' },
+  { label: 'Milk Chilling Plant', href: '/products/milk-chilling-plant' },
+  { label: 'Cream Separator', href: '/products/cream-separator' },
+  { label: 'Batch Pasteurizer (200 Ltr to 2000 Ltr)', href: '/products/batch-pasteurizer-200-ltr-to-2000-ltr' },
+  { label: 'HTST Milk Processing Plant', href: '/products/htst-milk-processing-plant' },
 ];
 
 const services = [

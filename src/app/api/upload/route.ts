@@ -43,8 +43,10 @@ export async function POST(req: NextRequest) {
     const fileUrl = (uploadResult as any).secure_url;
 
     return NextResponse.json({ url: fileUrl }, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Upload Error:', error);
-    return NextResponse.json({ error: 'Cloudinary upload failed' }, { status: 500 });
+    const errorMsg = error?.message || 'Cloudinary upload failed';
+    const status = error?.http_code || 500;
+    return NextResponse.json({ error: errorMsg }, { status });
   }
 }

@@ -153,7 +153,12 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
           const data = await res.json();
           uploadedUrls.push(data.url);
         } else {
-          Swal.fire('Error', `Image ${file.name} upload failed`, 'error');
+          let errMessage = 'Unknown error';
+          try {
+            const errData = await res.json();
+            errMessage = errData.error || errMessage;
+          } catch(e) {}
+          Swal.fire('Error', `Image ${file.name} upload failed: ${errMessage}`, 'error');
         }
       }
       
@@ -193,7 +198,12 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
         const data = await res.json();
         setFormData({ ...formData, model3d: data.url });
       } else {
-        Swal.fire('Error', '3D model upload failed', 'error');
+        let errMessage = 'Unknown error';
+        try {
+          const errData = await res.json();
+          errMessage = errData.error || errMessage;
+        } catch(e) {}
+        Swal.fire('Error', `3D model upload failed: ${errMessage}`, 'error');
       }
     } catch (err) {
       console.error(err);
@@ -281,6 +291,13 @@ export default function ProductForm({ initialData = null, mode = 'create' }: { i
         newSections[index].image = data.url;
         newSections[index].mediaType = isVideo ? 'video' : 'image';
         setFormData({ ...formData, pageSections: newSections });
+      } else {
+        let errMessage = 'Unknown error';
+        try {
+          const errData = await res.json();
+          errMessage = errData.error || errMessage;
+        } catch(e) {}
+        Swal.fire('Error', `Media upload failed: ${errMessage}`, 'error');
       }
     } catch (err) {
       console.error(err);
