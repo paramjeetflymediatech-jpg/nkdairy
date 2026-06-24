@@ -12,6 +12,7 @@ import ClienteleSlider from '@/components/shared/ClienteleSlider';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { motion } from 'framer-motion';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -66,6 +67,65 @@ const testimonials = [
     ],
   }
 ];
+
+const industryProducts: Record<string, {name: string, url: string}[]> = {
+  'dairy': [
+    { name: 'Paneer Plant', url: '/products/paneer-plant' },
+    { name: 'Dairy Turnkey Projects', url: '/products/dairy-turnkey-projects' },
+    { name: 'Greek Yogurt Plant', url: '/products/greek-yogurt-plant-in-india' },
+    { name: 'Cream Pasteurizer Plant', url: '/products/cream-pasteurizer-plant' },
+    { name: 'Milk Plant', url: '/products/milk-plant' },
+    { name: 'Ghee Plant', url: '/products/ghee-plant' },
+    { name: 'Dahi & Lassi Plant', url: '/products/dahi-and-lassi-plant' },
+    { name: 'Milk Pasteurizer Plant', url: '/products/milk-pasteurizer-plant' },
+    { name: 'Khoya / Mawa Machine', url: '/products/khoya-mawa-making-machine' },
+    { name: 'Butter Churner', url: '/products/butter-churner' },
+    { name: 'Curd Making Plant', url: '/products/curd-making-plant-manufacturer' },
+    { name: 'Dairy Plant', url: '/products/dairy-plant' },
+    { name: 'Milk Chilling Plant', url: '/products/milk-chilling-plant' },
+    { name: 'Cream Separator', url: '/products/cream-separator' },
+    { name: 'Batch Pasteurizer', url: '/products/batch-pasteurizer-200-ltr-to-2000-ltr' },
+    { name: 'HTST Milk Plant', url: '/products/htst-milk-processing-plant' }
+  ],
+  'dairy-processing-equipment-manufacturers': [
+    { name: 'Paneer Plant', url: '/products/paneer-plant' },
+    { name: 'Dairy Turnkey Projects', url: '/products/dairy-turnkey-projects' },
+    { name: 'Greek Yogurt Plant', url: '/products/greek-yogurt-plant-in-india' },
+    { name: 'Cream Pasteurizer Plant', url: '/products/cream-pasteurizer-plant' },
+    { name: 'Milk Plant', url: '/products/milk-plant' },
+    { name: 'Ghee Plant', url: '/products/ghee-plant' },
+    { name: 'Dahi & Lassi Plant', url: '/products/dahi-and-lassi-plant' },
+    { name: 'Milk Pasteurizer Plant', url: '/products/milk-pasteurizer-plant' },
+    { name: 'Khoya / Mawa Machine', url: '/products/khoya-mawa-making-machine' },
+    { name: 'Butter Churner', url: '/products/butter-churner' },
+    { name: 'Curd Making Plant', url: '/products/curd-making-plant-manufacturer' },
+    { name: 'Dairy Plant', url: '/products/dairy-plant' },
+    { name: 'Milk Chilling Plant', url: '/products/milk-chilling-plant' },
+    { name: 'Cream Separator', url: '/products/cream-separator' },
+    { name: 'Batch Pasteurizer', url: '/products/batch-pasteurizer-200-ltr-to-2000-ltr' },
+    { name: 'HTST Milk Plant', url: '/products/htst-milk-processing-plant' }
+  ],
+  'food': [
+    { name: 'Dahi & Lassi Plant', url: '/products/dahi-and-lassi-plant' },
+    { name: 'Khoya / Mawa Machine', url: '/products/khoya-mawa-making-machine' },
+    { name: 'Curd Making Plant', url: '/products/curd-making-plant-manufacturer' },
+    { name: 'Batch Pasteurizer', url: '/products/batch-pasteurizer-200-ltr-to-2000-ltr' },
+  ],
+  'beverage': [
+    { name: 'Dahi & Lassi Plant', url: '/products/dahi-and-lassi-plant' },
+    { name: 'Batch Pasteurizer', url: '/products/batch-pasteurizer-200-ltr-to-2000-ltr' },
+  ],
+  'beverages': [
+    { name: 'Dahi & Lassi Plant', url: '/products/dahi-and-lassi-plant' },
+    { name: 'Batch Pasteurizer', url: '/products/batch-pasteurizer-200-ltr-to-2000-ltr' },
+  ],
+  'cosmetics': [
+    { name: 'Batch Pasteurizer', url: '/products/batch-pasteurizer-200-ltr-to-2000-ltr' },
+  ],
+  'allied-industry': [
+    { name: 'Batch Pasteurizer', url: '/products/batch-pasteurizer-200-ltr-to-2000-ltr' },
+  ],
+};
 
 function TestimonialsCarousel() {
   return (
@@ -163,10 +223,12 @@ const stripHtml = (html: string) => {
 
 export default function HomeClient({
   initialProducts = [],
-  initialIndustries = []
+  initialIndustries = [],
+  initialFaqs = []
 }: {
   initialProducts?: any[];
   initialIndustries?: any[];
+  initialFaqs?: any[];
 }) {
   const [activeAccordion, setActiveAccordion] = useState<number | null>(0);
   const marqueeRef = useRef<HTMLDivElement>(null);
@@ -243,7 +305,7 @@ export default function HomeClient({
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-gray-50 overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-[#00b4d8]/10 blur-3xl z-0"></div>
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-[#0077b6]/10 blur-3xl z-0"></div>
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-[#0077b6]z10 blur-3xl z-0"></div>
 
         <div className="w-full max-w-[1440px] mx-auto px-6 xl:px-12 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-10 xl:gap-20 items-center">
@@ -251,12 +313,21 @@ export default function HomeClient({
             {/* Left Content */}
             <div className="w-full xl:pr-8">
              
-              <h1 className="text-4xl md:text-5xl lg:text-[56px] xl:text-[64px] font-extrabold text-[#0d1b2e] leading-[1.1] mb-6 drop-shadow-sm">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] xl:text-[56px] font-extrabold text-[#0d1b2e] leading-[1.1] mb-6 drop-shadow-sm">
                 Complete Processing <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077b6] to-[#00b4d8]">Solutions</span>
               </h1>
-              <p className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed font-medium">
-                Tailormade Process Equipment for Dairy, Food, and Beverage Industries. From farm to processing plant, we deliver excellence at every step.
-              </p>
+              <div className="mb-8">
+                <h3 className="text-xl md:text-2xl font-bold text-[#0077b6] mb-2">Dairy Equipment Company For The Success Of Dairy Business</h3>
+                <h4 className="text-lg font-semibold text-[#0d1b2e] mb-4">Welcome to NK Dairy Equipments</h4>
+                <div className="text-base text-gray-600 leading-relaxed font-medium space-y-4">
+                  <p>
+                    We are running a dairy equipment company located at Aurangabaad, Near Radha Swami Sat sang Bhawan, Radaur Road, Yamuna Nagar, Haryana which is certified with ISO:9001:2015. Here, at NK Dairy Equipments we focus on quality management which is associated with dairy machines such as automatic milking machines, Packaging machines, cream separator and butter manufacturing unit, Milk Cooler and Analyzer, Paneer and ghee making machines, and so on.
+                  </p>
+                  <p>
+                    We offer Dairy Equipment for the clients, which are manufactured with consideration and accuracy. Our products are well-renowned for offering high performance even in tough and serious conditions. In addition, we deliver our products at the proper time with careful considerations.
+                  </p>
+                </div>
+              </div>
 
               <div className="flex flex-wrap gap-4">
                 <Link href="/products">
@@ -272,21 +343,6 @@ export default function HomeClient({
                 </Link>
               </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-4 md:gap-6 mt-16 pt-8 border-t border-gray-200">
-                <div>
-                  <h4 className="text-3xl md:text-4xl font-extrabold text-[#0077b6]">500+</h4>
-                  <p className="text-xs md:text-sm text-gray-500 font-bold tracking-wider mt-1 uppercase">Clients</p>
-                </div>
-                <div>
-                  <h4 className="text-3xl md:text-4xl font-extrabold text-[#0077b6]">25+</h4>
-                  <p className="text-xs md:text-sm text-gray-500 font-bold tracking-wider mt-1 uppercase">Years</p>
-                </div>
-                <div>
-                  <h4 className="text-3xl md:text-4xl font-extrabold text-[#0077b6]">18+</h4>
-                  <p className="text-xs md:text-sm text-gray-500 font-bold tracking-wider mt-1 uppercase">States</p>
-                </div>
-              </div>
             </div>
 
             {/* Right Image/Composition */}
@@ -303,7 +359,7 @@ export default function HomeClient({
               </div>
 
               {/* Floating Badge */}
-              <div className="absolute -bottom-8 -left-8 md:bottom-10 md:-left-12 bg-white p-4 md:p-5 rounded-2xl shadow-2xl flex items-center gap-4 border border-gray-100 z-20 hover:-translate-y-2 transition-transform duration-300">
+              <div className="absolute -bottom-8 left-0 sm:-left-8 md:bottom-10 md:-left-12 bg-white p-4 md:p-5 rounded-2xl shadow-2xl flex items-center gap-4 border border-gray-100 z-20 hover:-translate-y-2 transition-transform duration-300">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#0077b6] to-[#00b4d8] flex items-center justify-center text-white shadow-inner">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                 </div>
@@ -339,31 +395,87 @@ export default function HomeClient({
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {segments.map((seg, i) => (
-              <Link key={i} href={`/industries/${seg.slug}`} className="group relative overflow-hidden rounded-[2rem] aspect-[4/3] md:aspect-auto md:h-[350px] block shadow-[0_10px_30px_rgba(13,27,46,0.08)] hover:shadow-[0_20px_40px_rgba(0,119,182,0.15)] transition-all duration-500 border-4 border-white">
-                {/* Background Image */}
-                <img 
-                  src={`${seg.image}?v=new`}
-                  alt={seg.name} 
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                {/* Dark Gradient Overlay for Text Readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b2e]/90 via-[#0d1b2e]/30 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"></div>
-                
-                {/* Content */}
-                <div className="absolute inset-0 p-8 flex flex-col justify-end items-start text-left">
-                  <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-2 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-300 ease-out drop-shadow-md">
-                    {seg.name}
-                  </h3>
-                  {/* Animated Arrow/Button */}
-                  <div className="flex items-center gap-2 text-[#00b4d8] font-bold opacity-0 group-hover:opacity-100 transform translate-y-6 group-hover:translate-y-0 transition-all duration-300 delay-75 ease-out">
-                    <span className="uppercase tracking-widest text-xs">Explore Solutions</span>
-                    <ArrowRight size={16} />
-                  </div>
-                </div>
-              </Link>
-            ))}
+          <div className="relative group/slider px-2 sm:px-12">
+            <Swiper
+              modules={[Navigation, Autoplay]}
+              spaceBetween={24}
+              slidesPerView={1}
+              breakpoints={{
+                640: { slidesPerView: 2, spaceBetween: 24 },
+                1024: { slidesPerView: 3, spaceBetween: 32 },
+              }}
+              navigation={{
+                prevEl: '.seg-prev-btn',
+                nextEl: '.seg-next-btn',
+              }}
+              autoplay={{ delay: 4000, disableOnInteraction: true }}
+              className="!pb-8"
+            >
+              {segments.map((seg, i) => {
+                const products = industryProducts[seg.slug.toLowerCase()] || [];
+                return (
+                  <SwiperSlide key={i} className="h-auto">
+                    <div tabIndex={0} className="h-full group relative overflow-hidden rounded-[2rem] aspect-[4/3] md:aspect-auto md:h-[350px] block shadow-[0_10px_30px_rgba(13,27,46,0.08)] hover:shadow-[0_20px_40px_rgba(0,119,182,0.15)] focus:shadow-[0_20px_40px_rgba(0,119,182,0.15)] transition-all duration-500 border-4 border-white cursor-pointer outline-none">
+                      {/* Background Image */}
+                      <img 
+                        src={`${seg.image}?v=new`}
+                        alt={seg.name} 
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      {/* Dark Gradient Overlay for Text Readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b2e]/90 via-[#0d1b2e]/30 to-[#0d1b2e]/40 opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      
+                      {/* Default State Content */}
+                      <div className="absolute inset-0 p-8 flex flex-col justify-end items-start text-left group-hover:opacity-0 group-focus:opacity-0 transition-opacity duration-300 pointer-events-none">
+                        <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-2 drop-shadow-md">
+                          {seg.name}
+                        </h3>
+                        <div className="flex items-center gap-2 text-[#00b4d8] font-bold">
+                          <span className="uppercase tracking-widest text-xs">Explore Solutions</span>
+                          <ArrowRight size={16} />
+                        </div>
+                      </div>
+
+                      {/* Hover State Content */}
+                      <div className="absolute inset-0 p-6 flex flex-col justify-start items-start text-left opacity-0 translate-y-4 group-hover:opacity-100 group-focus:opacity-100 group-hover:translate-y-0 group-focus:translate-y-0 transition-all duration-500 ease-out z-10 bg-[#0d1b2e]/85 backdrop-blur-sm">
+                        <h3 className="text-xl font-bold text-white mb-4 border-b border-white/20 pb-3 w-full flex justify-between items-center shrink-0">
+                          {seg.name}
+                          <Link href={`/industries/${seg.slug}`} className="text-xs font-bold text-[#00b4d8] uppercase hover:text-white flex items-center gap-1 transition-colors">
+                            View All <ArrowRight size={12} />
+                          </Link>
+                        </h3>
+                        
+                        <div className="flex-1 w-full overflow-y-auto pr-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#00b4d8 transparent' }}>
+                          {products.length > 0 ? (
+                            <div className="flex flex-wrap gap-2">
+                              {products.map((p, idx) => (
+                                <Link 
+                                  key={idx} 
+                                  href={p.url} 
+                                  className="text-xs font-medium bg-white/10 hover:bg-[#00b4d8] text-white px-3 py-2 rounded-full transition-colors border border-white/10 hover:border-[#00b4d8]"
+                                >
+                                  {p.name}
+                                </Link>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-sm text-gray-300 italic">Explore complete solutions for {seg.name} industry.</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+
+            {/* Custom Navigation Buttons */}
+            <button className="seg-prev-btn absolute left-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-[0_5px_15px_rgba(0,0,0,0.15)] flex items-center justify-center text-[#0d1b2e] hover:text-white hover:bg-[#00b4d8] transition-all duration-300 opacity-100 sm:opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 disabled:hidden -ml-2 sm:ml-0">
+              <ChevronLeft size={24} />
+            </button>
+            <button className="seg-next-btn absolute right-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-[0_5px_15px_rgba(0,0,0,0.15)] flex items-center justify-center text-[#0d1b2e] hover:text-white hover:bg-[#00b4d8] transition-all duration-300 opacity-100 sm:opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 disabled:hidden -mr-2 sm:mr-0">
+              <ChevronRight size={24} />
+            </button>
           </div>
         </div>
       </section>
@@ -389,7 +501,7 @@ export default function HomeClient({
               </div>
               
               {/* Floating Experience Badge */}
-              <div className="absolute -bottom-6 -right-6 md:bottom-8 md:-right-8 bg-white p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,119,182,0.15)] flex flex-col items-center justify-center border border-gray-50 z-20 animate-bounce" style={{ animationDuration: '4s' }}>
+              <div className="absolute -bottom-6 right-0 sm:-right-6 md:bottom-8 md:-right-8 bg-white p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,119,182,0.15)] flex flex-col items-center justify-center border border-gray-50 z-20 animate-bounce" style={{ animationDuration: '4s' }}>
                 <span className="text-4xl font-extrabold text-[#0077b6] mb-1">20+</span>
                 <span className="text-sm font-bold text-[#0d1b2e] uppercase tracking-wider text-center leading-tight">Years of<br/>Excellence</span>
               </div>
@@ -406,12 +518,13 @@ export default function HomeClient({
                 Pioneering the Future of <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077b6] to-[#00b4d8]">Dairy Technology</span>
               </h2>
               
-              <div className="space-y-6 text-lg text-slate-600 font-medium mb-10">
+              <div className="space-y-4 text-base text-slate-600 font-medium mb-10">
+                <h3 className="text-xl font-bold text-[#0d1b2e]">Utilities and Uses of Dairy Plant</h3>
                 <p>
-                  NK Dairy Equipments is a leading manufacturer of comprehensive machinery portfolios covering every stage of the dairy and food manufacturing process. We provide technologically advanced, energy-efficient, and tailormade solutions.
+                  Dairy farming is so popular from past many decades. But at that time the framers did all the works with their hands whereas these days dairy equipments are available with the latest technology to make your work easier. These equipments also include dairy machines which are additionally known as milking machines. With the advancements in technology, Indian dairy farming is also developed. And in recent days, Indian dairy is on peak all over the world because of the best quality dairy products.
                 </p>
                 <p className="text-slate-500">
-                  From Khoya Mawa machines, Curd making machines, to Bulk milk coolers and complete Pasteurization Plants, our equipment meets the highest global standards for hygiene and automation.
+                  In dairy farming, milk processing units play an imperative role in order to make dairy products such as cheese, yogurt, cream, butter, lassi, and ghee. These all the operations are done with the help of dairy equipments include-:
                 </p>
               </div>
               
@@ -422,6 +535,106 @@ export default function HomeClient({
                 </div>
               </Link>
             </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 3.5 Why Choose Us / Features */}
+      <section className="py-24 bg-[#0d1b2e] relative overflow-hidden">
+        {/* Animated Background Orbs */}
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3], rotate: [0, 90, 0] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-[#00b4d8]/20 to-transparent blur-[120px] pointer-events-none"
+        />
+        <motion.div 
+          animate={{ scale: [1, 1.5, 1], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-gradient-to-bl from-blue-500/20 to-transparent blur-[120px] pointer-events-none"
+        />
+        
+        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00b4d8]/10 border border-[#00b4d8]/30 mb-6 shadow-[0_0_20px_rgba(0,180,216,0.2)]">
+              <span className="w-2 h-2 rounded-full bg-[#00b4d8] animate-pulse"></span>
+              <span className="text-xs font-bold tracking-widest uppercase text-[#00b4d8]">Our Strengths</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight leading-tight">
+              Why Choose <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00b4d8] to-blue-400">Us</span>
+            </h2>
+            <p className="text-slate-400 font-medium text-lg max-w-2xl mx-auto">
+              We are dedicated to providing the highest quality equipment and service to ensure the success of your dairy business.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 relative">
+            
+            {/* Feature 1 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="group relative text-center md:text-left bg-[#11233e]/80 backdrop-blur-md p-8 lg:p-10 rounded-[2rem] border border-white/5 hover:border-[#00b4d8]/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[#00b4d8]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-[#00b4d8]/10 rounded-2xl flex items-center justify-center mb-6 mx-auto md:mx-0 text-[#00b4d8] group-hover:scale-110 group-hover:bg-[#00b4d8] group-hover:text-white transition-all duration-500 shadow-[0_0_15px_rgba(0,180,216,0.1)]">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <h4 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-[#00b4d8] transition-colors">20 Years of Excellence</h4>
+                <p className="text-slate-400 font-medium leading-relaxed group-hover:text-slate-300 transition-colors">
+                  We hold two decades of experience that can be favorable for you.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Feature 2 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="group relative text-center md:text-left bg-[#11233e]/80 backdrop-blur-md p-8 lg:p-10 rounded-[2rem] border border-white/5 hover:border-[#00b4d8]/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[#00b4d8]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-[#00b4d8]/10 rounded-2xl flex items-center justify-center mb-6 mx-auto md:mx-0 text-[#00b4d8] group-hover:scale-110 group-hover:bg-[#00b4d8] group-hover:text-white transition-all duration-500 shadow-[0_0_15px_rgba(0,180,216,0.1)]">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <h4 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-[#00b4d8] transition-colors">Experienced & Trained Workers</h4>
+                <p className="text-slate-400 font-medium leading-relaxed group-hover:text-slate-300 transition-colors">
+                  We have an experienced team of workers who are dedicated to providing the best to you.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Feature 3 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="group relative text-center md:text-left bg-[#11233e]/80 backdrop-blur-md p-8 lg:p-10 rounded-[2rem] border border-white/5 hover:border-[#00b4d8]/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[#00b4d8]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-[#00b4d8]/10 rounded-2xl flex items-center justify-center mb-6 mx-auto md:mx-0 text-[#00b4d8] group-hover:scale-110 group-hover:bg-[#00b4d8] group-hover:text-white transition-all duration-500 shadow-[0_0_15px_rgba(0,180,216,0.1)]">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                </div>
+                <h4 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-[#00b4d8] transition-colors">100+ Awards Won</h4>
+                <p className="text-slate-400 font-medium leading-relaxed group-hover:text-slate-300 transition-colors">
+                  We have won many awards for our commitment and dedication to offering the best dairy equipment to all.
+                </p>
+              </div>
+            </motion.div>
 
           </div>
         </div>
@@ -537,13 +750,13 @@ export default function HomeClient({
 
       
 
-      <FAQSection />
+      <FAQSection data={initialFaqs} />
 
     </div>
   );
 }
 
-const faqs = [
+const defaultFaqs = [
   {
     question: "What types of industries does NK Dairy Equipments serve?",
     answer: "We specialize in engineering high-quality processing equipment and turn-key solutions for Dairy, Food, Beverages, Cosmetics, and Allied Industries."
@@ -566,19 +779,51 @@ const faqs = [
   }
 ];
 
-function FAQSection() {
+function FAQSection({ data = [] }: { data?: any[] }) {
+  const displayFaqs = data && data.length > 0 ? data : defaultFaqs;
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const toggleFaq = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const midpoint = Math.ceil(displayFaqs.length / 2);
+  const leftFaqs = displayFaqs.slice(0, midpoint);
+  const rightFaqs = displayFaqs.slice(midpoint);
+
+  const renderFaq = (faq: any, index: number) => (
+    <div 
+      key={index} 
+      className={`border border-gray-100 rounded-2xl overflow-hidden transition-all duration-300 ${openIndex === index ? 'bg-white shadow-[0_10px_40px_rgba(0,119,182,0.06)] border-[#00b4d8]/20' : 'bg-slate-50 hover:bg-white hover:shadow-md'}`}
+    >
+      <button
+        className="w-full flex items-center justify-between p-6 md:px-8 md:py-6 text-left focus:outline-none"
+        onClick={() => toggleFaq(index)}
+      >
+        <h3 className={`text-lg md:text-xl font-bold pr-8 transition-colors ${openIndex === index ? 'text-[#0077b6]' : 'text-[#0d1b2e]'}`}>
+          {faq.question}
+        </h3>
+        <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${openIndex === index ? 'bg-[#0077b6] text-white rotate-180' : 'bg-white text-[#0077b6] shadow-sm'}`}>
+          <ChevronDown size={20} />
+        </div>
+      </button>
+      
+      <div 
+        className={`transition-all duration-300 ease-in-out ${openIndex === index ? 'max-h-96 opacity-100 pb-6 md:pb-8' : 'max-h-0 opacity-0'}`}
+      >
+        <div className="px-6 md:px-8 text-slate-600 leading-relaxed text-base">
+          {faq.answer}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <section className="py-24 bg-white relative overflow-hidden border-t border-gray-100">
       {/* Decorative Blur */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#00b4d8]/5 rounded-full blur-3xl pointer-events-none"></div>
       
-      <div className="w-full max-w-[1000px] mx-auto px-6 md:px-12 relative z-10">
+      <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 relative z-10">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-50 border border-cyan-100 mb-6">
             <span className="w-2 h-2 rounded-full bg-[#00b4d8]"></span>
@@ -592,33 +837,13 @@ function FAQSection() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-4">
-          {faqs.map((faq, index) => (
-            <div 
-              key={index} 
-              className={`border border-gray-100 rounded-2xl overflow-hidden transition-all duration-300 ${openIndex === index ? 'bg-white shadow-[0_10px_40px_rgba(0,119,182,0.06)] border-[#00b4d8]/20' : 'bg-slate-50 hover:bg-white hover:shadow-md'}`}
-            >
-              <button
-                className="w-full flex items-center justify-between p-6 md:px-8 md:py-6 text-left focus:outline-none"
-                onClick={() => toggleFaq(index)}
-              >
-                <h3 className={`text-lg md:text-xl font-bold pr-8 transition-colors ${openIndex === index ? 'text-[#0077b6]' : 'text-[#0d1b2e]'}`}>
-                  {faq.question}
-                </h3>
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${openIndex === index ? 'bg-[#0077b6] text-white rotate-180' : 'bg-white text-[#0077b6] shadow-sm'}`}>
-                  <ChevronDown size={20} />
-                </div>
-              </button>
-              
-              <div 
-                className={`transition-all duration-300 ease-in-out ${openIndex === index ? 'max-h-96 opacity-100 pb-6 md:pb-8' : 'max-h-0 opacity-0'}`}
-              >
-                <div className="px-6 md:px-8 text-slate-600 leading-relaxed text-base">
-                  {faq.answer}
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 items-start">
+          <div className="flex flex-col gap-4 lg:gap-6">
+            {leftFaqs.map((faq, idx) => renderFaq(faq, idx))}
+          </div>
+          <div className="flex flex-col gap-4 lg:gap-6">
+            {rightFaqs.map((faq, idx) => renderFaq(faq, midpoint + idx))}
+          </div>
         </div>
       </div>
     </section>

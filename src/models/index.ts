@@ -11,6 +11,7 @@ import { Gallery } from './Gallery';
 import { SeoMetadata } from './SeoMetadata';
 import { Industry } from './Industry';
 import { ProductIndustry } from './ProductIndustry';
+import { Faq } from './Faq';
 
 // Many-to-many associations between Product and Industry
 Product.belongsToMany(Industry, { 
@@ -53,4 +54,5 @@ export {
   SeoMetadata,
   Industry,
   ProductIndustry,
+  Faq,
 };

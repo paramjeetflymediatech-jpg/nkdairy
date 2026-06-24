@@ -90,7 +90,7 @@ export default async function RootLayout({
       <head>
         {parseHeadScripts(seo?.headScripts)}
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col overflow-x-hidden">
         {children}
         {seo?.footerScripts && (
           <div dangerouslySetInnerHTML={{ __html: seo.footerScripts }} style={{ display: 'none' }} />

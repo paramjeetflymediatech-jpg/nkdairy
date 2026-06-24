@@ -16,7 +16,8 @@ import {
   MessageSquare,
   Globe,
   FolderTree,
-  Layers
+  Layers,
+  HelpCircle
 } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 
@@ -50,6 +51,7 @@ export default function AdminLayout({
     { name: 'Industries', href: '/admin/industries', icon: Layers },
     { name: 'Leads', href: '/admin/leads', icon: Users },
     { name: 'Blogs', href: '/admin/blogs', icon: FileText },
+    { name: 'FAQs', href: '/admin/faqs', icon: HelpCircle },
     { name: 'Inquiries', href: '/admin/inquiries', icon: MessageSquare },
     { name: 'SEO Settings', href: '/admin/seo', icon: Globe },
   ];
