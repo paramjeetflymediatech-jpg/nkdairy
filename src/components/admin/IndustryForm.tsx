@@ -52,7 +52,7 @@ export default function IndustryForm({ initialData }: IndustryFormProps) {
   // Predefined segments list for easy drop-down select
   const segmentImages = [
     { name: 'Dairy', value: '/segments/dairy.png' },
-    { name: 'Fruits & Vegetables', value: '/segments/fruits.png' },
+    // { name: 'Fruits & Vegetables', value: '/segments/fruits.png' },
     { name: 'Food', value: '/segments/food.png' },
     { name: 'Cosmetics', value: '/segments/cosmetics.png' },
     { name: 'Beverages', value: '/segments/beverages.png' },

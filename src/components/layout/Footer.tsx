@@ -11,7 +11,7 @@ const industries = [
   { label: 'Dairy', href: '/products?category=dairy' },
   { label: 'Food', href: '/products?category=food' },
   { label: 'Beverage', href: '/products?category=beverage' },
-  { label: 'Fruits & Vegetables', href: '/products?category=fruits-vegetables' },
+  // { label: 'Fruits & Vegetables', href: '/products?category=fruits-vegetables' },
   { label: 'Cosmetics', href: '/products?category=cosmetics' },
   { label: 'Allied Industry', href: '/products?category=allied-industry' },
 ];

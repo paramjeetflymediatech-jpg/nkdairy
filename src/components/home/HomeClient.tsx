@@ -292,7 +292,7 @@ export default function HomeClient({
     ? initialIndustries
     : [
       { name: 'Dairy', image: '/segments/dairy.png', slug: 'dairy' },
-      { name: 'Fruits & Vegetables', image: '/segments/fruits.png', slug: 'fruits-vegetables' },
+      // { name: 'Fruits & Vegetables', image: '/segments/fruits.png', slug: 'fruits-vegetables' },
       { name: 'Food', image: '/segments/food.png', slug: 'food' },
       { name: 'Cosmetics', image: '/segments/cosmetics.png', slug: 'cosmetics' },
       { name: 'Beverages', image: '/segments/beverages.png', slug: 'beverages' },
