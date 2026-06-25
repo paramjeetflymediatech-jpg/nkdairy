@@ -313,18 +313,17 @@ export default function HomeClient({
             {/* Left Content */}
             <div className="w-full xl:pr-8">
              
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] xl:text-[56px] font-extrabold text-[#0d1b2e] leading-[1.1] mb-6 drop-shadow-sm">
-                Complete Processing <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077b6] to-[#00b4d8]">Solutions</span>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[40px] xl:text-[30px] font-extrabold text-[#0d1b2e] leading-[1.1] mb-6 drop-shadow-sm">
+                Complete Dairy Processing <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077b6] to-[#00b4d8]">Solutions</span>
               </h1>
               <div className="mb-8">
-                <h3 className="text-xl md:text-2xl font-bold text-[#0077b6] mb-2">Dairy Equipment Company For The Success Of Dairy Business</h3>
-                <h4 className="text-lg font-semibold text-[#0d1b2e] mb-4">Welcome to NK Dairy Equipments</h4>
+                <h3 className="text-lg md:text-xl font-bold text-[#0077b6] mb-4">Trusted Dairy Equipment Manufacturer for Modern Dairy Businesses</h3>
                 <div className="text-base text-gray-600 leading-relaxed font-medium space-y-4">
                   <p>
-                    We are running a dairy equipment company located at Aurangabaad, Near Radha Swami Sat sang Bhawan, Radaur Road, Yamuna Nagar, Haryana which is certified with ISO:9001:2015. Here, at NK Dairy Equipments we focus on quality management which is associated with dairy machines such as automatic milking machines, Packaging machines, cream separator and butter manufacturing unit, Milk Cooler and Analyzer, Paneer and ghee making machines, and so on.
+                    Welcome to <strong>NK Dairy Equipments</strong>, an <strong>ISO 9001:2015 certified</strong> dairy equipment manufacturer based in Yamunanagar, Haryana. We specialize in designing and manufacturing <strong>high-quality dairy processing and packaging equipment</strong>, including <strong>milk processing plants, pasteurizers, cream separators, butter and ghee production units, paneer making machines, milk coolers, and analyzers</strong>.
                   </p>
                   <p>
-                    We offer Dairy Equipment for the clients, which are manufactured with consideration and accuracy. Our products are well-renowned for offering high performance even in tough and serious conditions. In addition, we deliver our products at the proper time with careful considerations.
+                    With a strong focus on <strong>quality, innovation, and reliability</strong>, we deliver efficient dairy solutions that help businesses improve productivity and maintain consistent product quality. Our equipment is engineered for <strong>superior performance, durability, and timely delivery</strong>, ensuring long-term value for our customers.
                   </p>
                 </div>
               </div>
