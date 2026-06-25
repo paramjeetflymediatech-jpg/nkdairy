@@ -684,7 +684,7 @@ export default function HomeClient({
                       <div className="bg-white rounded-2xl overflow-hidden h-full flex flex-col border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,119,182,0.12)] transition-all duration-300">
                         {/* Image Background Container */}
                         <div className="bg-gradient-to-b from-gray-50 to-white flex justify-center items-center h-[280px] relative border-b border-gray-50 overflow-hidden">
-                          <img src={imageUrl} alt={product.name} className="w-full h-full object-contain" />
+                          <img src={imageUrl} alt={product.name} className="w-full h-full object-cover" />
                         </div>
 
                         <div className="p-6 md:p-8 flex flex-col flex-1 relative bg-white">
