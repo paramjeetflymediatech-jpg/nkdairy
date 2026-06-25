@@ -68,7 +68,7 @@ const testimonials = [
   }
 ];
 
-const industryProducts: Record<string, {name: string, url: string}[]> = {
+const industryProducts: Record<string, { name: string, url: string }[]> = {
   'dairy': [
     { name: 'Paneer Plant', url: '/products/paneer-plant' },
     { name: 'Dairy Turnkey Projects', url: '/products/dairy-turnkey-projects' },
@@ -130,7 +130,7 @@ const industryProducts: Record<string, {name: string, url: string}[]> = {
 function TestimonialsCarousel() {
   return (
     <section className="py-24 bg-gradient-to-b from-white to-[#f8f9fa] relative overflow-hidden">
-      
+
       {/* Decorative Background Quote */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 text-[300px] text-gray-50 leading-none font-serif opacity-50 z-0 select-none">
         &ldquo;
@@ -162,7 +162,7 @@ function TestimonialsCarousel() {
             {testimonials.map((t, i) => (
               <SwiperSlide key={i} className="h-auto">
                 <div className="bg-white rounded-[2rem] p-8 md:p-10 border border-gray-100 shadow-[0_10px_40px_rgba(0,119,182,0.06)] hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,119,182,0.12)] transition-all duration-300 h-full min-h-[420px] flex flex-col relative group">
-                  
+
                   {/* Absolute smaller quote mark */}
                   <div className="absolute top-6 right-8 text-6xl text-[#00b4d8] font-serif leading-none opacity-10 group-hover:opacity-20 transition-opacity">
                     &rdquo;
@@ -201,7 +201,7 @@ function TestimonialsCarousel() {
           >
             <ChevronLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
           </button>
-          
+
           <button
             aria-label="Next testimonial"
             className="testi-next hidden md:flex absolute -right-4 lg:-right-12 top-1/2 -translate-y-1/2 w-14 h-14 bg-white rounded-full items-center justify-center transition-all border border-gray-100 shadow-lg text-[#0077b6] hover:bg-[#0077b6] hover:text-white hover:scale-110 z-20 group"
@@ -312,18 +312,19 @@ export default function HomeClient({
 
             {/* Left Content */}
             <div className="w-full xl:pr-8">
-             
+
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[40px] xl:text-[30px] font-extrabold text-[#0d1b2e] leading-[1.1] mb-6 drop-shadow-sm">
-                Complete Dairy Processing <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077b6] to-[#00b4d8]">Solutions</span>
+                Complete Processing <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077b6] to-[#00b4d8]">Solutions</span>
               </h1>
               <div className="mb-8">
-                <h3 className="text-lg md:text-xl font-bold text-[#0077b6] mb-4">Trusted Dairy Equipment Manufacturer for Modern Dairy Businesses</h3>
+                <h3 className="text-lg md:text-xl font-bold text-[#0077b6] mb-2">Dairy Equipment Company For The Success Of Dairy Business</h3>
+                <h4 className="text-lg font-semibold text-[#0d1b2e] mb-4">Welcome to NK Dairy Equipments</h4>
                 <div className="text-base text-gray-600 leading-relaxed font-medium space-y-4">
                   <p>
-                    Welcome to <strong>NK Dairy Equipments</strong>, an <strong>ISO 9001:2015 certified</strong> dairy equipment manufacturer based in Yamunanagar, Haryana. We specialize in designing and manufacturing <strong>high-quality dairy processing and packaging equipment</strong>, including <strong>milk processing plants, pasteurizers, cream separators, butter and ghee production units, paneer making machines, milk coolers, and analyzers</strong>.
+                    We are running a dairy equipment company located at Aurangabaad, Near Radha Swami Sat sang Bhawan, Radaur Road, Yamuna Nagar, Haryana which is certified with ISO:9001:2015. Here, at NK Dairy Equipments we focus on quality management which is associated with dairy machines such as automatic milking machines, Packaging machines, cream separator and butter manufacturing unit, Milk Cooler and Analyzer, Paneer and ghee making machines, and so on.
                   </p>
                   <p>
-                    With a strong focus on <strong>quality, innovation, and reliability</strong>, we deliver efficient dairy solutions that help businesses improve productivity and maintain consistent product quality. Our equipment is engineered for <strong>superior performance, durability, and timely delivery</strong>, ensuring long-term value for our customers.
+                    We offer Dairy Equipment for the clients, which are manufactured with consideration and accuracy. Our products are well-renowned for offering high performance even in tough and serious conditions. In addition, we deliver our products at the proper time with careful considerations.
                   </p>
                 </div>
               </div>
@@ -353,7 +354,7 @@ export default function HomeClient({
                 <img
                   src="/gallery-banner.png"
                   alt="Dairy Processing Plant Equipment"
-                  className="w-full h-[400px] md:h-[500px] object-cover rounded-2xl transform hover:scale-105 transition-transform duration-700"
+                  className="w-full h-[500px] md:h-[650px] lg:h-[700px] object-cover rounded-2xl transform hover:scale-105 transition-transform duration-700"
                 />
               </div>
 
@@ -377,7 +378,7 @@ export default function HomeClient({
       <section className="py-24 bg-slate-50 relative overflow-hidden">
         {/* Clean Dotted Background Pattern */}
         <div className="absolute inset-0 z-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(#0d1b2e 2px, transparent 2px)', backgroundSize: '32px 32px' }}></div>
-        
+
         {/* Subtle glowing orbs for extra "clean" interest */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none z-0">
           <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-cyan-100 blur-3xl"></div>
@@ -416,14 +417,14 @@ export default function HomeClient({
                   <SwiperSlide key={i} className="h-auto">
                     <div tabIndex={0} className="h-full group relative overflow-hidden rounded-[2rem] aspect-[4/3] md:aspect-auto md:h-[350px] block shadow-[0_10px_30px_rgba(13,27,46,0.08)] hover:shadow-[0_20px_40px_rgba(0,119,182,0.15)] focus:shadow-[0_20px_40px_rgba(0,119,182,0.15)] transition-all duration-500 border-4 border-white cursor-pointer outline-none">
                       {/* Background Image */}
-                      <img 
+                      <img
                         src={`${seg.image}?v=new`}
-                        alt={seg.name} 
+                        alt={seg.name}
                         className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
                       {/* Dark Gradient Overlay for Text Readability */}
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b2e]/90 via-[#0d1b2e]/30 to-[#0d1b2e]/40 opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      
+
                       {/* Default State Content */}
                       <div className="absolute inset-0 p-8 flex flex-col justify-end items-start text-left group-hover:opacity-0 group-focus:opacity-0 transition-opacity duration-300 pointer-events-none">
                         <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-2 drop-shadow-md">
@@ -443,14 +444,14 @@ export default function HomeClient({
                             View All <ArrowRight size={12} />
                           </Link>
                         </h3>
-                        
+
                         <div className="flex-1 w-full overflow-y-auto pr-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#00b4d8 transparent' }}>
                           {products.length > 0 ? (
                             <div className="flex flex-wrap gap-2">
                               {products.map((p, idx) => (
-                                <Link 
-                                  key={idx} 
-                                  href={p.url} 
+                                <Link
+                                  key={idx}
+                                  href={p.url}
                                   className="text-xs font-medium bg-white/10 hover:bg-[#00b4d8] text-white px-3 py-2 rounded-full transition-colors border border-white/10 hover:border-[#00b4d8]"
                                 >
                                   {p.name}
@@ -483,26 +484,26 @@ export default function HomeClient({
       <section className="py-24 lg:py-32 bg-white relative overflow-hidden">
         {/* Subtle background decoration */}
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#f8f9fa] skew-x-12 translate-x-32 z-0 hidden lg:block"></div>
-        
+
         <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 relative z-10">
           <div className="flex flex-col lg:flex-row gap-16 items-center">
-            
+
             {/* Image Side */}
             <div className="w-full lg:w-1/2 relative">
               <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3] group border-8 border-white">
-                <img 
-                  src="/processing-tank-placeholder.png" 
-                  alt="NK Dairy Equipment Manufacturing" 
+                <img
+                  src="/processing-tank-placeholder.png"
+                  alt="NK Dairy Equipment Manufacturing"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 {/* Overlay gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b2e]/60 to-transparent"></div>
               </div>
-              
+
               {/* Floating Experience Badge */}
               <div className="absolute -bottom-6 right-0 sm:-right-6 md:bottom-8 md:-right-8 bg-white p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,119,182,0.15)] flex flex-col items-center justify-center border border-gray-50 z-20 animate-bounce" style={{ animationDuration: '4s' }}>
                 <span className="text-4xl font-extrabold text-[#0077b6] mb-1">20+</span>
-                <span className="text-sm font-bold text-[#0d1b2e] uppercase tracking-wider text-center leading-tight">Years of<br/>Excellence</span>
+                <span className="text-sm font-bold text-[#0d1b2e] uppercase tracking-wider text-center leading-tight">Years of<br />Excellence</span>
               </div>
             </div>
 
@@ -512,11 +513,11 @@ export default function HomeClient({
                 <span className="w-2 h-2 rounded-full bg-[#00b4d8] animate-pulse"></span>
                 <span className="text-xs font-bold tracking-widest uppercase text-[#0077b6]">Who We Are</span>
               </div>
-              
+
               <h2 className="text-4xl md:text-5xl font-extrabold text-[#0d1b2e] mb-6 tracking-tight leading-tight">
                 Pioneering the Future of <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077b6] to-[#00b4d8]">Dairy Technology</span>
               </h2>
-              
+
               <div className="space-y-4 text-base text-slate-600 font-medium mb-10">
                 <h3 className="text-xl font-bold text-[#0d1b2e]">Utilities and Uses of Dairy Plant</h3>
                 <p>
@@ -526,7 +527,7 @@ export default function HomeClient({
                   In dairy farming, milk processing units play an imperative role in order to make dairy products such as cheese, yogurt, cream, butter, lassi, and ghee. These all the operations are done with the help of dairy equipments include-:
                 </p>
               </div>
-              
+
               <Link href="/about" className="inline-flex items-center gap-3 bg-[#0d1b2e] hover:bg-[#0077b6] text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 group">
                 Discover Our Story
                 <div className="bg-white/20 p-1.5 rounded-full group-hover:translate-x-1 transition-transform">
@@ -542,19 +543,19 @@ export default function HomeClient({
       {/* 3.5 Why Choose Us / Features */}
       <section className="py-24 bg-[#0d1b2e] relative overflow-hidden">
         {/* Animated Background Orbs */}
-        <motion.div 
+        <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3], rotate: [0, 90, 0] }}
           transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
           className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-[#00b4d8]/20 to-transparent blur-[120px] pointer-events-none"
         />
-        <motion.div 
+        <motion.div
           animate={{ scale: [1, 1.5, 1], opacity: [0.2, 0.4, 0.2] }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-gradient-to-bl from-blue-500/20 to-transparent blur-[120px] pointer-events-none"
         />
-        
+
         <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 relative z-10">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -574,9 +575,9 @@ export default function HomeClient({
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 relative">
-            
+
             {/* Feature 1 */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
@@ -586,7 +587,7 @@ export default function HomeClient({
               <div className="absolute inset-0 bg-gradient-to-br from-[#00b4d8]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
                 <div className="w-16 h-16 bg-[#00b4d8]/10 rounded-2xl flex items-center justify-center mb-6 mx-auto md:mx-0 text-[#00b4d8] group-hover:scale-110 group-hover:bg-[#00b4d8] group-hover:text-white transition-all duration-500 shadow-[0_0_15px_rgba(0,180,216,0.1)]">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
                 </div>
                 <h4 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-[#00b4d8] transition-colors">20 Years of Excellence</h4>
                 <p className="text-slate-400 font-medium leading-relaxed group-hover:text-slate-300 transition-colors">
@@ -596,7 +597,7 @@ export default function HomeClient({
             </motion.div>
 
             {/* Feature 2 */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
@@ -606,7 +607,7 @@ export default function HomeClient({
               <div className="absolute inset-0 bg-gradient-to-br from-[#00b4d8]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
                 <div className="w-16 h-16 bg-[#00b4d8]/10 rounded-2xl flex items-center justify-center mb-6 mx-auto md:mx-0 text-[#00b4d8] group-hover:scale-110 group-hover:bg-[#00b4d8] group-hover:text-white transition-all duration-500 shadow-[0_0_15px_rgba(0,180,216,0.1)]">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
                 </div>
                 <h4 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-[#00b4d8] transition-colors">Experienced & Trained Workers</h4>
                 <p className="text-slate-400 font-medium leading-relaxed group-hover:text-slate-300 transition-colors">
@@ -616,7 +617,7 @@ export default function HomeClient({
             </motion.div>
 
             {/* Feature 3 */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
@@ -626,7 +627,7 @@ export default function HomeClient({
               <div className="absolute inset-0 bg-gradient-to-br from-[#00b4d8]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
                 <div className="w-16 h-16 bg-[#00b4d8]/10 rounded-2xl flex items-center justify-center mb-6 mx-auto md:mx-0 text-[#00b4d8] group-hover:scale-110 group-hover:bg-[#00b4d8] group-hover:text-white transition-all duration-500 shadow-[0_0_15px_rgba(0,180,216,0.1)]">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="6" /><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" /></svg>
                 </div>
                 <h4 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-[#00b4d8] transition-colors">100+ Awards Won</h4>
                 <p className="text-slate-400 font-medium leading-relaxed group-hover:text-slate-300 transition-colors">
@@ -682,8 +683,8 @@ export default function HomeClient({
                     <Link href={`/products/${product.slug}`} className="block h-full card-link group">
                       <div className="bg-white rounded-2xl overflow-hidden h-full flex flex-col border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,119,182,0.12)] transition-all duration-300">
                         {/* Image Background Container */}
-                        <div className="bg-gradient-to-b from-gray-50 to-white p-6 flex justify-center items-center h-[280px] relative border-b border-gray-50">
-                          <img src={imageUrl} alt={product.name} className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-700" />
+                        <div className="bg-gradient-to-b from-gray-50 to-white flex justify-center items-center h-[280px] relative border-b border-gray-50 overflow-hidden">
+                          <img src={imageUrl} alt={product.name} className="w-full h-full object-contain" />
                         </div>
 
                         <div className="p-6 md:p-8 flex flex-col flex-1 relative bg-white">
@@ -747,7 +748,7 @@ export default function HomeClient({
       {/* 7. Testimonials */}
       <TestimonialsCarousel />
 
-      
+
 
       <FAQSection data={initialFaqs} />
 
@@ -791,8 +792,8 @@ function FAQSection({ data = [] }: { data?: any[] }) {
   const rightFaqs = displayFaqs.slice(midpoint);
 
   const renderFaq = (faq: any, index: number) => (
-    <div 
-      key={index} 
+    <div
+      key={index}
       className={`border border-gray-100 rounded-2xl overflow-hidden transition-all duration-300 ${openIndex === index ? 'bg-white shadow-[0_10px_40px_rgba(0,119,182,0.06)] border-[#00b4d8]/20' : 'bg-slate-50 hover:bg-white hover:shadow-md'}`}
     >
       <button
@@ -806,8 +807,8 @@ function FAQSection({ data = [] }: { data?: any[] }) {
           <ChevronDown size={20} />
         </div>
       </button>
-      
-      <div 
+
+      <div
         className={`transition-all duration-300 ease-in-out ${openIndex === index ? 'max-h-96 opacity-100 pb-6 md:pb-8' : 'max-h-0 opacity-0'}`}
       >
         <div className="px-6 md:px-8 text-slate-600 leading-relaxed text-base">
@@ -821,7 +822,7 @@ function FAQSection({ data = [] }: { data?: any[] }) {
     <section className="py-24 bg-white relative overflow-hidden border-t border-gray-100">
       {/* Decorative Blur */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#00b4d8]/5 rounded-full blur-3xl pointer-events-none"></div>
-      
+
       <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 relative z-10">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-50 border border-cyan-100 mb-6">
