@@ -301,143 +301,184 @@ export default function HomeClient({
 
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans">
-      {/* 1. Static Modern Hero Banner */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-gray-50 overflow-hidden">
+      {/* 1. Full-Screen Image Hero */}
+      <section className="relative w-full h-[100vh]">
+        <img
+          src="/gallery-banner.png"
+          alt="Dairy Processing Plant Equipment"
+          className="w-full h-full object-cover object-center"
+        />
+        {/* Subtle dark gradient overlay at the bottom so the scroll arrow is visible */}
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/60 to-transparent"></div>
+
+        {/* Scroll down indicator */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce text-white z-10">
+          <span className="text-sm font-bold tracking-[0.2em] uppercase mb-3">Scroll Down</span>
+          <ArrowRight className="rotate-90" size={28} />
+        </div>
+      </section>
+
+      {/* 2. Hero Content Section */}
+      <section className="relative py-24 lg:py-32 bg-gray-50 overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-[#00b4d8]/10 blur-3xl z-0"></div>
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-[#0077b6]z10 blur-3xl z-0"></div>
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-[#0077b6]/10 blur-3xl z-0"></div>
 
         <div className="w-full max-w-[1440px] mx-auto px-6 xl:px-12 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-10 xl:gap-20 items-center">
+          <div className="max-w-7xl mx-auto text-center">
 
-            {/* Left Content */}
-            <div className="w-full xl:pr-8">
-
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[40px] xl:text-[30px] font-extrabold text-[#0d1b2e] leading-[1.1] mb-6 drop-shadow-sm">
-                Complete Processing <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077b6] to-[#00b4d8]">Solutions</span>
-              </h1>
-              <div className="mb-8">
-                <h3 className="text-lg md:text-xl font-bold text-[#0077b6] mb-2">Dairy Equipment Company For The Success Of Dairy Business</h3>
-                <h4 className="text-lg font-semibold text-[#0d1b2e] mb-4">Welcome to NK Dairy Equipments</h4>
-                <div className="text-base text-gray-600 leading-relaxed font-medium space-y-4">
-                  <p>
-                    We are running a dairy equipment company located at Aurangabaad, Near Radha Swami Sat sang Bhawan, Radaur Road, Yamuna Nagar, Haryana which is certified with ISO:9001:2015. Here, at NK Dairy Equipments we focus on quality management which is associated with dairy machines such as automatic milking machines, Packaging machines, cream separator and butter manufacturing unit, Milk Cooler and Analyzer, Paneer and ghee making machines, and so on.
-                  </p>
-                  <p>
-                    We offer Dairy Equipment for the clients, which are manufactured with consideration and accuracy. Our products are well-renowned for offering high performance even in tough and serious conditions. In addition, we deliver our products at the proper time with careful considerations.
-                  </p>
-                </div>
+            {/* Floating Quality Badge - Centered */}
+            <div className="inline-flex items-center gap-4 mb-10 bg-white p-3 pr-6 rounded-full shadow-lg border border-gray-100 mx-auto">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0077b6] to-[#00b4d8] flex items-center justify-center text-white shadow-inner shrink-0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
               </div>
-
-              <div className="flex flex-wrap gap-4">
-                <Link href="/products">
-                  <button className="bg-gradient-to-r from-[#0077b6] to-[#00b4d8] hover:from-[#00b4d8] hover:to-[#0077b6] text-white px-8 py-4 rounded-full font-bold tracking-widest transition-all shadow-lg shadow-[#00b4d8]/30 hover:shadow-[#00b4d8]/50 hover:-translate-y-1 flex items-center gap-2">
-                    EXPLORE SOLUTIONS
-                    <ArrowRight size={18} />
-                  </button>
-                </Link>
-                <Link href="/contact">
-                  <button className="bg-white text-[#0077b6] border-2 border-[#0077b6] hover:bg-gray-50 px-8 py-4 rounded-full font-bold tracking-widest transition-all hover:-translate-y-1">
-                    GET A QUOTE
-                  </button>
-                </Link>
+              <div className="text-left">
+                <p className="text-xs md:text-sm font-extrabold text-[#0d1b2e] leading-tight">Highest Standard</p>
+                <p className="text-[10px] md:text-xs text-[#0077b6] font-bold uppercase tracking-wider">ISO 9001:2015 Certified</p>
               </div>
-
             </div>
 
-            {/* Right Image/Composition */}
-            <div className="relative mt-16 lg:mt-0">
-              {/* Decorative blob behind image */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-gradient-to-tr from-[#00b4d8]/20 to-[#0077b6]/20 rounded-full blur-3xl z-0 animate-blob"></div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#0d1b2e] leading-[1.1] mb-8 drop-shadow-sm">
+              Complete Processing <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077b6] to-[#00b4d8]">Solutions</span>
+            </h1>
 
-              <div className="relative z-10 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,119,182,0.15)] border-4 border-white">
-                <img
-                  src="/gallery-banner.png"
-                  alt="Dairy Processing Plant Equipment"
-                  className="w-full h-[500px] md:h-[650px] lg:h-[700px] object-cover rounded-2xl transform hover:scale-105 transition-transform duration-700"
-                />
+            <div className="mb-12">
+              <h3 className="text-xl md:text-2xl font-bold text-[#0077b6] mb-4">Dairy Equipment Company For The Success Of Dairy Business</h3>
+              <h4 className="text-lg md:text-xl font-semibold text-[#0d1b2e] mb-6">Welcome to NK Dairy Equipments</h4>
+              <div className="text-base md:text-lg text-gray-600 leading-relaxed font-medium space-y-6 text-left sm:text-center">
+                <p>
+                  We are running a dairy equipment company located at Aurangabaad, Near Radha Swami Sat sang Bhawan, Radaur Road, Yamuna Nagar, Haryana which is certified with ISO:9001:2015. Here, at NK Dairy Equipments we focus on quality management which is associated with dairy machines such as automatic milking machines, Packaging machines, cream separator and butter manufacturing unit, Milk Cooler and Analyzer, Paneer and ghee making machines, and so on.
+                </p>
+                <p>
+                  We offer Dairy Equipment for the clients, which are manufactured with consideration and accuracy. Our products are well-renowned for offering high performance even in tough and serious conditions. In addition, we deliver our products at the proper time with careful considerations.
+                </p>
               </div>
+            </div>
 
-              {/* Floating Badge */}
-              <div className="absolute -bottom-8 left-0 sm:-left-8 md:bottom-10 md:-left-12 bg-white p-4 md:p-5 rounded-2xl shadow-2xl flex items-center gap-4 border border-gray-100 z-20 hover:-translate-y-2 transition-transform duration-300">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#0077b6] to-[#00b4d8] flex items-center justify-center text-white shadow-inner">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                </div>
-                <div>
-                  <p className="text-sm md:text-base font-extrabold text-[#0d1b2e]">Highest Standard</p>
-                  <p className="text-xs md:text-sm text-[#0077b6] font-semibold">Quality Tested</p>
-                </div>
-              </div>
+            <div className="flex flex-wrap justify-center gap-6">
+              <Link href="/products">
+                <button className="bg-gradient-to-r from-[#0077b6] to-[#00b4d8] hover:from-[#00b4d8] hover:to-[#0077b6] text-white px-10 py-5 rounded-full font-bold tracking-widest transition-all shadow-lg shadow-[#00b4d8]/30 hover:shadow-[#00b4d8]/50 hover:-translate-y-1 flex items-center gap-3">
+                  EXPLORE SOLUTIONS
+                  <ArrowRight size={20} />
+                </button>
+              </Link>
+              <Link href="/contact">
+                <button className="bg-white text-[#0077b6] border-2 border-[#0077b6] hover:bg-gray-50 px-10 py-5 rounded-full font-bold tracking-widest transition-all hover:-translate-y-1">
+                  GET A QUOTE
+                </button>
+              </Link>
             </div>
 
           </div>
         </div>
       </section>
+      {/* 2. Business Segments Grid */}
+      <section className="py-24 bg-slate-50 relative overflow-hidden">
+        {/* Clean Dotted Background Pattern */}
+        <div className="absolute inset-0 z-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(#0d1b2e 2px, transparent 2px)', backgroundSize: '32px 32px' }}></div>
 
-      {/* 2. Business Segments */}
-      <section className="py-20 bg-slate-50 relative overflow-hidden flex flex-col">
-        {/* Header Outside */}
-        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 relative z-10 mb-12">
-          <div className="text-center">
+        {/* Subtle glowing orbs for extra "clean" interest */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none z-0">
+          <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-cyan-100 blur-3xl"></div>
+          <div className="absolute top-1/2 right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-50 blur-3xl"></div>
+        </div>
+
+        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 relative z-10">
+          <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-extrabold text-[#0d1b2e] mb-4 tracking-tight">
               Industries <span className="text-[#0077b6]">We Serve</span>
             </h2>
-            <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto px-4">
+            <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">
               Precision Engineering for the World's Most Demanding Industries
             </p>
           </div>
-        </div>
 
-        <div className="relative w-full h-[70vh] min-h-[500px]">
-          <Swiper
-            modules={[Navigation, Autoplay]}
-            slidesPerView={1}
-            navigation={{
-              prevEl: '.seg-prev-btn',
-              nextEl: '.seg-next-btn',
-            }}
-            autoplay={{ delay: 3000, disableOnInteraction: false }}
-            loop={true}
-            className="w-full h-full"
-          >
-            {segments.map((seg, i) => {
-              return (
-                <SwiperSlide key={i} className="w-full h-full relative">
-                  {/* Background Image */}
-                  <img
-                    src={`${seg.image}?v=new`}
-                    alt={seg.name}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  {/* Overlay for better text readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b2e]/90 via-[#0d1b2e]/40 to-[#0d1b2e]/60"></div>
+          <div className="relative group/slider px-2 sm:px-12">
+            <Swiper
+              modules={[Navigation, Autoplay]}
+              spaceBetween={24}
+              slidesPerView={1}
+              breakpoints={{
+                640: { slidesPerView: 2, spaceBetween: 24 },
+                1024: { slidesPerView: 3, spaceBetween: 32 },
+              }}
+              navigation={{
+                prevEl: '.seg-prev-btn',
+                nextEl: '.seg-next-btn',
+              }}
+              autoplay={{ delay: 4000, disableOnInteraction: true }}
+              className="!pb-8"
+            >
+              {segments.map((seg, i) => {
+                const products = industryProducts[seg.slug.toLowerCase()] || [];
+                return (
+                  <SwiperSlide key={i} className="h-auto">
+                    <div tabIndex={0} className="h-full group relative overflow-hidden rounded-[2rem] aspect-[4/3] md:aspect-auto md:h-[350px] block shadow-[0_10px_30px_rgba(13,27,46,0.08)] hover:shadow-[0_20px_40px_rgba(0,119,182,0.15)] focus:shadow-[0_20px_40px_rgba(0,119,182,0.15)] transition-all duration-500 border-4 border-white cursor-pointer outline-none">
+                      {/* Background Image */}
+                      <img
+                        src={`${seg.image}?v=new`}
+                        alt={seg.name}
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      {/* Dark Gradient Overlay for Text Readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b2e]/90 via-[#0d1b2e]/30 to-[#0d1b2e]/40 opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-                  {/* Content */}
-                  <div className="absolute inset-0 flex flex-col justify-end items-center text-center pb-24 px-4 md:px-12 z-10 pointer-events-none">
-                    <h3 className="text-4xl md:text-6xl font-extrabold text-white mb-8 drop-shadow-md">
-                      {seg.name}
-                    </h3>
-                    <Link href={`/industries/${seg.slug}`} className="pointer-events-auto inline-flex items-center gap-2 bg-[#0077b6] hover:bg-[#00b4d8] text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
-                      Explore Solutions
-                      <ArrowRight size={18} />
-                    </Link>
-                  </div>
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
+                      {/* Default State Content */}
+                      <div className="absolute inset-0 p-8 flex flex-col justify-end items-start text-left group-hover:opacity-0 group-focus:opacity-0 transition-opacity duration-300 pointer-events-none">
+                        <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-2 drop-shadow-md">
+                          {seg.name}
+                        </h3>
+                        <div className="flex items-center gap-2 text-[#00b4d8] font-bold">
+                          <span className="uppercase tracking-widest text-xs">Explore Solutions</span>
+                          <ArrowRight size={16} />
+                        </div>
+                      </div>
 
-          {/* Custom Navigation Buttons */}
-          <button className="seg-prev-btn absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-16 md:h-16 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-300 disabled:opacity-0 disabled:hidden">
-            <ChevronLeft size={28} className="md:w-8 md:h-8" />
-          </button>
-          <button className="seg-next-btn absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-16 md:h-16 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-300 disabled:opacity-0 disabled:hidden">
-            <ChevronRight size={28} className="md:w-8 md:h-8" />
-          </button>
+                      {/* Hover State Content */}
+                      <div className="absolute inset-0 p-6 flex flex-col justify-start items-start text-left opacity-0 translate-y-4 group-hover:opacity-100 group-focus:opacity-100 group-hover:translate-y-0 group-focus:translate-y-0 transition-all duration-500 ease-out z-10 bg-[#0d1b2e]/85 backdrop-blur-sm">
+                        <h3 className="text-xl font-bold text-white mb-4 border-b border-white/20 pb-3 w-full flex justify-between items-center shrink-0">
+                          {seg.name}
+                          <Link href={`/industries/${seg.slug}`} className="text-xs font-bold text-[#00b4d8] uppercase hover:text-white flex items-center gap-1 transition-colors">
+                            View All <ArrowRight size={12} />
+                          </Link>
+                        </h3>
+
+                        <div className="flex-1 w-full overflow-y-auto pr-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#00b4d8 transparent' }}>
+                          {products.length > 0 ? (
+                            <div className="flex flex-wrap gap-2">
+                              {products.map((p, idx) => (
+                                <Link
+                                  key={idx}
+                                  href={p.url}
+                                  className="text-xs font-medium bg-white/10 hover:bg-[#00b4d8] text-white px-3 py-2 rounded-full transition-colors border border-white/10 hover:border-[#00b4d8]"
+                                >
+                                  {p.name}
+                                </Link>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-sm text-gray-300 italic">Explore complete solutions for {seg.name} industry.</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+
+            {/* Custom Navigation Buttons */}
+            <button className="seg-prev-btn absolute left-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-[0_5px_15px_rgba(0,0,0,0.15)] flex items-center justify-center text-[#0d1b2e] hover:text-white hover:bg-[#00b4d8] transition-all duration-300 opacity-100 sm:opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 disabled:hidden -ml-2 sm:ml-0">
+              <ChevronLeft size={24} />
+            </button>
+            <button className="seg-next-btn absolute right-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-[0_5px_15px_rgba(0,0,0,0.15)] flex items-center justify-center text-[#0d1b2e] hover:text-white hover:bg-[#00b4d8] transition-all duration-300 opacity-100 sm:opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 disabled:hidden -mr-2 sm:mr-0">
+              <ChevronRight size={24} />
+            </button>
+          </div>
         </div>
       </section>
 
-      {/* 3. Company Introduction */}  
+      {/* 3. Company Introduction */}
       <section className="py-24 lg:py-32 bg-white relative overflow-hidden">
         {/* Subtle background decoration */}
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#f8f9fa] skew-x-12 translate-x-32 z-0 hidden lg:block"></div>

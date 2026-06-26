@@ -50,14 +50,10 @@ export default function AboutClient() {
     });
 
     // 3. Values Animations
-    gsap.fromTo(".value-card", 
-      { y: 40, opacity: 0 },
-      {
-        y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "back.out(1.2)",
-        scrollTrigger: { trigger: ".values-section", start: "top 80%" },
-        clearProps: "all"
-      }
-    );
+    gsap.from(".value-card", {
+      y: 40, opacity: 0, duration: 0.6, stagger: 0.1, ease: "back.out(1.2)",
+      scrollTrigger: { trigger: ".values-section", start: "top 80%" }
+    });
 
     // 4. FAQ Animation
     gsap.from(".faq-container", {
@@ -187,14 +183,15 @@ export default function AboutClient() {
               { icon: Users, title: 'Turnkey Execution', desc: 'End-to-end project management, from design to installation.' },
               { icon: Award, title: 'Global Standards', desc: 'ISO 9001:2015 & CE Certified machinery for global markets.' }
             ].map((item, i) => (
-              <div key={i} className="value-card h-full">
-                <div className="group bg-slate-50 border border-gray-100 p-8 rounded-3xl text-center hover:bg-[#0d1b2e] transition-all duration-500 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-default h-full">
-                  <div className="w-20 h-20 bg-white shadow-md rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 group-hover:rotate-3">
-                    <item.icon className="text-[#0077b6] group-hover:text-[#00b4d8] transition-colors duration-500" size={36} />
-                  </div>
-                  <h3 className="text-xl font-bold mb-4 text-[#0d1b2e] group-hover:text-white transition-colors duration-500">{item.title}</h3>
-                  <p className="text-gray-500 group-hover:text-white/80 transition-colors duration-500 font-medium leading-relaxed">{item.desc}</p>
+              <div
+                key={i}
+                className="value-card group bg-slate-50 border border-gray-100 p-8 rounded-3xl text-center hover:bg-[#0d1b2e] transition-all duration-500 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-default"
+              >
+                <div className="w-20 h-20 bg-white shadow-md rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 group-hover:rotate-3">
+                  <item.icon className="text-[#0077b6] group-hover:text-[#00b4d8] transition-colors duration-500" size={36} />
                 </div>
+                <h3 className="text-xl font-bold mb-4 text-[#0d1b2e] group-hover:text-white transition-colors duration-500">{item.title}</h3>
+                <p className="text-gray-500 group-hover:text-white/80 transition-colors duration-500 font-medium leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>

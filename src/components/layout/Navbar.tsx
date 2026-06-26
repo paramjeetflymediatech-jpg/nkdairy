@@ -221,13 +221,13 @@ export default function Navbar() {
   return (
     <div className={`fixed z-50 transition-all duration-300 w-full flex justify-center ${scrolled ? 'top-4 px-4 md:px-8' : 'top-0'}`}>
       <nav
-        className={`w-full max-w-[1600px] transition-all duration-500 relative ${
+        className={`w-full transition-all duration-500 relative ${
           scrolled 
-            ? 'bg-white/90 backdrop-blur-lg py-3 shadow-[0_10px_40px_rgba(0,0,0,0.1)] rounded-2xl md:rounded-[2.5rem] border border-white/50' 
-            : 'bg-white py-5 border-b border-gray-100'
+            ? 'max-w-[1440px] bg-white/95 backdrop-blur-lg py-3 shadow-[0_10px_40px_rgba(0,0,0,0.1)] rounded-2xl md:rounded-[2.5rem] border border-white/50' 
+            : 'max-w-full bg-white py-5 border-b border-gray-100'
         }`}
       >
-        <div className={`w-full flex justify-between items-center relative transition-all duration-500 ${scrolled ? 'px-6 md:px-10' : 'container mx-auto px-4 md:px-8'}`}>
+        <div className={`w-full flex justify-between items-center relative transition-all duration-500 ${scrolled ? 'px-6 md:px-10' : 'px-6 md:px-12 xl:px-20'}`}>
           <Link href="/" className="flex items-center group flex-shrink-0">
             <Image src="/logo.png" alt="NK Dairy Logo" width={220} height={75} className={`object-contain transition-all duration-500 ${scrolled ? 'scale-90' : 'scale-100'}`} priority />
           </Link>
