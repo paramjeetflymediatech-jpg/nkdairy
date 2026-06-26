@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       
       const adminPromises = adminEmails.map(adminEmail => {
         return transporter.sendMail({
-          from: `"NK Dairy Website" <${process.env.SMTP_FROM || process.env.EMAIL_USER || 'no-reply@nkdairy.com'}>`,
+          from: `"NK Dairy Website" <${process.env.SMTP_FROM || process.env.EMAIL_WEB ||  'no-reply@nkdairy.com'}>`,
           replyTo: process.env.SMTP_REPLY_TO || process.env.EMAIL_REPLY_TO || process.env.EMAIL_USER || 'no-reply@nkdairy.com',
           to: adminEmail,
           subject: `New Lead: ${name} - ${productInterest || 'General Inquiry'}`,
