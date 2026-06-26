@@ -57,16 +57,64 @@ export async function POST(req: NextRequest) {
           to: adminEmail,
           subject: `New Lead: ${name} - ${productInterest || 'General Inquiry'}`,
           html: `
-            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-              <h2 style="color: #d9534f;">New Lead Alert</h2>
-              <p><strong>Name:</strong> ${name}</p>
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Phone:</strong> ${phone}</p>
-              <p><strong>Company:</strong> ${company || 'N/A'}</p>
-              <p><strong>Product Interest:</strong> ${productInterest}</p>
-              <p><strong>Source:</strong> ${source || 'Website Contact Form'}</p>
-              <p><strong>Message:</strong></p>
-              <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #ccc;">${message}</blockquote>
+            <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f1f5f9; padding: 40px 20px; color: #333;">
+              <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                
+                <!-- Header -->
+                <div style="background-color: #ef4444; padding: 30px; text-align: center; border-bottom: 4px solid #b91c1c;">
+                  <h1 style="color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 1px;">NEW LEAD ALERT</h1>
+                  <p style="color: #fca5a5; margin: 5px 0 0 0; font-size: 14px; text-transform: uppercase; letter-spacing: 2px;">Action Required</p>
+                </div>
+
+                <!-- Body -->
+                <div style="padding: 40px 30px;">
+                  <p style="font-size: 16px; line-height: 1.6; color: #555; margin-top: 0;">
+                    A new inquiry has been submitted through the <strong>${source || 'Website Contact Form'}</strong>. Below are the details:
+                  </p>
+
+                  <!-- Details Table -->
+                  <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 25px 0;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
+                      <tr>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #64748b; width: 130px;"><strong>Name:</strong></td>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-weight: 600;">${name}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;"><strong>Email:</strong></td>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #0077b6;"><a href="mailto:${email}" style="color: #0077b6; text-decoration: none;">${email}</a></td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;"><strong>Phone:</strong></td>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #0f172a;">${phone}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;"><strong>Company:</strong></td>
+                        <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #0f172a;">${company || 'N/A'}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 10px 0; color: #64748b;"><strong>Product Interest:</strong></td>
+                        <td style="padding: 10px 0; color: #0f172a; font-weight: 600;">${productInterest || 'General Inquiry'}</td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <!-- Message Box -->
+                  <div style="margin-top: 25px;">
+                    <h3 style="margin-top: 0; color: #0f172a; font-size: 16px; margin-bottom: 10px;">Message:</h3>
+                    <div style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px; border-radius: 0 8px 8px 0; color: #451a03; line-height: 1.6; font-style: italic;">
+                      "${message}"
+                    </div>
+                  </div>
+                  
+                </div>
+
+                <!-- Footer -->
+                <div style="background-color: #1e293b; padding: 15px; text-align: center;">
+                  <p style="margin: 0; color: #94a3b8; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                    NK Dairy Equipments • Internal Notification
+                  </p>
+                </div>
+              </div>
             </div>
           `,
         });
