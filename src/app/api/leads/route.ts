@@ -7,11 +7,11 @@ import nodemailer from 'nodemailer';
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
-    
+
     const body = await req.json();
-    
+
     const { name, phone, email, company, country, productInterest, message, source } = body;
-    
+
     // Basic validation
     if (!name || !phone || !email) {
       return NextResponse.json(
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    
+
     const newLead = await Lead.create({
       name,
       phone,
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       source: source || 'Website Contact Form',
       status: 'NEW'
     });
-    
+
     // Send email using nodemailer
     try {
       const transporter = nodemailer.createTransport({
@@ -42,12 +42,33 @@ export async function POST(req: NextRequest) {
           user: process.env.SMTP_USER || 'placeholder_user',
           pass: process.env.SMTP_PASS || 'placeholder_pass',
         },
-        tls: {
-          servername: 'smtp.gmail.com',
-        },
         connectionTimeout: 5000,
         greetingTimeout: 5000,
         socketTimeout: 5000,
+      });
+
+      const adminEmailStr = process.env.ADMIN_EMAIL || 'sales@nkdairy.com';
+      const adminEmails = adminEmailStr.split(/[,;]/).map(e => e.trim()).filter(Boolean);
+      
+      const adminPromises = adminEmails.map(adminEmail => {
+        return transporter.sendMail({
+          from: `"NK Dairy Website" <${process.env.SMTP_FROM || 'no-reply@nkdairy.com'}>`,
+          to: adminEmail,
+          subject: `New Lead: ${name} - ${productInterest || 'General Inquiry'}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+              <h2 style="color: #d9534f;">New Lead Alert</h2>
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Phone:</strong> ${phone}</p>
+              <p><strong>Company:</strong> ${company || 'N/A'}</p>
+              <p><strong>Product Interest:</strong> ${productInterest}</p>
+              <p><strong>Source:</strong> ${source || 'Website Contact Form'}</p>
+              <p><strong>Message:</strong></p>
+              <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #ccc;">${message}</blockquote>
+            </div>
+          `,
+        });
       });
 
       // Send emails (awaited to ensure serverless function doesn't terminate prematurely)
@@ -74,35 +95,18 @@ export async function POST(req: NextRequest) {
             </div>
           `,
         }),
-        // 2. Email to the admin (Notification)
-        transporter.sendMail({
-          from: `"NK Dairy Website" <${process.env.SMTP_FROM || 'no-reply@nkdairy.com'}>`,
-          to: process.env.ADMIN_EMAIL || 'sales@nkdairy.com',
-          subject: `New Lead: ${name} - ${productInterest || 'General Inquiry'}`,
-          html: `
-            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-              <h2 style="color: #d9534f;">New Lead Alert</h2>
-              <p><strong>Name:</strong> ${name}</p>
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Phone:</strong> ${phone}</p>
-              <p><strong>Company:</strong> ${company || 'N/A'}</p>
-              <p><strong>Product Interest:</strong> ${productInterest}</p>
-              <p><strong>Source:</strong> ${source || 'Website Contact Form'}</p>
-              <p><strong>Message:</strong></p>
-              <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #ccc;">${message}</blockquote>
-            </div>
-          `,
-        })
+        // 2. Emails to the admins individually
+        ...adminPromises
       ]).then(() => {
         console.log('Emails sent successfully!');
       }).catch(emailError => {
         console.error('Failed to send email, but lead was saved:', emailError);
       });
-      
+
     } catch (setupError) {
       console.error('Failed to setup email transporter:', setupError);
     }
-    
+
     return NextResponse.json(
       { message: 'Inquiry submitted successfully', leadId: newLead.id },
       { status: 201 }
@@ -120,17 +124,17 @@ export async function GET(req: NextRequest) {
   try {
     // In a real application, you must protect this route (e.g., check session)
     await connectDB();
-    
+
     const { searchParams } = new URL(req.url);
-    
+
     let page = parseInt(searchParams.get('page') || '1', 10);
     if (isNaN(page)) page = 1;
-    
+
     let limit = parseInt(searchParams.get('limit') || '10', 10);
     if (isNaN(limit)) limit = 10;
-    
+
     const search = searchParams.get('search');
-    
+
     const offset = (page - 1) * limit;
 
     let whereClause: any = {};
@@ -150,7 +154,7 @@ export async function GET(req: NextRequest) {
       limit,
       offset
     });
-    
+
     return NextResponse.json({
       data: rows,
       totalItems: count,
