@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
       await Promise.all([
         // 1. Email to the user (Confirmation)
         transporter.sendMail({
-          from: `"NK Dairy Equipments" <${process.env.SMTP_FROM || process.env.EMAIL_USER || 'no-reply@nkdairy.com'}>`,
+          from: `"NK Dairy Equipments" <${process.env.SMTP_FROM || process.env.EMAIL_WEB || 'no-reply@nkdairy.com'}>`,
           to: email,
           subject: "Thank You for Contacting NK Dairy Equipments",
           html: `
