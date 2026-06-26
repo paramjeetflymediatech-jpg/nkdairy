@@ -71,6 +71,14 @@ export default function Navbar() {
   const [categories, setCategories] = useState<any[]>([]);
   const [industries, setIndustries] = useState<any[]>([]);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleLinkClick = () => {
+    setIsOpen(false);
+    setActiveDropdown(null);
+    setIsClosing(true);
+    setTimeout(() => setIsClosing(false), 150);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -144,7 +152,7 @@ export default function Navbar() {
     if (validCategories.length === 0) return null;
 
     return (
-      <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 w-max min-w-[800px] max-w-[95vw] z-50 transition-all duration-300 ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0'}`}>
+      <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 w-max min-w-[800px] max-w-[95vw] z-50 transition-all duration-300 ${isClosing ? '!hidden' : ''} ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0'}`}>
         <div className="bg-white border-t-4 border-[#323373] rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-8 relative">
           <div className="flex gap-12">
             {validCategories.map((category: any, index: number) => (
@@ -159,7 +167,11 @@ export default function Navbar() {
                 <div className="grid grid-cols-2 gap-x-8 gap-y-0">
                   {category.allNestedProducts.map((prod: any) => (
                     <div key={prod.id} className="border-b border-gray-100 py-2.5">
-                      <Link href={`/products/${prod.slug}`} className="block text-gray-600 hover:text-[#323373] hover:translate-x-1 transition-transform text-sm font-medium w-full">
+                      <Link 
+                        href={`/products/${prod.slug}`} 
+                        onClick={handleLinkClick}
+                        className="block text-gray-600 hover:text-[#323373] hover:translate-x-1 transition-transform text-sm font-medium w-full"
+                      >
                         {prod.name}
                       </Link>
                     </div>
@@ -177,8 +189,8 @@ export default function Navbar() {
     if (!items || items.length === 0) return null;
 
     const wrapperClasses = depth === 0
-      ? "absolute top-full left-0 pt-2 min-w-max z-50 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 transform origin-top-left translate-y-2 group-hover:translate-y-0"
-      : "absolute top-0 left-full pl-0 min-w-max z-50 opacity-0 group-hover/sub:opacity-100 invisible group-hover/sub:visible transition-all duration-300 transform -translate-x-2 group-hover/sub:translate-x-0";
+      ? `absolute top-full left-0 pt-2 min-w-max z-50 transition-all duration-300 transform origin-top-left ${isClosing ? '!hidden' : 'opacity-0 group-hover:opacity-100 invisible group-hover:visible translate-y-2 group-hover:translate-y-0'}`
+      : `absolute top-0 left-full pl-0 min-w-max z-50 transition-all duration-300 transform ${isClosing ? '!hidden' : 'opacity-0 group-hover/sub:opacity-100 invisible group-hover/sub:visible -translate-x-2 group-hover/sub:translate-x-0'}`;
 
     return (
       <div className={wrapperClasses}>
@@ -187,7 +199,7 @@ export default function Navbar() {
             <li key={sub.id} className="relative group/sub">
               <Link
                 href={`/${sub.slug}`}
-                onClick={() => setIsOpen(false)}
+                onClick={handleLinkClick}
                 className="block px-5 py-2.5 text-sm text-[#323373] hover:bg-gray-50 hover:text-blue-600 transition-colors flex items-center gap-3 whitespace-nowrap"
               >
                 {sub.image && (

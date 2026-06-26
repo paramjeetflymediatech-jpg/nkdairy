@@ -374,113 +374,70 @@ export default function HomeClient({
         </div>
       </section>
 
-      {/* 2. Business Segments Grid */}
-      <section className="py-24 bg-slate-50 relative overflow-hidden">
-        {/* Clean Dotted Background Pattern */}
-        <div className="absolute inset-0 z-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(#0d1b2e 2px, transparent 2px)', backgroundSize: '32px 32px' }}></div>
-
-        {/* Subtle glowing orbs for extra "clean" interest */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none z-0">
-          <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-cyan-100 blur-3xl"></div>
-          <div className="absolute top-1/2 right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-50 blur-3xl"></div>
-        </div>
-
-        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 relative z-10">
-          <div className="text-center mb-16">
+      {/* 2. Business Segments */}
+      <section className="py-20 bg-slate-50 relative overflow-hidden flex flex-col">
+        {/* Header Outside */}
+        <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 relative z-10 mb-12">
+          <div className="text-center">
             <h2 className="text-3xl md:text-5xl font-extrabold text-[#0d1b2e] mb-4 tracking-tight">
               Industries <span className="text-[#0077b6]">We Serve</span>
             </h2>
-            <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">
+            <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto px-4">
               Precision Engineering for the World's Most Demanding Industries
             </p>
           </div>
+        </div>
 
-          <div className="relative group/slider px-2 sm:px-12">
-            <Swiper
-              modules={[Navigation, Autoplay]}
-              spaceBetween={24}
-              slidesPerView={1}
-              breakpoints={{
-                640: { slidesPerView: 2, spaceBetween: 24 },
-                1024: { slidesPerView: 3, spaceBetween: 32 },
-              }}
-              navigation={{
-                prevEl: '.seg-prev-btn',
-                nextEl: '.seg-next-btn',
-              }}
-              autoplay={{ delay: 4000, disableOnInteraction: true }}
-              className="!pb-8"
-            >
-              {segments.map((seg, i) => {
-                const products = industryProducts[seg.slug.toLowerCase()] || [];
-                return (
-                  <SwiperSlide key={i} className="h-auto">
-                    <div tabIndex={0} className="h-full group relative overflow-hidden rounded-[2rem] aspect-[4/3] md:aspect-auto md:h-[350px] block shadow-[0_10px_30px_rgba(13,27,46,0.08)] hover:shadow-[0_20px_40px_rgba(0,119,182,0.15)] focus:shadow-[0_20px_40px_rgba(0,119,182,0.15)] transition-all duration-500 border-4 border-white cursor-pointer outline-none">
-                      {/* Background Image */}
-                      <img
-                        src={`${seg.image}?v=new`}
-                        alt={seg.name}
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                      {/* Dark Gradient Overlay for Text Readability */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b2e]/90 via-[#0d1b2e]/30 to-[#0d1b2e]/40 opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className="relative w-full h-[70vh] min-h-[500px]">
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            slidesPerView={1}
+            navigation={{
+              prevEl: '.seg-prev-btn',
+              nextEl: '.seg-next-btn',
+            }}
+            autoplay={{ delay: 5000, disableOnInteraction: true }}
+            loop={true}
+            className="w-full h-full"
+          >
+            {segments.map((seg, i) => {
+              return (
+                <SwiperSlide key={i} className="w-full h-full relative">
+                  {/* Background Image */}
+                  <img
+                    src={`${seg.image}?v=new`}
+                    alt={seg.name}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  {/* Overlay for better text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b2e]/90 via-[#0d1b2e]/40 to-[#0d1b2e]/60"></div>
 
-                      {/* Default State Content */}
-                      <div className="absolute inset-0 p-8 flex flex-col justify-end items-start text-left group-hover:opacity-0 group-focus:opacity-0 transition-opacity duration-300 pointer-events-none">
-                        <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-2 drop-shadow-md">
-                          {seg.name}
-                        </h3>
-                        <div className="flex items-center gap-2 text-[#00b4d8] font-bold">
-                          <span className="uppercase tracking-widest text-xs">Explore Solutions</span>
-                          <ArrowRight size={16} />
-                        </div>
-                      </div>
+                  {/* Content */}
+                  <div className="absolute inset-0 flex flex-col justify-end items-center text-center pb-24 px-4 md:px-12 z-10 pointer-events-none">
+                    <h3 className="text-4xl md:text-6xl font-extrabold text-white mb-8 drop-shadow-md">
+                      {seg.name}
+                    </h3>
+                    <Link href={`/industries/${seg.slug}`} className="pointer-events-auto inline-flex items-center gap-2 bg-[#0077b6] hover:bg-[#00b4d8] text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                      Explore Solutions
+                      <ArrowRight size={18} />
+                    </Link>
+                  </div>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
 
-                      {/* Hover State Content */}
-                      <div className="absolute inset-0 p-6 flex flex-col justify-start items-start text-left opacity-0 translate-y-4 group-hover:opacity-100 group-focus:opacity-100 group-hover:translate-y-0 group-focus:translate-y-0 transition-all duration-500 ease-out z-10 bg-[#0d1b2e]/85 backdrop-blur-sm">
-                        <h3 className="text-xl font-bold text-white mb-4 border-b border-white/20 pb-3 w-full flex justify-between items-center shrink-0">
-                          {seg.name}
-                          <Link href={`/industries/${seg.slug}`} className="text-xs font-bold text-[#00b4d8] uppercase hover:text-white flex items-center gap-1 transition-colors">
-                            View All <ArrowRight size={12} />
-                          </Link>
-                        </h3>
-
-                        <div className="flex-1 w-full overflow-y-auto pr-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#00b4d8 transparent' }}>
-                          {products.length > 0 ? (
-                            <div className="flex flex-wrap gap-2">
-                              {products.map((p, idx) => (
-                                <Link
-                                  key={idx}
-                                  href={p.url}
-                                  className="text-xs font-medium bg-white/10 hover:bg-[#00b4d8] text-white px-3 py-2 rounded-full transition-colors border border-white/10 hover:border-[#00b4d8]"
-                                >
-                                  {p.name}
-                                </Link>
-                              ))}
-                            </div>
-                          ) : (
-                            <p className="text-sm text-gray-300 italic">Explore complete solutions for {seg.name} industry.</p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
-
-            {/* Custom Navigation Buttons */}
-            <button className="seg-prev-btn absolute left-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-[0_5px_15px_rgba(0,0,0,0.15)] flex items-center justify-center text-[#0d1b2e] hover:text-white hover:bg-[#00b4d8] transition-all duration-300 opacity-100 sm:opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 disabled:hidden -ml-2 sm:ml-0">
-              <ChevronLeft size={24} />
-            </button>
-            <button className="seg-next-btn absolute right-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-[0_5px_15px_rgba(0,0,0,0.15)] flex items-center justify-center text-[#0d1b2e] hover:text-white hover:bg-[#00b4d8] transition-all duration-300 opacity-100 sm:opacity-0 group-hover/slider:opacity-100 disabled:opacity-0 disabled:hidden -mr-2 sm:mr-0">
-              <ChevronRight size={24} />
-            </button>
-          </div>
+          {/* Custom Navigation Buttons */}
+          <button className="seg-prev-btn absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-16 md:h-16 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-300 disabled:opacity-0 disabled:hidden">
+            <ChevronLeft size={28} className="md:w-8 md:h-8" />
+          </button>
+          <button className="seg-next-btn absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-16 md:h-16 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-300 disabled:opacity-0 disabled:hidden">
+            <ChevronRight size={28} className="md:w-8 md:h-8" />
+          </button>
         </div>
       </section>
 
-      {/* 3. Company Introduction */}
+      {/* 3. Company Introduction */}  
       <section className="py-24 lg:py-32 bg-white relative overflow-hidden">
         {/* Subtle background decoration */}
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#f8f9fa] skew-x-12 translate-x-32 z-0 hidden lg:block"></div>
