@@ -42,54 +42,65 @@ export async function POST(req: NextRequest) {
           user: process.env.SMTP_USER || 'placeholder_user',
           pass: process.env.SMTP_PASS || 'placeholder_pass',
         },
+        tls: {
+          servername: 'smtp.gmail.com',
+        },
+        connectionTimeout: 5000,
+        greetingTimeout: 5000,
+        socketTimeout: 5000,
       });
 
-      // 1. Email to the user (Confirmation)
-      await transporter.sendMail({
-        from: `"NK Dairy Equipments" <${process.env.SMTP_FROM || 'no-reply@nkdairy.com'}>`,
-        to: email,
-        subject: "Thank You for Contacting NK Dairy Equipments",
-        html: `
-          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-            <h2 style="color: #323373;">Inquiry Received</h2>
-            <p>Dear ${name},</p>
-            <p>Thank you for reaching out to NK Dairy Equipments. We have received your inquiry regarding <strong>${productInterest || 'our products'}</strong>.</p>
-            <p>Our sales team is currently reviewing your message and will get back to you shortly.</p>
-            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
-            <p style="font-size: 0.9em; color: #777;">
-              <strong>Your Message Summary:</strong><br/>
-              Phone: ${phone}<br/>
-              Company: ${company || 'N/A'}<br/>
-              Message: ${message}
-            </p>
-            <p>Best Regards,<br/><strong>NK Dairy Equipments Team</strong></p>
-          </div>
-        `,
-      });
-
-      // 2. Email to the admin (Notification)
-      await transporter.sendMail({
-        from: `"NK Dairy Website" <${process.env.SMTP_FROM || 'no-reply@nkdairy.com'}>`,
-        to: process.env.ADMIN_EMAIL || 'sales@nkdairy.com',
-        subject: `New Lead: ${name} - ${productInterest || 'General Inquiry'}`,
-        html: `
-          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-            <h2 style="color: #d9534f;">New Lead Alert</h2>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${phone}</p>
-            <p><strong>Company:</strong> ${company || 'N/A'}</p>
-            <p><strong>Product Interest:</strong> ${productInterest}</p>
-            <p><strong>Source:</strong> ${source || 'Website Contact Form'}</p>
-            <p><strong>Message:</strong></p>
-            <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #ccc;">${message}</blockquote>
-          </div>
-        `,
+      // Send emails (awaited to ensure serverless function doesn't terminate prematurely)
+      await Promise.all([
+        // 1. Email to the user (Confirmation)
+        transporter.sendMail({
+          from: `"NK Dairy Equipments" <${process.env.SMTP_FROM || 'no-reply@nkdairy.com'}>`,
+          to: email,
+          subject: "Thank You for Contacting NK Dairy Equipments",
+          html: `
+            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+              <h2 style="color: #323373;">Inquiry Received</h2>
+              <p>Dear ${name},</p>
+              <p>Thank you for reaching out to NK Dairy Equipments. We have received your inquiry regarding <strong>${productInterest || 'our products'}</strong>.</p>
+              <p>Our sales team is currently reviewing your message and will get back to you shortly.</p>
+              <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+              <p style="font-size: 0.9em; color: #777;">
+                <strong>Your Message Summary:</strong><br/>
+                Phone: ${phone}<br/>
+                Company: ${company || 'N/A'}<br/>
+                Message: ${message}
+              </p>
+              <p>Best Regards,<br/><strong>NK Dairy Equipments Team</strong></p>
+            </div>
+          `,
+        }),
+        // 2. Email to the admin (Notification)
+        transporter.sendMail({
+          from: `"NK Dairy Website" <${process.env.SMTP_FROM || 'no-reply@nkdairy.com'}>`,
+          to: process.env.ADMIN_EMAIL || 'sales@nkdairy.com',
+          subject: `New Lead: ${name} - ${productInterest || 'General Inquiry'}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+              <h2 style="color: #d9534f;">New Lead Alert</h2>
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Phone:</strong> ${phone}</p>
+              <p><strong>Company:</strong> ${company || 'N/A'}</p>
+              <p><strong>Product Interest:</strong> ${productInterest}</p>
+              <p><strong>Source:</strong> ${source || 'Website Contact Form'}</p>
+              <p><strong>Message:</strong></p>
+              <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #ccc;">${message}</blockquote>
+            </div>
+          `,
+        })
+      ]).then(() => {
+        console.log('Emails sent successfully!');
+      }).catch(emailError => {
+        console.error('Failed to send email, but lead was saved:', emailError);
       });
       
-    } catch (emailError) {
-      console.error('Failed to send email, but lead was saved:', emailError);
-      // We don't fail the request if email fails, because the lead is already saved in DB.
+    } catch (setupError) {
+      console.error('Failed to setup email transporter:', setupError);
     }
     
     return NextResponse.json(

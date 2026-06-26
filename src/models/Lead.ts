@@ -2,16 +2,16 @@ import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../lib/db';
 
 export class Lead extends Model {
-  public id!: number;
-  public name!: string;
-  public phone!: string;
-  public email!: string;
-  public company?: string;
-  public country?: string;
-  public productInterest?: string;
-  public message?: string;
-  public source?: string;
-  public status!: string;
+  declare id: number;
+  declare name: string;
+  declare phone: string;
+  declare email: string;
+  declare company?: string;
+  declare country?: string;
+  declare productInterest?: string;
+  declare message?: string;
+  declare source?: string;
+  declare status: string;
 }
 
 Lead.init(

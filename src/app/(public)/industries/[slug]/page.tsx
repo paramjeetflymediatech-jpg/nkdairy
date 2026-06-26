@@ -11,7 +11,7 @@ import FAQAccordion from '@/components/home/FAQAccordion';
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   await connectDB();
-  
+
   const industry = await Industry.findOne({ where: { slug } });
   if (!industry) return { title: 'Industry Not Found' };
 
@@ -61,12 +61,12 @@ export default async function IndustryDetailPage(
   }
 
   // Parse equipment solutions and FAQs from JSON
-  const eqSolutions = typeof industry.equipmentSolutions === 'string' 
-    ? JSON.parse(industry.equipmentSolutions) 
+  const eqSolutions = typeof industry.equipmentSolutions === 'string'
+    ? JSON.parse(industry.equipmentSolutions)
     : industry.equipmentSolutions;
-    
-  const faqs = typeof industry.faqs === 'string' 
-    ? JSON.parse(industry.faqs) 
+
+  const faqs = typeof industry.faqs === 'string'
+    ? JSON.parse(industry.faqs)
     : industry.faqs;
 
   // Helper to parse product images
@@ -82,7 +82,7 @@ export default async function IndustryDetailPage(
 
   return (
     <div className="min-h-screen bg-white font-sans">
-      
+
       {/* 1. Dynamic Hero Section */}
       <div className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-[#0d1b2e]">
         {/* Background Image or Gradient Pattern */}
@@ -116,7 +116,7 @@ export default async function IndustryDetailPage(
               Business Segments
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold mb-6 text-white tracking-tight leading-tight drop-shadow-lg">
-              {industry.name} <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00b4d8] to-blue-400">Processing Solutions</span>
+              {industry.name} <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00b4d8] to-blue-400">Processing Solutions</span>
             </h1>
             {industry.description && (
               <p className="text-gray-300 text-lg md:text-xl leading-relaxed font-light max-w-3xl border-l-2 border-[#00b4d8] pl-6">
@@ -125,7 +125,7 @@ export default async function IndustryDetailPage(
             )}
           </div>
         </div>
-        
+
         {/* Bottom Curve/Wave Divider */}
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-10 translate-y-[1px]">
           <svg className="relative block w-full h-[60px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
@@ -154,29 +154,28 @@ export default async function IndustryDetailPage(
             Explore our state-of-the-art machinery meticulously engineered for the {industry.name} sector.
           </p>
         </div>
-        
+
         {industry.products && industry.products.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {industry.products.map((product: any) => {
               const image = getProductImage(product);
-              
+
               return (
-                <div key={product.id} className="group bg-white border border-gray-100 rounded-[2rem] overflow-hidden hover:border-[#00b4d8]/30 shadow-[0_4px_20px_rgba(13,27,46,0.04)] hover:shadow-[0_20px_40px_rgba(0,180,216,0.12)] transition-all duration-500 flex flex-col -translate-y-0 hover:-translate-y-2">
+                <div key={product.id} className="group bg-white border border-gray-100 rounded-lg overflow-hidden hover:border-[#00b4d8]/30 shadow-[0_4px_20px_rgba(13,27,46,0.04)] hover:shadow-[0_20px_40px_rgba(0,180,216,0.12)] transition-all duration-500 flex flex-col -translate-y-0 hover:-translate-y-2">
                   <Link href={`/products/${product.slug}`} className="block relative">
-                    <div className="aspect-[4/3] bg-slate-50 relative overflow-hidden flex items-center justify-center p-6 group-hover:bg-blue-50/50 transition-colors">
+                    <div className="aspect-[4/3] bg-slate-50 relative overflow-hidden flex items-center justify-center transition-colors">
                       {image ? (
-                        <Image 
-                          src={image} 
+                        <Image
+                          src={image}
                           alt={product.name}
                           fill
-                          className="object-contain p-6 group-hover:scale-110 transition-transform duration-700 ease-out"
+                          className="object-contain transition-transform duration-700 ease-out"
                         />
                       ) : (
                         <div className="text-gray-400 font-mono text-xs opacity-50">
                           [ NO IMAGE ]
                         </div>
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b2e]/60 via-transparent to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
                   </Link>
                   <div className="p-8 flex-1 flex flex-col justify-between relative bg-white">
@@ -196,7 +195,7 @@ export default async function IndustryDetailPage(
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="pt-6 mt-6 border-t border-gray-100">
                       <Link href={`/products/${product.slug}`} className="inline-flex items-center gap-2 text-sm font-bold text-[#0d1b2e] group-hover:text-[#0077b6] transition-colors uppercase tracking-wider">
                         Explore Specs <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-300" />
