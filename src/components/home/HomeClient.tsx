@@ -396,7 +396,7 @@ export default function HomeClient({
               prevEl: '.seg-prev-btn',
               nextEl: '.seg-next-btn',
             }}
-            autoplay={{ delay: 5000, disableOnInteraction: true }}
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
             loop={true}
             className="w-full h-full"
           >
