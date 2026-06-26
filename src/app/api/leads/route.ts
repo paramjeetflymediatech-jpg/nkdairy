@@ -35,12 +35,12 @@ export async function POST(req: NextRequest) {
     // Send email using nodemailer
     try {
       const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST || 'smtp.ethereal.email',
-        port: parseInt(process.env.SMTP_PORT || '587'),
-        secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
+        host: process.env.SMTP_HOST || process.env.EMAIL_HOST || 'smtp.ethereal.email',
+        port: parseInt(process.env.SMTP_PORT || process.env.EMAIL_PORT || '587'),
+        secure: (process.env.SMTP_SECURE || process.env.EMAIL_SECURE) === 'true', // true for 465, false for other ports
         auth: {
-          user: process.env.SMTP_USER || 'placeholder_user',
-          pass: process.env.SMTP_PASS || 'placeholder_pass',
+          user: process.env.SMTP_USER || process.env.EMAIL_USER || 'placeholder_user',
+          pass: process.env.SMTP_PASS || process.env.EMAIL_PASS || 'placeholder_pass',
         },
         connectionTimeout: 5000,
         greetingTimeout: 5000,
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       
       const adminPromises = adminEmails.map(adminEmail => {
         return transporter.sendMail({
-          from: `"NK Dairy Website" <${process.env.SMTP_FROM || 'no-reply@nkdairy.com'}>`,
+          from: `"NK Dairy Website" <${process.env.SMTP_FROM || process.env.EMAIL_USER || 'no-reply@nkdairy.com'}>`,
           to: adminEmail,
           subject: `New Lead: ${name} - ${productInterest || 'General Inquiry'}`,
           html: `
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
       await Promise.all([
         // 1. Email to the user (Confirmation)
         transporter.sendMail({
-          from: `"NK Dairy Equipments" <${process.env.SMTP_FROM || 'no-reply@nkdairy.com'}>`,
+          from: `"NK Dairy Equipments" <${process.env.SMTP_FROM || process.env.EMAIL_USER || 'no-reply@nkdairy.com'}>`,
           to: email,
           subject: "Thank You for Contacting NK Dairy Equipments",
           html: `
